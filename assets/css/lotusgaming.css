@@ -1,0 +1,47 @@
+:root {
+
+    --lotus_black: #000000;
+
+	--lotus_pink1: #E53C50;
+    --lotus_pink2: #F15674;
+    --lotus_pink3: #FE779A;
+    --lotus_pink4: #FE92B2;
+    
+    --lotus_green1: #6CB547;
+	--lotus_green2: #8ECD51;
+
+    --background_color: #37393b;
+	--divider_color: rgba(170, 170, 170, .2);
+}
+
+body {
+    height: 100vh;
+    background-color: var(--background_color);
+}
+
+.navbar {
+    border-bottom: 2px solid var(--divider_color);
+}
+
+.scroll_to_top {
+    width: 40px;
+    height: 40px; 
+    background: #111;
+    border: 2px solid var(--lotus_pink1);
+    color: var(--lotus_pink1);
+    border-radius: 50%;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    opacity: 0;
+}
+
+.scroll_to_top:hover {
+    
+    background-color: var(--lotus_black);
+    color: var(--lotus_green1);
+    border-color: var(--lotus_green1);
+}
