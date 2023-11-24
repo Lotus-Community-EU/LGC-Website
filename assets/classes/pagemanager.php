@@ -2,8 +2,6 @@
 
 Functions::ConnectDB();
 
-Functions::LoadUserdData(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
-
 $page = isset($_GET['url']) ? $_GET['url'] : 'index';
 
 $GET = explode('/', $page);
@@ -40,22 +38,17 @@ switch($page) {
 		}
 		else {
 			switch($page) {
-				case 'index':
-					LoadView('index','Home-Page');
-					break;
-                case 'login':
-                    if(Functions::$user['id'] != 0) {
-                        header("Location: /");
-                        exit;
-                    }
-                    LoadView('login','Login');
-                    break;
                 case 'logout':
                     LoadHandler('logout');
                     break;
 				default:
-					header("Location: /");
-					break;
+                    Functions::LoadUserdData(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
+                    if($page == 'login' && Functions::$user['id'] != 0) {
+                        header("Location: /");
+                        exit;
+                    }
+					LoadView($page);
+                    break;
 			}
 		}
 }
@@ -75,8 +68,10 @@ function CheckCookies() {
     }
 }
 
-function LoadView($page = '', $page_title = '') {
-	global $GET;
+function LoadView($page = '', $page_title = 'Lotus Gaming Community') {
+	if(!file_exists('pages/'.$page.'.php')) {
+        $page = 'index';
+    }
     ?>
 	<!DOCTYPE html>
 	<html lang="en-US">

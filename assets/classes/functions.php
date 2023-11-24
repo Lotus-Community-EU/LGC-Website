@@ -3,6 +3,7 @@
 class Functions {
 
     public static $website_url = 'https://localhost';
+    public static $website_version = 'v0.0.1-R2';
 
     public static $csrf = array('TFE$RW§5e342wREw','FT$§E%TR§$E3tzrterTrtgre');
     public static $csrf_token;
@@ -109,9 +110,7 @@ class Functions {
                 self::$user = $result->fetch_array();
             }
             else {
-                session_destroy();
-                setcookie('remember','', 1,'/');
-                header("Location: /");
+                header("Location: /logout");
                 exit;
             }
         }
