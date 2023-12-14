@@ -16,6 +16,8 @@ error_reporting(E_ALL);
             Version: 3.7.1
         - JQuery Cookie (By Carl Hartl, https://github.com/carhartl/jquery-cookie)
             Version: 1.4.1
+        - Cookie Consent (By Wruczek, https://github.com/Wruczek/Bootstrap-Cookie-Alert)
+            Version: 1.2.2
         - WYSIWYG-Editor (https://summernote.org/)
             Version: 0.8.18
 

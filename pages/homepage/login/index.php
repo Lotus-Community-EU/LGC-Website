@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-12 col-lg-6">
         <?php if(isset($GET[1]) && isset($GET[1]) == 'register') { ?>
-            <form action="/register" method="POST" class=" mb-3">
+            <form action="/register" method="POST" class="mb-3">
             <div class="mb-3">
                     <label for="username" class="form-label"><?= Functions::$translations['username'];?></label>
                     <input type="text" name="username" class="form-control" id="username" placeholder="<?= Functions::$translations['username'];?>">
@@ -24,7 +24,7 @@
             </form>
             <a class="btn btn-primary float-end" href="/login"><?= Functions::$translations['login.back_to_register'];?></a>
         <?php } else {?>
-            <form action="/login" method="POST" class=" mb-3">
+            <form action="/login" method="POST" class="mb-3">
                 <div class="mb-3">
                     <label for="username" class="form-label"><?= Functions::$translations['username'];?></label>
                     <input type="text" name="username" class="form-control" id="username" placeholder="<?= Functions::$translations['username'];?>">

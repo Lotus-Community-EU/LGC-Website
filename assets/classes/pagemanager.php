@@ -15,17 +15,16 @@ switch($page) {
 			break;
 		}
 		else {
+            Functions::LoadUserdData(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
 			switch($GET[1]) {
-				case 'home':
-					//LoadAdminView('home','Home','p_view_home');
-                    echo 'Admin_Home';
-					break;
-				case 'logout':
-                    echo 'Admin_Logout';
-					//Functions::LogoutUser();
-					break;
+                case 'user': 
+                    LoadAdminView($GET['1'],'admin_user_list');
+                    break;
+                case 'roles':
+                    LoadAdminView($GET['1'],'admin_role_management');
+                    break;
 				default:
-					header("Location: /admin/home");
+					LoadAdminView($GET[1]);
 					break;
 			}
 			break;
@@ -69,81 +68,65 @@ function CheckCookies() {
 }
 
 function LoadView($page = '', $page_title = 'Lotus Gaming Community') {
-	if(!file_exists('pages/'.$page.'.php')) {
+    global $GET;
+	if(!file_exists('pages/homepage/'.$page.'/index.php')) {
         $page = 'index';
     }
     ?>
 	<!DOCTYPE html>
 	<html lang="en-US">
 		<?php
-		include('components/head.php');
-		?><body class="text-white"><div class="container"><?php
-		include('components/navbar.php');
-        Functions::ShowErrorMessage();
-		include('pages/'.$page.'.php');
-		?><div class="divider-50"></div><a href="" class="scroll_to_top"><i class="fa-solid fa-arrow-up"></i></a></div></body><?php
-		include('components/footer.php');
-        CheckCookies();
-        include('components/javascript.php');
+            include('components/head.php');
+            ?><body class="text-white"><div class="container" style="min-height: 500px;"><?php
+            include('components/navbar.php');
+            Functions::ShowErrorMessage();
+            ?>
+            <!--<div style="overflow-y: auto;">-->
+            <?php include('pages/homepage/'.$page.'/index.php');?>
+            <!--</div>-->
+            <a href="" class="scroll_to_top"><i class="fa-solid fa-arrow-up"></i></a></div></body><?php
+            include('components/footer.php');
+            CheckCookies();
+            include('components/javascript.php');
 		?>
         </html>
     <?php
 }
 
-function LoadAdminView($view = '', $page_title = '', $needed_permission = '') {
-	include('assets/connectdatabase.php');
-    include('assets/functions.php');
-	Functions::InitDB($mysqli);
-	Functions::CheckUserLogin($mysqli);
-	if(!Functions::RoleHasPermission(Functions::$user['role'], $needed_permission)) {
-		header("Location: /login");
+function LoadAdminView($page = '', $needed_permission = '', $page_title = 'Lotus Gaming Community') {
+    global $GET;
+	if(!Functions::UserHasPermission($needed_permission)) {
+		header("Location: /");
 		exit;
 	}
-	
-    $view = $view;
-	global $GET;
     ?>
 	<!DOCTYPE html>
 	<html lang="en-US">
 		<?php
-		include('view/admin/modules/head.php');
+            include('components/head.php');
+            ?><body class="text-white"><div class="container" style="min-height: 500px;"><?php
+            include('components/navbar.php');
+            Functions::ShowSuccessMessage();
+            Functions::ShowErrorMessage();
+            include('pages/admin/'.$page.'/index.php');
+            ?><div class="divider-50"></div><a href="" class="scroll_to_top"><i class="fa-solid fa-arrow-up"></i></a></div></body><?php
+            include('components/footer.php');
+            CheckCookies();
+            include('components/javascript.php');
 		?>
-		<body class="dark-mode sidebar-mini layout-fixed layout-footer-fixed control-sidebar-slide-open sidebar-mini-xs layout-navbar-fixed">
-			<div class="wrapper"><?php
-				include('view/admin/modules/navbar_top.php');
-				include('view/admin/modules/navbar_side.php');
-				?>
-				<div class="content-wrapper">
-					<?php
-					include('view/admin/modules/head_title.php');
-					?>
-					<section class="content">
-						<div class="container-fluid">
-							<?php
-							include('view/admin/modules/head_boxes.php');
-							?>
-							<div class="row">
-								<?php
-								include('view/admin/'.$view.'.php');
-								?>
-							</div>
-						</div>
-					</section>
-					<?php include('view/admin/modules/footer.php'); ?>
-				</div>
-				<?php include('view/admin/modules/scripts.php'); ?>
-                <script>
-                    $(".nav-check").removeClass("active");
-                    $("#<?= $view;?>").addClass("active");
-                </script>
-			</div>
-		</body>
-	</html>
-	<!-- Used Template was provided by AdminLTE (https://adminlte.io) and edited by SpoonyUK for LotusGamingCommunity -->
+        </html>
     <?php
 }
 
+/*
+    <script>
+        $(".nav-check").removeClass("active");
+        $("#<?= $view;?>").addClass("active");
+    </script>
+*/
+
 function LoadHandler($handler = '') {
+    Functions::LoadUserdData(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
 	global $GET;
     include('handler/'.$handler.'.php');
 }

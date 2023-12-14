@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
@@ -25,7 +25,7 @@
                             <?php
                                 // Functions::AddAdminTabLink($link, $icon, $permission, $text)
                                 Functions::AddAdminTabLink('/admin/user/list','fa-solid fa-users','admin_user_list', Functions::$translations['admin.user_list']);
-                                Functions::AddAdminTabLink('/admin/user_management','fa-solid fa-user-pen','admin_user_management', Functions::$translations['admin.user_management']);
+                                //Functions::AddAdminTabLink('/admin/user_management','fa-solid fa-user-pen','admin_user_management', Functions::$translations['admin.user_management']);
                                 Functions::AddAdminTabLink('/admin/roles/list','fa-solid fa-user-gear','admin_role_management', Functions::$translations['admin.role_management']);
                             ?>
                         </ul>

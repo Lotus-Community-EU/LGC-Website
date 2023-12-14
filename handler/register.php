@@ -12,11 +12,8 @@ if(strpos($ref, Functions::$website_url) == 0) {
             $error = 1;
             $error_msg = '- The input Username is invalid!';
         }
-        $prepare = Functions::$mysqli->prepare("SELECT id FROM users WHERE username = ?");
-        $prepare->bind_param('s', $username);
-        $prepare->execute();
-        $result = $prepare->get_result();
-        if($result->num_rows > 0) {
+        
+        if(Functions::IsUsernameRegistered($username)) {
             $error = 1;
             if(strlen($error_msg) > 0) { $error_msg .='<br>';}
             $error_msg .= '- The Username is already taken.';
@@ -48,7 +45,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
         }
 
         $password = Functions::HashPassword($password);
-        $statement = Functions::$mysqli->prepare("INSERT INTO users (username,password,email,created_at) VALUES (?,?,?,?)");
+        $statement = Functions::$mysqli->prepare("INSERT INTO web_users (username,password,email,created_at) VALUES (?,?,?,?)");
         $time = gmdate('U');
         $statement->bind_param('sssi', $username, $password, $email, $time);
         $statement->execute();
@@ -56,7 +53,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
 
         $row = Functions::$mysqli->insert_id;
         $login_token = Functions::CreateUniqueToken($row);
-        Functions::$mysqli->query("UPDATE users SET login_token = '".$login_token."' WHERE id = '".$row."'");
+        Functions::$mysqli->query("UPDATE web_users SET login_token = '".$login_token."' WHERE id = '".$row."'");
         $_SESSION['user_token'] = $login_token;
         ?><script>SetCookie('remember', <?= $login_token;?>, time()+2592000,'/');</script><?php // 30 Tage
         header("Location: /");

@@ -1,5 +1,4 @@
 <?php
-session_destroy();
-setcookie('remember','', 1,'/');
+Functions::LogoutUser();
 header("Location: /");
 exit;

@@ -25,14 +25,18 @@ if(strpos($ref, Functions::$website_url) == 0) {
         }
 
         $password = Functions::HashPassword($password);
-        $statement = Functions::$mysqli->prepare("SELECT id FROM users WHERE username = ? AND password = ?");
+        $statement = Functions::$mysqli->prepare("SELECT id FROM web_users WHERE username = ? AND password = ?");
         $statement->bind_param('ss', $username, $password);
         $statement->execute();
         $result = $statement->get_result();
         if($result->num_rows > 0) {
 			$row = $result->fetch_array();
 			$login_token = Functions::CreateUniqueToken($row['id']);
-			Functions::$mysqli->query("UPDATE users SET login_token = '".$login_token."' WHERE id = '".$row['id']."'");
+			Functions::$mysqli->query("UPDATE web_users SET login_token = '".$login_token."' WHERE id = '".$row['id']."'");
+            $time = gmdate('U');
+            $ip = Functions::EncryptString(Functions::GetIP());
+            $user_agent = $_SERVER["HTTP_USER_AGENT"];
+            Functions::$mysqli->query("INSERT INTO web_users_logins (user_id,login_time,ip_address,user_agent) VALUES ('".$row['id']."','".$time."','".$ip."','".$user_agent."')");
 			$_SESSION['user_token'] = $login_token;
 			if($_POST['remember'] == 'on') {
 				?><script>SetCookie('remember', <?= $login_token;?>, time()+2592000,'/');</script><?php // 30 Tage
