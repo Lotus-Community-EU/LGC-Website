@@ -23,7 +23,7 @@ $mc_username = json_decode(file_get_contents('https://mc-heads.net/minecraft/pro
                         (!Functions::IsStaff($user_data) && !Functions::IsUpperStaff($user_data) && Functions::UserHasPermission('admin_user_management'))) {?>
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Admin-Menu">
-                                <i class="fa-solid fa-user-tie"></i>
+                                Admin
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                                 <li><a class="dropdown-item" href="/admin/user/edit/<?= $user_data['id'];?>"><?= Functions::Translation('edit_user');?></a></li>
@@ -37,8 +37,8 @@ $mc_username = json_decode(file_get_contents('https://mc-heads.net/minecraft/pro
                                 <i class="fa-solid fa-gear"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/user/logs"><?= Functions::Translation('view_logs');?></a></li>
                                 <li><a class="dropdown-item" href="/user/edit"><?= Functions::Translation('edit_profile');?></a></li>
+                                <li><a class="dropdown-item" href="/user/logs"><?= Functions::Translation('view_logs');?></a></li>
                             </ul>
                         </div>
                     <?php } ?>
