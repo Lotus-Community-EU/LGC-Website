@@ -1,6 +1,7 @@
 <?php
 
 Functions::ConnectDB();
+Functions::GetAllSettings();
 
 $page = isset($_GET['url']) ? $_GET['url'] : 'index';
 

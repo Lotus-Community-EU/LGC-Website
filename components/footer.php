@@ -8,6 +8,13 @@
                 <a href="/imprint" class="nav-link text-white px-2"><?= Functions::$translations['imprint'];?></a>
             </li>
         </ul>
-        <p class="text-center">&copy; 2023 Lotus Gaming Community</p>
+
+        <?php if(Functions::GetSetting('copyright_show') == 1) { ?>
+        <p class="text-center mb-0"><?= Functions::GetSetting('copyright_text');?></p>
+        <?php } ?>
+
+        <?php if(Functions::GetSetting('show_mcheads') == 1) { ?>
+        <p class="text-center mb-0">Thanks to <a href="https://mc-heads.net">MCHeads</a> for providing Minecraft Avatars.</p>
+        <?php } ?>
     </footer>
 </div>

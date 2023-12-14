@@ -15,6 +15,8 @@ class Functions {
     public static $translations;
     public static $language_resetted = 0;
 
+    public static $settings;
+
     public static $user_permissions;
 
     static function EncryptString($string = '') {
@@ -377,28 +379,53 @@ class Functions {
         else return $code;
     }
 
-    static function GetSetting($setting) {
-        $prepare = self::$mysqli->prepare("SELECT text FROM web_settings WHERE code = ? LIMIT 1");
-        $prepare->bind_param('s', $setting);
-        $prepare->execute();
+    static function GetAllSettings() {
+        $query = self::$mysqli->query("SELECT * FROM web_settings WHERE id > 0");
+        
+        $all = $query->fetch_all(MYSQLI_ASSOC);
 
-        $result = $prepare->get_result();
-        if($result->num_rows > 0) {
-            return $result->fetch_array()['text'];
+        foreach($all as $setting) {
+            self::$settings[$setting['code']] = $setting['value'];
+        }
+    }
+
+    static function GetSetting($setting) {
+        if(isset(self::$settings[$setting])) {
+            return self::$settings[$setting];
         }
         else {
-            return '0';
+            return 0;
         }
     }
 
     static function GeneratePassword() {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!\"§$%&/()=?';
-        $pass = array(); //remember to declare $pass as an array
-        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        $pass = array();
+        $alphaLength = strlen($alphabet) - 1;
         for ($i = 0; $i < 8; $i++) {
             $n = rand(0, $alphaLength);
             $pass[] = $alphabet[$n];
         }
-        return implode($pass); //turn the array into a string
+        return implode($pass);
+    }
+
+    static function IsStaff($user) {
+        $all_ranks = self::GetAllRanks();
+        if($all_ranks[$user['main_rank']]['is_staff'] == 1 || $all_ranks[$user['secondary_rank']]['is_staff'] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    static function IsUpperStaff($user) {
+        $all_ranks = self::GetAllRanks();
+        if($all_ranks[$user['main_rank']]['is_upperstaff'] == 1 || $all_ranks[$user['secondary_rank']]['is_upperstaff'] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
