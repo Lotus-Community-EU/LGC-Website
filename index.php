@@ -20,6 +20,8 @@ error_reporting(E_ALL);
             Version: 1.2.2
         - WYSIWYG-Editor (https://summernote.org/)
             Version: 0.8.18
+		- SCSS (https://sass-lang.com/)
+			Version: 1.12
 
 */
 
