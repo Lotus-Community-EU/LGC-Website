@@ -3,11 +3,15 @@ if(!isset($GET[1])) {
     header("Location: /user/".Functions::$user['id']);
     exit;
 }
+if(strtolower($GET[1]) == 'edit') {
+    include('edit.php');
+}
+else {
 $user_id = $GET[1];
 $user_data = Functions::GetUserData($user_id);
 $user_ranks = Functions::GetUserRanks($user_id);
 $all_ranks = Functions::GetAllRanks();
-$languages = Functions::GetAllLanguages();
+$all_languages = Functions::GetAllLanguages();
 
 if(strlen($user_data['mc_uuid']) > 1)
 $mc_username = json_decode(file_get_contents('https://mc-heads.net/minecraft/profile/'.$user_data['mc_uuid']))->name;
@@ -62,7 +66,7 @@ $mc_username = json_decode(file_get_contents('https://mc-heads.net/minecraft/pro
         <b>Main Rank:</b> <?= '<font color="'.$all_ranks[$user_ranks[0]]['rank_colour'].'">'.$all_ranks[$user_ranks[0]]['rank_name'].'</font>';?><br>
         <?= $user_ranks[1] != 0 ? '<b>Secondary Rank:</b> <font color="'.$all_ranks[$user_ranks[1]]['rank_colour'].'">'.$all_ranks[$user_ranks[1]]['rank_name'].'</font><br>' : '';?>
         <b><?= Functions::Translation('member_since');?></b> <?= date('d.m.Y - H:i', $user_data['created_at']);?><br>
-        <b><?= Functions::Translation('language');?></b> <?= $languages[$user_data['language']]['language_name'];?><br>
+        <b><?= Functions::Translation('language');?></b> <?= $all_languages[$user_data['language']]['language_name'];?><br>
         <?php if(Functions::IsStaff(Functions::$user) || Functions::IsUpperStaff(Functions::$user) || $user_data['show_mc_name'] == 1 || $user_data['id'] == Functions::$user['id']) {?>
         <b>Minecraft-Account:</b> <?= $user_data['mc_uuid'] > 1 ? 'Linked ('.$mc_username.')<br>' : 'Not Linked!';?>
         <?php } else {
@@ -72,3 +76,4 @@ $mc_username = json_decode(file_get_contents('https://mc-heads.net/minecraft/pro
         <?= $user_data['bio'];?>
     </div>
 </div>
+<?php } ?>
