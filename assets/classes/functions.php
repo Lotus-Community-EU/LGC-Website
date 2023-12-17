@@ -3,7 +3,7 @@
 class Functions {
 
     public static $website_url = 'https://localhost';
-    public static $website_version = 'v0.0.1-R2';
+    public static $website_version = 'v0.0.2';
 
     public static $csrf = array('TFE$RW§5e342wREw','FT$§E%TR§$E3tzrterTrtgre');
     public static $csrf_token;
@@ -194,9 +194,10 @@ class Functions {
         return $return;
     }
 
-    static function AddLog($staff_id, $user_id, $category, $visibility, $text) {
-        $prepare = self::$mysqli->prepare("INSERT INTO web_logs (staff_id,user_id,log_category,log_visibility,log_entry) VALUES (?,?,?,?,?)");
-        $prepare->bind_param("iisis", $staff_id, $user_id, $category, $visibility, $text);
+    static function AddProfileEditLog($user_id, $changed_by, $visibility, $changed_what, $changed_old, $changed_new) {
+        $time = gmdate('U');
+        $prepare = self::$mysqli->prepare("INSERT INTO web_profile_edit_logs (user_id,changed_by,log_visibility,changed_what,changed_old,changed_new,changed_time) VALUES (?,?,?,?,?,?,?)");
+        $prepare->bind_param("iiisssi", $user_id, $changed_by, $visibility, $changed_what, $changed_old, $changed_new, $time);
         $prepare->execute();
     }
 
@@ -398,6 +399,22 @@ class Functions {
         }
     }
 
+    static function GenerateLinkKey($id) {
+        $alphabet = '123456789';
+        $pass = array();
+        $alphaLength = strlen($alphabet) - 1;
+        for ($i = 0; $i < 6; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n]*$id;
+            if($i == 2) {
+                $pass[] = '-'.$id.'-';
+            }
+        }
+        return implode($pass);
+        /*$num = $numbers[rand(0, strlen($numbers)-1)]*$id;
+        return $pass.$num;*/
+    }
+
     static function GeneratePassword() {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!\"§$%&/()=?';
         $pass = array();
@@ -426,6 +443,45 @@ class Functions {
         }
         else {
             return false;
+        }
+    }
+
+    static function UserLastNameChange($user_id) {
+        $user_data = self::GetUserData($user_id);
+        if($user_data['last_username_change'] == 0) {
+            return 'Never';
+        }
+        else {
+            return date('d.m.Y - H:i:s', $user_data['last_username_change']);
+        }
+    }
+
+    static function UserCanChangeName($user_id) {
+        $user_data = self::GetUserData($user_id);
+        if($user_data['last_username_change'] == 0) {
+            return true;
+        }
+        else {
+            $change_value = self::GetSetting('username_change_value');
+            $change_unit = self::GetSetting('username_change_unit');
+            $change_final = 0;
+            switch($change_unit) {
+                case 'hours':
+                    $change_final = $change_value*3600; // 1 Hour = 3600 Seconds
+                case 'days':
+                    $change_final = $change_value*86400; // 1 Day = 86400 Seconds
+                    break;
+                case 'month':
+                    $change_final = $change_value*2628000; // 1 Month = 2628000 Seconds
+                    break;
+            }
+
+            if(time() > ($user_data['last_username_change']+$change_final)) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 }

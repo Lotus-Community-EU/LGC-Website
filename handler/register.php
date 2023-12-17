@@ -25,10 +25,10 @@ if(strpos($ref, Functions::$website_url) == 0) {
             $error_msg .= '- The entered E-Mail address is invalid!';
         }
 
-        if(strlen($password) < 1 || strlen($password) > 64) {
+        if(strlen($password) < 6 || strlen($password) > 64) {
             $error = 1;
             if(strlen($error_msg) > 0) { $error_msg .='<br>';}
-            $error_msg .= '- The input password is incorrect!';
+            $error_msg .= '- The input password has to be between 6 and 64 characters!';
         }
 
         if($password !== $password2) {

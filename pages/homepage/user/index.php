@@ -3,8 +3,8 @@ if(!isset($GET[1])) {
     header("Location: /user/".Functions::$user['id']);
     exit;
 }
-if(strtolower($GET[1]) == 'edit') {
-    include('edit.php');
+if(strtolower($GET[1]) == 'settings') {
+    include('settings.php');
 }
 else {
 $user_id = $GET[1];
@@ -41,8 +41,7 @@ $mc_username = json_decode(file_get_contents('https://mc-heads.net/minecraft/pro
                                 <i class="fa-solid fa-gear"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/user/edit"><?= Functions::Translation('edit_profile');?></a></li>
-                                <li><a class="dropdown-item" href="/user/logs"><?= Functions::Translation('view_logs');?></a></li>
+                                <li><a class="dropdown-item" href="/user/settings"><?= Functions::Translation('account_settings');?></a></li>
                             </ul>
                         </div>
                     <?php } ?>

@@ -81,6 +81,7 @@ function LoadView($page = '', $page_title = 'Lotus Gaming Community') {
             ?><body class="text-white"><div class="container" style="min-height: 500px;"><?php
             include('components/navbar.php');
             Functions::ShowErrorMessage();
+            Functions::ShowSuccessMessage();
             ?>
             <!--<div style="overflow-y: auto;">-->
             <?php include('pages/homepage/'.$page.'/index.php');?>

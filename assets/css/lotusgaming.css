@@ -50,3 +50,8 @@ body {
     background-color: var(--background_color);
     border: 2px solid grey;
 }
+
+label {
+    text-decoration: underline;
+    margin-bottom: .5rem;
+}

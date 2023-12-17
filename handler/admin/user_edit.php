@@ -1,7 +1,7 @@
 <?php
 $user_id = $GET['2'];
 
-//AddLog($staff_id, $user_id, $category, $visibility, $text) {
+// AddProfileEditLog($user_id, $changed_by, $visibility, $changed_what, $changed_old, $changed_new)
 
 $ref = $_SERVER['HTTP_REFERER'];
 if(strpos($ref, Functions::$website_url) == 0) {
@@ -42,7 +42,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
             }
             else {
                 if(strcmp($new_username, $user_data['username'])) {
-                    Functions::AddLog(Functions::$user['id'], $user_data['id'],'user_edit', 0,'Username changed from "'.$user_data['username'].'" to "'.$new_username.'"');
+                    Functions::AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Username', $user_data['username'], $new_username);
                     $prepare = Functions::$mysqli->prepare("UPDATE web_users SET username = ? WHERE id = ?");
                     $prepare->bind_param("si", $new_username, $user_data['id']);
                     $prepare->execute();
@@ -58,7 +58,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
         }
         else {
             if($user_data['language'] != $new_language) {
-                Functions::AddLog(Functions::$user['id'], $user_data['id'],'user_edit', 0,'Language changed from "'.$user_data['language'].'" to "'.$new_language.'"');
+                AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Language', $user_data['language'], $new_language);
                 $prepare = Functions::$mysqli->prepare("UPDATE web_users SET language = ? WHERE id = ?");
                 $prepare->bind_param("si", $new_language, $user_data['id']);
                 $prepare->execute();
@@ -81,15 +81,15 @@ if(strpos($ref, Functions::$website_url) == 0) {
             }
             else {
                 if($user_data['main_rank'] != $new_main_rank) {
-                    Functions::AddLog(Functions::$user['id'], $user_data['id'],'user_edit', 0,'Main-Rank changed from "'.all_ranks[$user_data['main_rank']]['rank_name'].'" to "'.$all_ranks[$new_main_rank]['rank_name'].'"');
+                    AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Main-Rank', $all_ranks[$user_data['main_rank']]['rank_name'], $all_ranks[$new_main_rank]['rank_name']);
                     $prepare = Functions::$mysqli->prepare("UPDATE web_users SET main_rank = ? WHERE id = ?");
                     $prepare->bind_param("ii", $new_main_rank, $user_data['id']);
                     $prepare->execute();
                     $changed ++;
                 }
                 if($user_data['secondary_rank'] != $new_secondary_rank) {
-                    Functions::AddLog(Functions::$user['id'], $user_data['id'],'user_edit', 0,'Secondary-Rank changed from "'.all_ranks[$user_data['secondary_rank']]['rank_name'].'" to "'.$all_ranks[$new_secondary_rank]['rank_name'].'"');
-                    $prepare = Functions::$mysqli->prepare("UPDATE web_users SET main_rank = ? WHERE id = ?");
+                    AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Secondary-Rank', $all_ranks[$user_data['secondary_rank']]['rank_name'], $all_ranks[$new_secondary_rank]['rank_name']);
+                    $prepare = Functions::$mysqli->prepare("UPDATE web_users SET secondary_rank = ? WHERE id = ?");
                     $prepare->bind_param("ii", $new_secondary_rank, $user_data['id']);
                     $prepare->execute();
                     $changed ++;
@@ -104,7 +104,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
         }
         else {
             if($user_data['bio'] != $new_bio) {
-                Functions::AddLog(Functions::$user['id'], $user_data['id'],'user_edit', 0,'Bio changed from "'.$user_data['bio'].'" to "'.$new_bio.'"');
+                AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Bio', $user_data['bio'], $new_bio);
                 $prepare = Functions::$mysqli->prepare("UPDATE web_users SET bio = ? WHERE id = ?");
                 $prepare->bind_param("si", $new_bio, $user_data['id']);
                 $prepare->execute();
@@ -126,13 +126,13 @@ if(strpos($ref, Functions::$website_url) == 0) {
     else {
         $_SESSION['error_title'] = 'Edit User';
         $_SESSION['error_message'] = 'An error occured while logging in. Please try again! (2)';
-        header("Location: /admin/user/edit".$user_id);
+        header("Location: /admin/user/edit/".$user_id);
         exit;
     }
 }
 else {
     $_SESSION['error_title'] = 'Edit User';
     $_SESSION['error_message'] = 'An error occured while logging in. Please try again! (1)';
-    header("Location: /admin/user/edit".$user_id);
+    header("Location: /admin/user/edit/".$user_id);
     exit;
 }
