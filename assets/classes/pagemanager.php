@@ -21,8 +21,8 @@ switch($page) {
                 case 'user': 
                     LoadAdminView($GET['1'],'admin_user_list');
                     break;
-                case 'roles':
-                    LoadAdminView($GET['1'],'admin_role_management');
+                case 'ranks':
+                    LoadAdminView($GET['1'],'admin_rank_management');
                     break;
 				default:
 					LoadAdminView($GET[1]);

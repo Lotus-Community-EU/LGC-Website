@@ -292,6 +292,66 @@ class Functions {
         }
     }
 
+    static function GetRankComments() {
+        $query = self::$mysqli->query("SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
+
+		$columns = array();
+		$values = array();
+
+		if($query->num_rows > 0) {
+			while($row = $query->fetch_assoc()) {
+				$columns[$row["COLUMN_NAME"]] = $row["COLUMN_COMMENT"];
+			}
+		}
+
+        return $columns;
+    }
+
+    static function GetAllPermissions() {
+        $query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
+
+		$columns = array();
+		$values = array();
+
+		if($query->num_rows > 0) {
+			while($row = $query->fetch_assoc()) {
+				$columns[] = $row["COLUMN_NAME"];
+			}
+		}
+
+        return $columns;
+    }
+
+    static function GetRankPermissions($rank_id) {
+        $query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
+
+		$columns = array();
+		$values = array();
+
+		if($query->num_rows > 0) {
+			while($row = $query->fetch_assoc()) {
+				$columns[] = $row["COLUMN_NAME"];
+			}
+		}
+
+		$query2 = self::$mysqli->query("SELECT " . implode(",", $columns) . " FROM web_ranks_permissions WHERE rank_id = ".$rank_id);
+
+        $permissions = array();
+
+		if($query2->num_rows > 0) {
+			while($row = $query2->fetch_assoc()) {
+				$rowValues = array();
+				foreach($columns as $column) {
+                    if($row[$column] == 1) {
+					    $rowValues[$column] = (int)$row[$column];
+                    }
+				}
+				$permissions = $rowValues;
+			}
+		}
+        return $permissions;
+    }
+
     static function GetUserPermissions() {
         $query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
 

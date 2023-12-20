@@ -26,7 +26,7 @@
                                 // Functions::AddAdminTabLink($link, $icon, $permission, $text)
                                 Functions::AddAdminTabLink('/admin/user/list','fa-solid fa-users','admin_user_list', Functions::$translations['admin.user_list']);
                                 //Functions::AddAdminTabLink('/admin/user_management','fa-solid fa-user-pen','admin_user_management', Functions::$translations['admin.user_management']);
-                                Functions::AddAdminTabLink('/admin/roles/list','fa-solid fa-user-gear','admin_role_management', Functions::$translations['admin.role_management']);
+                                Functions::AddAdminTabLink('/admin/ranks/list','fa-solid fa-user-gear','admin_rank_management', Functions::$translations['admin.rank_management']);
                             ?>
                         </ul>
                     </li>

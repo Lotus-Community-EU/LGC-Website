@@ -41,7 +41,7 @@ $csrf_token = Functions::CreateCSRFToken();
             <!--<a href="" class="btn btn-sm btn-warning">Reset Profile Picture</a>-->
         </div>
     </div>
-    <form action="/admin/user_edit/<?= $GET['3'];?>" method="POST" class="">
+    <form action="/admin/user_edit/<?= $GET['3'];?>" method="POST">
         <div class="form-group">
             <label for="username"><?= Functions::$translations['username'];?></label>
             <input type="text" name="username" id="username" class="form-control" value="<?= $user_data['username'];?>">
@@ -109,7 +109,7 @@ $csrf_token = Functions::CreateCSRFToken();
             <p><?= Functions::Translation('reset_password.text', ['username'], [$user_data['username']]);?></p>
             </div>
             <div class="modal-footer">
-                <form action="/admin/user_resetpw/<?= $GET['3'];?>" method="POST" class="">
+                <form action="/admin/user_resetpw/<?= $GET[3];?>" method="POST" class="">
                     <input type="submit" name="reset_password" class="btn btn-success" value="<?= Functions::Translation('reset_password.button');?>">
                     <?php Functions::AddCSRFCheck($csrf_token);?>
                 </form>
