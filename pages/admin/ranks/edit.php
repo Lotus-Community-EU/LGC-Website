@@ -18,9 +18,11 @@ $csrf_token = Functions::CreateCSRFToken();
         <div>
             <p><?= Functions::Translation('edit_rank_header', ['rank_name'], [$rank['rank_name']]);?></p>
         </div>
+        <?php if($rank['id'] != 1 && $rank['id'] != 2 && $rank['id'] != 3) {?>
         <div>
             <a href="" class="btn btn-sm btn-danger mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#delete_rank"><?= Functions::Translation('delete_rank');?></a>
         </div>
+        <?php } ?>
     </div>
     <form action="/admin/rank_edit/<?= $GET['3'];?>" method="POST">
 
@@ -73,7 +75,7 @@ $csrf_token = Functions::CreateCSRFToken();
             foreach($all_permissions as $permission) {
                 ?>
                 <div class="form-check mt-3">
-                    <input type="checkbox" name="<?= $permission;?>" class="form-check-input" id="<?= $permission;?>" value="<?= $permission;?>" <?= $rank_permissions[$permission] == 1 ? 'checked' : '';?>>
+                    <input type="checkbox" name="<?= $permission;?>" class="form-check-input" id="<?= $permission;?>" value="<?= $permission;?>" <?= isset($rank_permissions[$permission]) ? 'checked' : '';?>>
                     <label class="form-check-label" for="<?= $permission;?>"><?= $rank_names[$permission].' (<b>'.$permission.'</b>)';?></label>
                 </div>
                 <?php
@@ -85,6 +87,7 @@ $csrf_token = Functions::CreateCSRFToken();
     </form>
 </div>
 
+<?php if($rank['id'] != 1 && $rank['id'] != 2 && $rank['id'] != 3) {?>
 <!-- Delete Rank -->
 <div class="modal" id="delete_rank" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -105,6 +108,7 @@ $csrf_token = Functions::CreateCSRFToken();
         </div>
     </div>
 </div>
+<?php } ?>
 
 <style>
     .form-check-label {

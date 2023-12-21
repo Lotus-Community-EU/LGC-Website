@@ -1,14 +1,24 @@
 <?php if(isset($GET[2]) && $GET[2] == 'edit') {
     include('edit.php');
 }
+elseif(isset($_GET[2]) && $GET[2] == 'add') {
+    include('add.php');
+}
 else { ?>
 
+<div class="row justify-content-end mb-3">
+    <div class="col-12 col-md-2">
+        <div class="text-end">
+            <a class="btn btn-success" href="/admin/ranks/add" target="_blank""><?= Functions::Translation('add_rank');?></a>
+        </div>
+    </div>
+</div>
 <div class="table-responsive">
     <table class="table table-dark table-striped text-center text-white" style="background-color: none;">
         <thead>
             <tr>
                 <th>ID</th>
-                <th><?= Functions::Translation('username');?></th>
+                <th><?= Functions::Translation('rank_name');?></th>
                 <th><?= Functions::Translation('edit');?></th>
             </tr>
         </thead>
@@ -19,7 +29,7 @@ else { ?>
                     ?>
                     <tr>
                         <td><?= $rank['id'];?></td>
-                        <td><span style="color: <?= $rank['rank_colour'];?>;"><?= $rank['rank_name'].(strlen($rank['rank_short']) > 1 ? '('.$rank['rank_short'].')' : '');?></style></td>
+                        <td><span style="color: <?= $rank['rank_colour'];?>;"><?= $rank['rank_name'].(strlen($rank['rank_short']) > 1 ? ' ('.$rank['rank_short'].')' : '');?></style></td>
                         <td><a href="/admin/ranks/edit/<?= $rank['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::$translations['edit_rank'];?></a></td>
                     </tr>
                     <?php
