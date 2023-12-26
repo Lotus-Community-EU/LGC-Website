@@ -83,7 +83,7 @@ $csrf_token = Functions::CreateCSRFToken();
         ?>
 
         <?php Functions::AddCSRFCheck($csrf_token);?>
-        <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::$translations['edit'];?>">
+        <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translations('edit');?>">
     </form>
 </div>
 

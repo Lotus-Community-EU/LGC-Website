@@ -1,7 +1,7 @@
 <?php if(isset($GET[2]) && $GET[2] == 'edit') {
     include('edit.php');
 }
-elseif(isset($_GET[2]) && $GET[2] == 'add') {
+elseif(isset($GET[2]) && $GET[2] == 'add') {
     include('add.php');
 }
 else { ?>
