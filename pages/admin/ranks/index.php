@@ -24,12 +24,12 @@ else { ?>
         </thead>
         <tbody>
             <?php
-                $ranks = Functions::$mysqli->query("SELECT id,rank_name,rank_short,rank_colour FROM core_ranks WHERE id > 0");
+                $ranks = Functions::$mysqli->query("SELECT id,name,short,colour FROM core_ranks WHERE id > 0");
                 while($rank = $ranks->fetch_array()) {
                     ?>
                     <tr>
                         <td><?= $rank['id'];?></td>
-                        <td><span style="color: <?= $rank['rank_colour'];?>;"><?= $rank['rank_name'].(strlen($rank['rank_short']) > 1 ? ' ('.$rank['rank_short'].')' : '');?></style></td>
+                        <td><span style="color: <?= $rank['colour'];?>;"><?= $rank['name'].(strlen($rank['short']) > 1 ? ' ('.$rank['short'].')' : '');?></style></td>
                         <td><a href="/admin/ranks/edit/<?= $rank['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::$translations['edit_rank'];?></a></td>
                     </tr>
                     <?php

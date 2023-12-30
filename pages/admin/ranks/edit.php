@@ -16,7 +16,7 @@ $csrf_token = Functions::CreateCSRFToken();
 <div class="container w-50 mb-5">
     <div class="d-flex justify-content-between">
         <div>
-            <p><?= Functions::Translation('edit_rank_header', ['rank_name'], [$rank['rank_name']]);?></p>
+            <p><?= Functions::Translation('edit_rank_header', ['rank_name'], [$rank['name']]);?></p>
         </div>
         <?php if($rank['id'] != 1 && $rank['id'] != 2 && $rank['id'] != 3) {?>
         <div>
@@ -33,17 +33,17 @@ $csrf_token = Functions::CreateCSRFToken();
         <div class="form-group">
             <?php $rank_name = Functions::Translation('rank_edit.rank_name');?>
             <label for="rank_name"><?= $rank_name;?></label>
-            <input type="text" name="rank_name" class="form-control" id="rank_name" placeholder="<?= $rank_name;?>" value="<?= $rank['rank_name'];?>">
+            <input type="text" name="rank_name" class="form-control" id="rank_name" placeholder="<?= $rank_name;?>" value="<?= $rank['name'];?>">
         </div>
         <div class="form-group mt-3">
             <?php $rank_short = Functions::Translation('rank_edit.rank_short');?>
             <label for="rank_short"><?= $rank_short;?></label>
-            <input type="text" name="rank_short" class="form-control" id="rank_short" placeholder="<?= $rank_short;?>" value="<?= $rank['rank_short'];?>">
+            <input type="text" name="rank_short" class="form-control" id="rank_short" placeholder="<?= $rank_short;?>" value="<?= $rank['short'];?>">
         </div>
         <div class="form-group mt-3">
             <?php $rank_colour = Functions::Translation('rank_edit.rank_colour');?>
             <label for="rank_colour"><?= $rank_colour;?></label>
-            <input type="color" name="rank_colour" class="form-control" id="rank_colour" placeholder="<?= $rank_colour;?>" value="<?= $rank['rank_colour'];?>">
+            <input type="color" name="rank_colour" class="form-control" id="rank_colour" placeholder="<?= $rank_colour;?>" value="<?= $rank['colour'];?>">
         </div>
 
         <hr>
@@ -93,11 +93,11 @@ $csrf_token = Functions::CreateCSRFToken();
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?= Functions::Translation('rank_edit.delete_title', ['rank_name'], [$rank['rank_name']]); ?></h5>
+                <h5 class="modal-title"><?= Functions::Translation('rank_edit.delete_title', ['rank_name'], [$rank['name']]); ?></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <p><?= Functions::Translation('rank_edit.delete_text', ['rank_name','rank_short'], [$rank['rank_name'], $rank['rank_short']]);?></p>
+            <p><?= Functions::Translation('rank_edit.delete_text', ['rank_name','short'], ['rank_short', $rank['short']]);?></p>
             </div>
             <div class="modal-footer">
                 <form action="/admin/rank_delete/<?= $GET[3];?>" method="POST" class="">

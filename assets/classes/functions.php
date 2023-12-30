@@ -172,21 +172,21 @@ class Functions {
     }
 
     static function GetAllRanks() {
-        $query = self::$mysqli->query("SELECT id,rank_name,rank_short,rank_colour,is_staff,is_upperstaff FROM core_ranks WHERE id > 0");
+        $query = self::$mysqli->query("SELECT id,name,short,colour,is_staff,is_upperstaff FROM core_ranks WHERE id > 0");
         $all = $query->fetch_all(MYSQLI_ASSOC);
 
         $return = array();
 
         $return[0]['id'] = 0;
-        $return[0]['rank_name'] = 'None';
+        $return[0]['name'] = 'None';
         $return[0]['is_staff'] = 0;
         $return[0]['is_upperstaff'] = 0;
 
         foreach($all as $role) {
             $return[$role['id']]['id'] = $role['id'];
-            $return[$role['id']]['rank_name'] = $role['rank_name'];
-            $return[$role['id']]['rank_short'] = $role['rank_short'];
-            $return[$role['id']]['rank_colour'] = $role['rank_colour'];
+            $return[$role['id']]['name'] = $role['name'];
+            $return[$role['id']]['short'] = $role['short'];
+            $return[$role['id']]['colour'] = $role['colour'];
             $return[$role['id']]['is_staff'] = $role['is_staff'];
             $return[$role['id']]['is_upperstaff'] = $role['is_upperstaff'];
         }

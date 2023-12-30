@@ -16,19 +16,19 @@ $all_permissions = Functions::GetAllPermissions();
         <hr>
 
         <div class="form-group">
-            <?php $rank_name = Functions::Translation('rank_edit.rank_name');?>
-            <label for="rank_name"><?= $rank_name;?></label>
-            <input type="text" name="rank_name" class="form-control" id="rank_name" placeholder="<?= $rank_name;?>">
+            <?php $name = Functions::Translation('rank_edit.rank_name');?>
+            <label for="name"><?= $name;?></label>
+            <input type="text" name="name" class="form-control" id="name" placeholder="<?= $name;?>">
         </div>
         <div class="form-group mt-3">
-            <?php $rank_short = Functions::Translation('rank_edit.rank_short');?>
-            <label for="rank_short"><?= $rank_short;?></label>
-            <input type="text" name="rank_short" class="form-control" id="rank_short" placeholder="<?= $rank_short;?>">
+            <?php $short = Functions::Translation('rank_edit.rank_short');?>
+            <label for="short"><?= $short;?></label>
+            <input type="text" name="short" class="form-control" id="short" placeholder="<?= $short;?>">
         </div>
         <div class="form-group mt-3">
-            <?php $rank_colour = Functions::Translation('rank_edit.rank_colour');?>
-            <label for="rank_colour"><?= $rank_colour;?></label>
-            <input type="color" name="rank_colour" class="form-control" id="rank_colour" placeholder="<?= $rank_colour;?>">
+            <?php $colour = Functions::Translation('rank_edit.rank_colour');?>
+            <label for="colour"><?= $colour;?></label>
+            <input type="color" name="colour" class="form-control" id="colour" placeholder="<?= $colour;?>">
         </div>
 
         <hr>
@@ -38,16 +38,16 @@ $all_permissions = Functions::GetAllPermissions();
         <div class="row">
             <div class="col-12 col-md-6">
                 <div class="form-check mt-3">
-                    <?php $rank_is_staff = Functions::Translation('rank_edit.is_staff');?>
-                    <input type="checkbox" name="rank_is_staff" class="form-check-input" id="rank_is_staff" value="rank_is_staff">
-                    <label class="form-check-label" for="rank_is_staff"><?= $rank_is_staff;?></label>
+                    <?php $is_staff = Functions::Translation('rank_edit.is_staff');?>
+                    <input type="checkbox" name="is_staff" class="form-check-input" id="is_staff" value="is_staff">
+                    <label class="form-check-label" for="is_staff"><?= $is_staff;?></label>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-check mt-3">
-                    <?php $rank_is_upper_staff = Functions::Translation('rank_edit.is_upper_staff');?>
-                    <input type="checkbox" name="rank_is_upper_staff" class="form-check-input" id="rank_is_upper_staff" value="rank_is_upper_staff">
-                    <label class="form-check-label" for="rank_is_upper_staff"><?= $rank_is_upper_staff;?></label>
+                    <?php $is_upper_staff = Functions::Translation('rank_edit.is_upper_staff');?>
+                    <input type="checkbox" name="is_upper_staff" class="form-check-input" id="is_upper_staff" value="is_upper_staff">
+                    <label class="form-check-label" for="is_upper_staff"><?= $is_upper_staff;?></label>
                 </div>
             </div>
         </div>

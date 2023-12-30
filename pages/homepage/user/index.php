@@ -62,8 +62,8 @@ $mc_username = json_decode(file_get_contents('https://mc-heads.net/minecraft/pro
     </div>
     <div class="col-12 col-md-8">
         <b><?= Functions::Translation('username');?>:</b> <?= $user_data['username'];?><br>
-        <b>Main Rank:</b> <?= '<font color="'.$all_ranks[$user_ranks[0]]['rank_colour'].'">'.$all_ranks[$user_ranks[0]]['rank_name'].'</font>';?><br>
-        <?= $user_ranks[1] != 0 ? '<b>Secondary Rank:</b> <font color="'.$all_ranks[$user_ranks[1]]['rank_colour'].'">'.$all_ranks[$user_ranks[1]]['rank_name'].'</font><br>' : '';?>
+        <b>Main Rank:</b> <?= '<font color="'.$all_ranks[$user_ranks[0]]['colour'].'">'.$all_ranks[$user_ranks[0]]['name'].'</font>';?><br>
+        <?= $user_ranks[1] != 0 ? '<b>Secondary Rank:</b> <font color="'.$all_ranks[$user_ranks[1]]['colour'].'">'.$all_ranks[$user_ranks[1]]['name'].'</font><br>' : '';?>
         <b><?= Functions::Translation('member_since');?></b> <?= date('d.m.Y - H:i', $user_data['created_at']);?><br>
         <b><?= Functions::Translation('language');?></b> <?= $all_languages[$user_data['language']]['language_name'];?><br>
         <?php if(Functions::IsStaff(Functions::$user) || Functions::IsUpperStaff(Functions::$user) || $user_data['show_mc_name'] == 1 || $user_data['id'] == Functions::$user['id']) {?>
