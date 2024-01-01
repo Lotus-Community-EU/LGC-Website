@@ -172,7 +172,7 @@ class Functions {
     }
 
     static function GetAllRanks() {
-        $query = self::$mysqli->query("SELECT id,name,short,colour,is_staff,is_upperstaff FROM core_ranks WHERE id > 0");
+        $query = self::$mysqli->query("SELECT * FROM core_ranks WHERE id > 0");
         $all = $query->fetch_all(MYSQLI_ASSOC);
 
         $return = array();
@@ -184,9 +184,12 @@ class Functions {
 
         foreach($all as $role) {
             $return[$role['id']]['id'] = $role['id'];
+            $return[$role['id']]['ingame-id'] = $role['ingame-id'];
             $return[$role['id']]['name'] = $role['name'];
             $return[$role['id']]['short'] = $role['short'];
             $return[$role['id']]['colour'] = $role['colour'];
+            $return[$role['id']]['colour_ingame'] = $role['colour_ingame'];
+            $return[$role['id']]['priority'] = $role['priority'];
             $return[$role['id']]['is_staff'] = $role['is_staff'];
             $return[$role['id']]['is_upperstaff'] = $role['is_upperstaff'];
         }

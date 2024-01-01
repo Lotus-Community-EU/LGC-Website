@@ -65,7 +65,7 @@ $csrf_token = Functions::CreateCSRFToken();
             <label for="main_rank">Main Rank</label>
             <select name="main_rank" id="main_rank" class="form-control">
                 <?php foreach($all_ranks as $main_rank) { ?>
-                    <option value="<?= $main_rank['id'];?>" <?= $main_rank['id'] == $user_data['main_rank'] ? 'selected' : '';?>><?= $main_rank['rank_name'];?></option>
+                    <option value="<?= $main_rank['id'];?>" <?= $main_rank['id'] == $user_data['main_rank'] ? 'selected' : '';?>><?= $main_rank['name'];?></option>
                 <?php } ?>
             </select>
         </div>
@@ -74,7 +74,7 @@ $csrf_token = Functions::CreateCSRFToken();
             <label for="secondary_rank">Secondary Rank</label>
             <select name="secondary_rank" id="secondary_rank" class="form-control">
                 <?php foreach($all_ranks as $secondary_rank) { ?>
-                    <option value="<?= $secondary_rank['id'];?>" <?= $secondary_rank['id'] == $user_data['secondary_rank'] ? 'selected' : '';?>><?= $secondary_rank['rank_name'];?></option>
+                    <option value="<?= $secondary_rank['id'];?>" <?= $secondary_rank['id'] == $user_data['secondary_rank'] ? 'selected' : '';?>><?= $secondary_rank['name'];?></option>
                 <?php } ?>
             </select>
         </div>

@@ -24,7 +24,7 @@ else { ?>
         </thead>
         <tbody>
             <?php
-                $ranks = Functions::$mysqli->query("SELECT id,name,short,colour FROM core_ranks WHERE id > 0");
+                $ranks = Functions::$mysqli->query("SELECT id,name,short,colour FROM core_ranks WHERE id > 0 ORDER BY priority ASC");
                 while($rank = $ranks->fetch_array()) {
                     ?>
                     <tr>

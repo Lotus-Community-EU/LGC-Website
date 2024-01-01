@@ -18,7 +18,7 @@ $csrf_token = Functions::CreateCSRFToken();
         <div>
             <p><?= Functions::Translation('edit_rank_header', ['rank_name'], [$rank['name']]);?></p>
         </div>
-        <?php if($rank['id'] != 1 && $rank['id'] != 2 && $rank['id'] != 3) {?>
+        <?php if($rank['id'] != 1 && $rank['id'] != 2) {?>
         <div>
             <a href="" class="btn btn-sm btn-danger mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#delete_rank"><?= Functions::Translation('delete_rank');?></a>
         </div>
@@ -32,18 +32,33 @@ $csrf_token = Functions::CreateCSRFToken();
 
         <div class="form-group">
             <?php $rank_name = Functions::Translation('rank_edit.rank_name');?>
-            <label for="rank_name"><?= $rank_name;?></label>
-            <input type="text" name="rank_name" class="form-control" id="rank_name" placeholder="<?= $rank_name;?>" value="<?= $rank['name'];?>">
+            <label for="name"><?= $rank_name;?></label>
+            <input type="text" name="name" class="form-control" id="name" placeholder="<?= $rank_name;?>" value="<?= $rank['name'];?>" maxlength="64">
         </div>
         <div class="form-group mt-3">
             <?php $rank_short = Functions::Translation('rank_edit.rank_short');?>
-            <label for="rank_short"><?= $rank_short;?></label>
-            <input type="text" name="rank_short" class="form-control" id="rank_short" placeholder="<?= $rank_short;?>" value="<?= $rank['short'];?>">
+            <label for="short"><?= $rank_short;?></label>
+            <input type="text" name="short" class="form-control" id="short" placeholder="<?= $rank_short;?>" value="<?= $rank['short'];?>" maxlength="6">
         </div>
         <div class="form-group mt-3">
             <?php $rank_colour = Functions::Translation('rank_edit.rank_colour');?>
-            <label for="rank_colour"><?= $rank_colour;?></label>
-            <input type="color" name="rank_colour" class="form-control" id="rank_colour" placeholder="<?= $rank_colour;?>" value="<?= $rank['colour'];?>">
+            <label for="colour"><?= $rank_colour;?></label>
+            <input type="color" name="colour" class="form-control" id="colour" placeholder="<?= $rank_colour;?>" value="<?= $rank['colour'];?>">
+        </div>
+        <div class="form-group mt-3">
+            <?php $rank_colour_ingame = Functions::Translation('rank_edit.rank_colour_ingame');?>
+            <label for="colour_ingame"><?= $rank_colour_ingame;?></label>
+            <input type="text" name="colour_ingame" class="form-control" id="colour_ingame" placeholder="<?= $rank_colour_ingame;?>" value="<?= $rank['colour_ingame'];?>" maxlength="5">
+        </div>
+        <div class="form-group mt-3">
+            <?php $rank_ingame_id = Functions::Translation('rank_edit.rank_ingame_id');?>
+            <label for="ingame_id"><?= $rank_ingame_id;?></label>
+            <input type="text" name="ingame_id" class="form-control" id="ingame_id" placeholder="<?= $rank_ingame_id;?>" value="<?= $rank['ingame-id'];?>" maxlength="64">
+        </div>
+        <div class="form-group mt-3">
+            <?php $rank_priority = Functions::Translation('rank_edit.rank_priority');?>
+            <label for="priority"><?= $rank_priority;?></label>
+            <input type="text" pattern="[0-9]+" name="priority" class="form-control" id="priority" placeholder="<?= $rank_priority;?>" value="<?= $rank['priority'];?>">
         </div>
 
         <hr>
@@ -52,7 +67,6 @@ $csrf_token = Functions::CreateCSRFToken();
 
         <div class="row">
             <div class="col-12 col-md-6">
-
                 <div class="form-check mt-3">
                     <?php $rank_is_staff = Functions::Translation('rank_edit.is_staff');?>
                     <input type="checkbox" name="rank_is_staff" class="form-check-input" id="rank_is_staff" value="rank_is_staff" <?= $rank['is_staff'] == 1 ? 'checked' : '';?>>
@@ -83,13 +97,13 @@ $csrf_token = Functions::CreateCSRFToken();
         ?>
 
         <?php Functions::AddCSRFCheck($csrf_token);?>
-        <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translations('edit');?>">
+        <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('edit');?>">
     </form>
 </div>
 
-<?php if($rank['id'] != 1 && $rank['id'] != 2 && $rank['id'] != 3) {?>
+<?php if($rank['id'] != 1 && $rank['id'] != 2) {?>
 <!-- Delete Rank -->
-<div class="modal" id="delete_rank" tabindex="-1">
+<div class="modal" id="delete_rank" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,7 +111,7 @@ $csrf_token = Functions::CreateCSRFToken();
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <p><?= Functions::Translation('rank_edit.delete_text', ['rank_name','short'], ['rank_short', $rank['short']]);?></p>
+            <p><?= Functions::Translation('rank_edit.delete_text', ['rank_name','rank_short'], [$rank['name'], $rank['short']]);?></p>
             </div>
             <div class="modal-footer">
                 <form action="/admin/rank_delete/<?= $GET[3];?>" method="POST" class="">

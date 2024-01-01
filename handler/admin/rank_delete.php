@@ -9,8 +9,8 @@ $ref = $_SERVER['HTTP_REFERER'];
 $rank_id = $GET[2];
 if(strpos($ref, Functions::$website_url) == 0) {
     if(Functions::CheckCSRF($_POST['token'])) {
-        $rank = Functions::GetAllRanks[$rank_id];
-        if($rank['id'] != 1 && $rank['id'] != 2 && $rank['id'] != 3) {
+        $rank = Functions::GetAllRanks($rank_id);
+        if($rank['id'] != 1 && $rank['id'] != 2) {
             $prep = Functions::$mysqli->prepare("DELETE FROM core_ranks WHERE id = ?");
             $prep->bind_param('i', $rank_id);
             $prep->execute();

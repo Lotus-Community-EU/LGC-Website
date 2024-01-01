@@ -17,9 +17,14 @@ if(strpos($ref, Functions::$website_url) == 0) {
         $name = $_POST['name'];
         $short = $_POST['short'];
         $colour = $_POST['colour'];
+        $colour_ingame = $_POST['colour_ingame'];
+        $ingame_id = $_POST['colour_ingame'];
+        $priority = $_POST['priority'];
         $is_staff = isset($_POST['is_staff']) ? 1 : 0;
         $is_upperstaff = isset($_POST['is_upper_staff']) ? 1 : 0;
         $error = 0; $error_msg = '';
+
+        
 
 
         $permissions = $_POST;
@@ -56,6 +61,55 @@ if(strpos($ref, Functions::$website_url) == 0) {
             $error_msg .= 'Something\'s wrong with the Rank\'s colour. Try it again!';
         }
 
+        /*
+        <div class="form-group mt-3">
+            <?php $rank_colour_ingame = Functions::Translation('rank_edit.rank_colour_ingame');?>
+            <label for="colour_ingame"><?= $rank_colour_ingame;?></label>
+            <input type="text" name="colour_ingame" class="form-control" id="colour_ingame" placeholder="<?= $rank_colour_ingame;?>" value="<?= $rank['colour_ingame'];?>" maxlength="5">
+        </div>
+        <div class="form-group mt-3">
+            <?php $rank_ingame_id = Functions::Translation('rank_edit.rank_ingame_id');?>
+            <label for="ingame_id"><?= $rank_ingame_id;?></label>
+            <input type="text" name="ingame_id" class="form-control" id="ingame_id" placeholder="<?= $rank_ingame_id;?>" value="<?= $rank['ingame-id'];?>" maxlength="64">
+        </div>
+        <div class="form-group mt-3">
+            <?php $rank_priority = Functions::Translation('rank_edit.rank_priority');?>
+            <label for="priority"><?= $rank_priority;?></label>
+            <input type="text" pattern="[0-9]" name="priority" class="form-control" id="priority" placeholder="<?= $rank_priority;?>" value="<?= $rank['priority'];?>">
+        </div>
+        */
+
+        if(strlen($colour_ingame) > 5) {
+            $error = 1;
+            if(strlen($error_msg) > 0) { $error_msg .='<br>';}
+            $error_msg .= 'The in-game colour cannot be longer than 5 characters!';
+        }
+
+        if(strlen($ingame_id) > 64) {
+            $error = 1;
+            if(strlen($error_msg) > 0) { $error_msg .='<br>';}
+            $error_msg .= 'The in-game ID cannot be longer than 64 characters!';
+        }
+
+        $prep = Functions::$mysqli->prepare("SELECT id FROM core_ranks WHERE ingame_id = ? LIMIT 1");
+        $prep->bind_param('s', $ingame_id);
+        $prep->execute();
+
+        $result = $prep->get_result();
+        if($result->num_rows > 0) {
+            if(strcmp($ingame_id, $rank['ingame_id'])) {
+                $error = 1;
+                if(strlen($error_msg) > 0) { $error_msg .='<br>';}
+                $error_msg .= 'The selected in-game ID is already taken by another Rank!';
+            }
+        }
+
+        if(!is_numeric($priority)) {
+            $error = 1;
+            if(strlen($error_msg) > 0) { $error_msg .='<br>';}
+            $error_msg .= 'The priority must be numeric!';
+        }
+
         foreach($all_permissions as $new_perm) {
             $new_permissions[$new_perm] = 0;
             if(isset($permissions[$new_perm])) {
@@ -86,8 +140,8 @@ if(strpos($ref, Functions::$website_url) == 0) {
             exit;
         }
 
-        $prepare_core = Functions::$mysqli->prepare("UPDATE core_ranks SET name = ?,short = ?,colour = ?,is_staff = ?,is_upperstaff = ? WHERE id = ?");
-        $prepare_core->bind_param("sssiii", $name, $short, $colour, $is_staff, $is_upperstaff, $id);
+        $prepare_core = Functions::$mysqli->prepare("UPDATE core_ranks SET ingame_id = ?,name = ?,short = ?,colour = ?,colour_ingame = ?,priority = ?,is_staff = ?,is_upperstaff = ? WHERE id = ?");
+        $prepare_core->bind_param("sssssiiii", $ingame_id, $name, $short, $colour, $colour_ingame, $priority, $is_staff, $is_upperstaff, $id);
         $prepare_core->execute();
 
         $prepare_perms = Functions::$mysqli->prepare("UPDATE web_ranks_permissions SET ".$query_perms." WHERE rank_id = ?");
