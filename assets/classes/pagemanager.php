@@ -12,7 +12,8 @@ $_GET['url'] = $page;
 switch($page) {
     case 'admin':
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
-			LoadHandler('admin/'.$GET[1]);
+            $position = implode('/', $GET);
+			LoadHandler($position);
 			break;
 		}
 		else {
@@ -33,7 +34,8 @@ switch($page) {
 
     default:
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
-			LoadHandler($page);
+            $position = implode('/', $GET);
+			LoadHandler($position);
 			break;
 		}
 		else {

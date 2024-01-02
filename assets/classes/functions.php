@@ -184,7 +184,7 @@ class Functions {
 
         foreach($all as $role) {
             $return[$role['id']]['id'] = $role['id'];
-            $return[$role['id']]['ingame-id'] = $role['ingame-id'];
+            $return[$role['id']]['ingame_id'] = $role['ingame_id'];
             $return[$role['id']]['name'] = $role['name'];
             $return[$role['id']]['short'] = $role['short'];
             $return[$role['id']]['colour'] = $role['colour'];

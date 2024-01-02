@@ -21,7 +21,7 @@ else {
                 <!--<a href="" class="btn btn-sm btn-warning">Reset Profile Picture</a>-->
             </div>
         </div>
-        <form action="/user_edit" method="POST" class="">
+        <form action="/user/settings" method="POST" class="">
             <div class="form-group mb-2">
                 <label for="username"><?= Functions::$translations['username'];?></label>
                 <input type="text" name="username" id="username" class="form-control" value="<?= $user_data['username'];?>" <?= Functions::UserCanChangeName(Functions::$user['id']) == false ? 'disabled' : '';?>>
@@ -81,7 +81,8 @@ else {
                 </script>
             </div>
 
-            <?php Functions::AddCSRFCheck();?>
+            <?php Functions::AddCSRFCheck(); $_SESSION['user_id'] = $user_data['id'];?>
+            <input type="hidden" name="user_id" value="<?= $user_data['id'];?>">
             <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::$translations['edit'];?>">
         </form>
     </div>

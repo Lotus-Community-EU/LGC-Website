@@ -24,7 +24,7 @@ $csrf_token = Functions::CreateCSRFToken();
         </div>
         <?php } ?>
     </div>
-    <form action="/admin/rank_edit/<?= $GET['3'];?>" method="POST">
+    <form action="/admin/ranks/edit" method="POST">
 
         <hr>
         <h5><?= Functions::Translation('edit_rank.main_header');?></h5>
@@ -53,7 +53,7 @@ $csrf_token = Functions::CreateCSRFToken();
         <div class="form-group mt-3">
             <?php $rank_ingame_id = Functions::Translation('rank_edit.rank_ingame_id');?>
             <label for="ingame_id"><?= $rank_ingame_id;?></label>
-            <input type="text" name="ingame_id" class="form-control" id="ingame_id" placeholder="<?= $rank_ingame_id;?>" value="<?= $rank['ingame-id'];?>" maxlength="64">
+            <input type="text" name="ingame_id" class="form-control" id="ingame_id" placeholder="<?= $rank_ingame_id;?>" value="<?= $rank['ingame_id'];?>" maxlength="64">
         </div>
         <div class="form-group mt-3">
             <?php $rank_priority = Functions::Translation('rank_edit.rank_priority');?>
@@ -69,8 +69,8 @@ $csrf_token = Functions::CreateCSRFToken();
             <div class="col-12 col-md-6">
                 <div class="form-check mt-3">
                     <?php $rank_is_staff = Functions::Translation('rank_edit.is_staff');?>
-                    <input type="checkbox" name="rank_is_staff" class="form-check-input" id="rank_is_staff" value="rank_is_staff" <?= $rank['is_staff'] == 1 ? 'checked' : '';?>>
-                    <label class="form-check-label" for="rank_is_staff"><?= $rank_is_staff;?></label>
+                    <input type="checkbox" name="is_staff" class="form-check-input" id="is_staff" value="is_staff" <?= $rank['is_staff'] == 1 ? 'checked' : '';?>>
+                    <label class="form-check-label" for="is_staff"><?= $rank_is_staff;?></label>
                 </div>
 
                 </div>
@@ -78,8 +78,8 @@ $csrf_token = Functions::CreateCSRFToken();
 
                 <div class="form-check mt-3">
                     <?php $rank_is_upper_staff = Functions::Translation('rank_edit.is_upper_staff');?>
-                    <input type="checkbox" name="rank_is_upper_staff" class="form-check-input" id="rank_is_upper_staff" value="rank_is_upper_staff" <?= $rank['is_upperstaff'] == 1 ? 'checked' : '';?>>
-                    <label class="form-check-label" for="rank_is_upper_staff"><?= $rank_is_upper_staff;?></label>
+                    <input type="checkbox" name="is_upper_staff" class="form-check-input" id="is_upper_staff" value="is_upper_staff" <?= $rank['is_upperstaff'] == 1 ? 'checked' : '';?>>
+                    <label class="form-check-label" for="is_upper_staff"><?= $rank_is_upper_staff;?></label>
                 </div>
 
             </div>
@@ -96,7 +96,8 @@ $csrf_token = Functions::CreateCSRFToken();
             }
         ?>
 
-        <?php Functions::AddCSRFCheck($csrf_token);?>
+        <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['rank_id'] = $rank['id'];?>
+        <input type="hidden" name="rank_id" value="<?= $rank['id'];?>">
         <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('edit');?>">
     </form>
 </div>
@@ -114,7 +115,7 @@ $csrf_token = Functions::CreateCSRFToken();
             <p><?= Functions::Translation('rank_edit.delete_text', ['rank_name','rank_short'], [$rank['name'], $rank['short']]);?></p>
             </div>
             <div class="modal-footer">
-                <form action="/admin/rank_delete/<?= $GET[3];?>" method="POST" class="">
+                <form action="/admin/ranks/delete/<?= $GET[3];?>" method="POST" class="">
                     <input type="submit" name="reset_password" class="btn btn-success" value="<?= Functions::Translation('rank_edit.delete_button');?>">
                     <?php Functions::AddCSRFCheck($csrf_token);?>
                 </form>

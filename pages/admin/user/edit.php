@@ -92,7 +92,8 @@ $csrf_token = Functions::CreateCSRFToken();
             </script>
         </div>
 
-        <?php Functions::AddCSRFCheck($csrf_token);?>
+        <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['user_id'] = $user_data['id'];?>
+        <input type="hidden" name="user_id" value="<?= $user_data['id'];?>">
         <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::$translations['edit'];?>">
     </form>
 </div>
@@ -109,9 +110,10 @@ $csrf_token = Functions::CreateCSRFToken();
             <p><?= Functions::Translation('reset_password.text', ['username'], [$user_data['username']]);?></p>
             </div>
             <div class="modal-footer">
-                <form action="/admin/user_resetpw/<?= $GET[3];?>" method="POST" class="">
+                <form action="/admin/user/resetpw" method="POST" class="">
+                    <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['user_id'] = $user_data['id'];?>
+                    <input type="hidden" name="user_id" value="<?= $user_data['id'];?>">
                     <input type="submit" name="reset_password" class="btn btn-success" value="<?= Functions::Translation('reset_password.button');?>">
-                    <?php Functions::AddCSRFCheck($csrf_token);?>
                 </form>
             </div>
         </div>

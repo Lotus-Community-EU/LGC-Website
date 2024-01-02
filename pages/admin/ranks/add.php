@@ -9,7 +9,7 @@ $all_permissions = Functions::GetAllPermissions();
             <p><?= Functions::Translation('add_rank_header');?></p>
         </div>
     </div>
-    <form action="/admin/rank_add" method="POST">
+    <form action="/admin/ranks/add" method="POST">
 
         <hr>
         <h5><?= Functions::Translation('edit_add_rank.main_header');?></h5>
@@ -29,6 +29,21 @@ $all_permissions = Functions::GetAllPermissions();
             <?php $colour = Functions::Translation('rank_edit.rank_colour');?>
             <label for="colour"><?= $colour;?></label>
             <input type="color" name="colour" class="form-control" id="colour" placeholder="<?= $colour;?>">
+        </div>
+        <div class="form-group mt-3">
+            <?php $rank_colour_ingame = Functions::Translation('rank_edit.rank_colour_ingame');?>
+            <label for="colour_ingame"><?= $rank_colour_ingame;?></label>
+            <input type="text" name="colour_ingame" class="form-control" id="colour_ingame" placeholder="<?= $rank_colour_ingame;?>" maxlength="5">
+        </div>
+        <div class="form-group mt-3">
+            <?php $rank_ingame_id = Functions::Translation('rank_edit.rank_ingame_id');?>
+            <label for="ingame_id"><?= $rank_ingame_id;?></label>
+            <input type="text" name="ingame_id" class="form-control" id="ingame_id" placeholder="<?= $rank_ingame_id;?>" maxlength="64">
+        </div>
+        <div class="form-group mt-3">
+            <?php $rank_priority = Functions::Translation('rank_edit.rank_priority');?>
+            <label for="priority"><?= $rank_priority;?></label>
+            <input type="text" pattern="[0-9]+" name="priority" class="form-control" id="priority" placeholder="<?= $rank_priority;?>">
         </div>
 
         <hr>

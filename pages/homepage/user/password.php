@@ -4,7 +4,7 @@
             <p><?= Functions::Translation('change_password');?></p>
         </div>
     </div>
-    <form action="/user_password" method="POST" class="">
+    <form action="/user/password" method="POST" class="">
         <div class="form-group">
             <label for="current_password"><?= Functions::Translation('current_password');?></label>
             <input type="password" name="current_password" class="form-control" id="current_password" placeholder="<?= Functions::Translation('current_password');?>">
@@ -18,7 +18,8 @@
             <input type="password" name="repeat_new_password" class="form-control" id="repeat_new_password" placeholder="<?= Functions::Translation('repeat_new_password');?>">
         </div>
 
-        <?php Functions::AddCSRFCheck();?>
+        <?php Functions::AddCSRFCheck(); $_SESSION['user_id'] = Functions::$user['id'];?>
+        <input type="hidden" name="user_id" value="<?= Functions::$user['id'];?>">
         <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::$translations['change_password'];?>">
     </form>
 </div>
