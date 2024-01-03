@@ -13,22 +13,22 @@ if(strpos($ref, Functions::$website_url) == 0) {
             $rank = Functions::GetAllRanks($id);
             if($rank['id'] != 1 && $rank['id'] != 2) {
                 $prep = Functions::$mysqli->prepare("DELETE FROM core_ranks WHERE id = ?");
-                $prep->bind_param('i', $rank_id);
+                $prep->bind_param('i', $id);
                 $prep->execute();
 
                 $prep = Functions::$mysqli->prepare("DELETE FROM web_ranks_permissions WHERE rank_id = ?");
-                $prep->bind_param('i', $rank_id);
+                $prep->bind_param('i', $id);
                 $prep->execute();
 
-                $prep = Functions::$mysqli->prepare("UPDATE web_users SET main_rank = '3' WHERE main_rank = ?");
-                $prep->bind_param('i', $rank_id);
+                $prep = Functions::$mysqli->prepare("UPDATE web_users SET main_rank = '2' WHERE main_rank = ?");
+                $prep->bind_param('i', $id);
                 $prep->execute();
 
                 $prep = Functions::$mysqli->prepare("UPDATE web_users SET secondary_rank = '0' WHERE secondary_rank = ?");
-                $prep->bind_param('i', $rank_id);
+                $prep->bind_param('i', $id);
                 $prep->execute();
 
-                $_SESSION['success_message'] = 'Rank was deleted successfully, everyone who had the Rank was set back to \'Verified\'.';
+                $_SESSION['success_message'] = 'Rank was deleted successfully, everyone who had the Rank was set back to \''.Functions::GetAllRanks()[2]['name'].'\'';
                 header("Location: /admin/ranks/list");
                 exit;
             }

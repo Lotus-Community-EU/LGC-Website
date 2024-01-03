@@ -115,9 +115,10 @@ $csrf_token = Functions::CreateCSRFToken();
             <p><?= Functions::Translation('rank_edit.delete_text', ['rank_name','rank_short'], [$rank['name'], $rank['short']]);?></p>
             </div>
             <div class="modal-footer">
-                <form action="/admin/ranks/delete/<?= $GET[3];?>" method="POST" class="">
+                <form action="/admin/ranks/delete>" method="POST" class="">
+                    <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['rank_id'] = $rank['id'];?>
+                    <input type="hidden" name="rank_id" value="<?= $rank['id'];?>">
                     <input type="submit" name="reset_password" class="btn btn-success" value="<?= Functions::Translation('rank_edit.delete_button');?>">
-                    <?php Functions::AddCSRFCheck($csrf_token);?>
                 </form>
             </div>
         </div>
