@@ -386,10 +386,10 @@ class Functions {
 
     static function GetTranslations($language) {
         if(self::LanguageExists($language) == false) {
-            $language = 'en';
+            $language = 'English';
             self::$language_resetted = 1;
         }
-        $prepare = self::$mysqli->prepare("SELECT * FROM web_translations WHERE LENGTH(?) > 0");
+        $prepare = self::$mysqli->prepare("SELECT * FROM core_translations WHERE LENGTH(?) > 0 AND isWeb = 1");
         $prepare->bind_param('s', $language);
         $prepare->execute();
 
@@ -397,14 +397,14 @@ class Functions {
         if($result->num_rows > 0) {
             $result = $result->fetch_all(MYSQLI_ASSOC);
             for($i = 0; $i < sizeof($result); $i++) {
-                self::$translations[$result[$i]['code']] = $result[$i][$language];
+                self::$translations[$result[$i]['path']] = $result[$i][$language];
             }
             //self::$translations = $result->fetch_all(MYSQLI_ASSOC);
         }
     }
 
     static function LanguageExists($language) {
-        $prepare = self::$mysqli->prepare("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_translations' AND COLUMN_NAME = ?");
+        $prepare = self::$mysqli->prepare("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'core_translations' AND COLUMN_NAME = ?");
         $prepare->bind_param('s', $language);
         $prepare->execute();
 
@@ -416,7 +416,7 @@ class Functions {
     }
 
     static function GetAllLanguages() {
-        $query = self::$mysqli->query("SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_translations' AND COLUMN_NAME NOT IN('id','code')");
+        $query = self::$mysqli->query("SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'core_translations' AND COLUMN_NAME NOT IN('id','path','isBot','isGame','isWeb')");
         
         $all = $query->fetch_all(MYSQLI_ASSOC);
 

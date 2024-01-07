@@ -9,7 +9,7 @@ else { ?>
 <div class="row justify-content-end mb-3">
     <div class="col-12 col-md-2">
         <div class="text-end">
-            <a class="btn btn-success" href="/admin/ranks/add"><?= Functions::Translation('add_rank');?></a>
+            <a class="btn btn-success" href="/admin/ranks/add"><?= Functions::Translation('text.rank.add');?></a>
         </div>
     </div>
 </div>
@@ -18,8 +18,8 @@ else { ?>
         <thead>
             <tr>
                 <th>ID</th>
-                <th><?= Functions::Translation('rank_name');?></th>
-                <th><?= Functions::Translation('edit');?></th>
+                <th><?= Functions::Translation('text.rank.rank_name');?></th>
+                <th><?= Functions::Translation('global.edit');?></th>
             </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@ else { ?>
                     <tr>
                         <td><?= $rank['id'];?></td>
                         <td><span style="color: <?= $rank['colour'];?>;"><?= $rank['name'].(strlen($rank['short']) > 1 ? ' ('.$rank['short'].')' : '');?></style></td>
-                        <td><a href="/admin/ranks/edit/<?= $rank['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::$translations['edit_rank'];?></a></td>
+                        <td><a href="/admin/ranks/edit/<?= $rank['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::Translation('text.rank.edit.button');?></a></td>
                     </tr>
                     <?php
                 }

@@ -33,8 +33,8 @@ else {
                                     Admin
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="/admin/user/edit/<?= $user_data['id'];?>"><?= Functions::Translation('edit_user');?></a></li>
-                                    <li><a class="dropdown-item" href="/admin/user/logs/<?= $user_data['id'];?>"><?= Functions::Translation('view_logs');?></a></li>
+                                    <li><a class="dropdown-item" href="/admin/user/edit/<?= $user_data['id'];?>"><?= Functions::Translation('text.edit_user');?></a></li>
+                                    <li><a class="dropdown-item" href="/admin/user/logs/<?= $user_data['id'];?>"><?= Functions::Translation('text.view_logs');?></a></li>
                                 </ul>
                             </div>
                         <?php } ?>
@@ -44,7 +44,7 @@ else {
                                     <i class="fa-solid fa-gear"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="/user/settings"><?= Functions::Translation('account_settings');?></a></li>
+                                    <li><a class="dropdown-item" href="/user/settings"><?= Functions::Translation('text.account_settings');?></a></li>
                                 </ul>
                             </div>
                         <?php } ?>
@@ -64,17 +64,17 @@ else {
 
         </div>
         <div class="col-12 col-md-8">
-            <b><?= Functions::Translation('username');?>:</b> <?= $user_data['username'];?><br>
+            <b><?= Functions::Translation('global.username');?>:</b> <?= $user_data['username'];?><br>
             <b>Main Rank:</b> <?= '<font color="'.$all_ranks[$user_ranks[0]]['colour'].'">'.$all_ranks[$user_ranks[0]]['name'].'</font>';?><br>
             <?= $user_ranks[1] != 0 ? '<b>Secondary Rank:</b> <font color="'.$all_ranks[$user_ranks[1]]['colour'].'">'.$all_ranks[$user_ranks[1]]['name'].'</font><br>' : '';?>
-            <b><?= Functions::Translation('member_since');?></b> <?= date('d.m.Y - H:i', $user_data['created_at']);?><br>
-            <b><?= Functions::Translation('language');?></b> <?= $all_languages[$user_data['language']]['language_name'];?><br>
+            <b><?= Functions::Translation('text.member_since');?>:</b> <?= date('d.m.Y - H:i', $user_data['created_at']);?><br>
+            <b><?= Functions::Translation('global.language');?>:</b> <?= $all_languages[$user_data['language']]['language_name'];?><br>
             <?php if(Functions::IsStaff(Functions::$user) || Functions::IsUpperStaff(Functions::$user) || $user_data['show_mc_name'] == 1 || $user_data['id'] == Functions::$user['id']) {?>
             <b>Minecraft-Account:</b> <?= $user_data['mc_uuid'] > 1 ? 'Linked ('.$mc_username.')<br>' : 'Not Linked!';?>
             <?php } else {
                 ?><b>Minecraft-Account:</b> <?= $user_data['mc_uuid'] > 1 ? 'Linked<br>' : 'Not Linked!';?><?php
             } ?>
-            <br>
+            <br><br>
             <?= $user_data['bio'];?>
         </div>
     </div>

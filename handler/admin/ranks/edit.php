@@ -105,7 +105,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
                         $new_permissions[$new_perm] = 0;
                         $error = 1;
                         if(strlen($error_msg) > 0) { $error_msg .='<br>';}
-                        $error_msg .= 'You tried to set at least 1 permission you don\'t have access to!';
+                        $error_msg .= 'You tried to set the permission \''.$new_perm.'\' but you don\'t have access to it!';
                     }
                 }
             }

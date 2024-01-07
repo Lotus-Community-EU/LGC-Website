@@ -24,16 +24,16 @@
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
                             <?php
                                 // Functions::AddAdminTabLink($link, $icon, $permission, $text)
-                                Functions::AddAdminTabLink('/admin/user/list','fa-solid fa-users','admin_user_list', Functions::$translations['admin.user_list']);
-                                //Functions::AddAdminTabLink('/admin/user_management','fa-solid fa-user-pen','admin_user_management', Functions::$translations['admin.user_management']);
-                                Functions::AddAdminTabLink('/admin/ranks/list','fa-solid fa-user-gear','admin_rank_management', Functions::$translations['admin.rank_management']);
+                                Functions::AddAdminTabLink('/admin/user/list','fa-solid fa-users','admin_user_list', Functions::Translation('nav.admin.user_list'));
+                                Functions::AddAdminTabLink('/admin/ranks/list','fa-solid fa-user-gear','admin_rank_management', Functions::Translation('nav.admin.rank_management'));
+                                Functions::AddAdminTabLink('/admin/translation/list','fa-solid fa-language','admin_translation_list', Functions::Translation('nav.admin.translation_management'));
                             ?>
                         </ul>
                     </li>
                 <?php } ?>
                 <?php if(Functions::$user['id'] == 0) { // User not loggedin ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login"><?= Functions::$translations['login'];?></a>
+                        <a class="nav-link" href="/login"><?= Functions::Translation('text.login');?></a>
                     </li>
                 <?php } else { // User loggedin ?>
                     <li class="nav-item dropdown">
@@ -41,10 +41,10 @@
                             <?= Functions::$user['username'];?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
-                            <a class="dropdown-item" href="/user/<?= Functions::$user['id'];?>"><?= Functions::$translations['profile'];?></a>
-                            <a class="dropdown-item" href="/user/settings"><?= Functions::$translations['account_settings'];?></a>
+                            <a class="dropdown-item" href="/user/<?= Functions::$user['id'];?>"><?= Functions::Translation('text.profile');?></a>
+                            <a class="dropdown-item" href="/user/settings"><?= Functions::Translation('text.account_settings');?></a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/logout"><?= Functions::$translations['logout'];?></a>
+                            <a class="dropdown-item" href="/logout"><?= Functions::Translation('text.logout');?></a>
                         </ul>
                     </li>
                 <?php } ?>

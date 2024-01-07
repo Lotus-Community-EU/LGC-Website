@@ -21,7 +21,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
                 $prepare = Functions::$mysqli->prepare("UPDATE web_users SET mc_uuid = '' WHERE id = ?");
                 $prepare->bind_param("i", Functions::$user['id']);
                 $prepare->execute();
-                $_SESSION['success_message'] = Functions::Translation('minecraft_unlink_success');
+                $_SESSION['success_message'] = Functions::Translation('text.success.minecraft_unlink');
                 header("Location: /user/settings");
                 exit;
             }

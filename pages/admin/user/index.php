@@ -8,9 +8,9 @@ else { ?>
         <thead>
             <tr>
                 <th>ID</th>
-                <th><?= Functions::Translation('username');?></th>
-                <th title="Format: DD.MM.YYYY"><?= Functions::Translation('last_login');?></th>
-                <th><?= Functions::Translation('edit');?></th>
+                <th><?= Functions::Translation('global.username');?></th>
+                <th title="Format: DD.MM.YYYY"><?= Functions::Translation('global.last_login');?></th>
+                <th><?= Functions::Translation('text.edit_user');?></th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@ else { ?>
                         <td><?= $user['id'];?></td>
                         <td><a href="/user/<?= $user['id'];?>" class="text-white"><?= $user['username'];?></a></td>
                         <td><?= date('d.m.Y', $last_login);?></td>
-                        <td><a href="/admin/user/edit/<?= $user['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::$translations['edit_user'];?></a></td>
+                        <td><a href="/admin/user/edit/<?= $user['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::Translation('text.edit_user');?></a></td>
                     </tr>
                     <?php
                 }

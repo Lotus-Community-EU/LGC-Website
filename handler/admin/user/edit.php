@@ -17,13 +17,13 @@ if(strpos($ref, Functions::$website_url) == 0) {
             $all_ranks = Functions::GetAllRanks();
             if(($all_ranks[$user_ranks[0]]['is_staff'] == 1 || $all_ranks[$user_ranks[1]]['is_staff']) && !Functions::UserHasPermission('admin_staff_management')) {
                 $_SESSION['error_title'] = 'Permissions - Edit Staff';
-                $_SESSION['error_message'] = Functions::Translation('error.edit_staff');
+                $_SESSION['error_message'] = Functions::Translation('text.error.edit_staff');
                 header("Location: /admin/user/list");
                 exit;
             }
             if(($all_ranks[$user_ranks[0]]['is_upperstaff'] == 1 || $all_ranks[$user_ranks[1]]['is_upperstaff']) && !Functions::UserHasPermission('admin_upperstaff_management')) {
                 $_SESSION['error_title'] = 'Permissions - Edit Upper-Staff';
-                $_SESSION['error_message'] = Functions::Translation('error.edit_upperstaff');
+                $_SESSION['error_message'] = Functions::Translation('text.error.edit_upperstaff');
                 header("Location: /admin/user/list");
                 exit;
             }
@@ -57,7 +57,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
             }
             else {
                 if($user_data['language'] != $new_language) {
-                    AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Language', $user_data['language'], $new_language);
+                    Functions::AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Language', $user_data['language'], $new_language);
                     $prepare = Functions::$mysqli->prepare("UPDATE web_users SET language = ? WHERE id = ?");
                     $prepare->bind_param("si", $new_language, $user_data['id']);
                     $prepare->execute();
@@ -118,7 +118,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
             if($changed > 0) {
                 $_SESSION['success_message'] = 'Account edited successfully';
             }
-            header("Location: /admin/user/edit/".$user_id);
+            header("Location: /admin/user/edit/".$user_data['id']);
             exit;
         }
         else {

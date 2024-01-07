@@ -1,6 +1,6 @@
 <?php
 if(isset($GET[2]) && strtolower($GET[2]) == 'password') {
-    include('change_password.php');
+    include('password.php');
 }
 else {
 
@@ -14,22 +14,22 @@ else {
     <div class="container w-50 mb-5">
         <div class="d-flex justify-content-between">
             <div>
-                <p><?= Functions::Translation('edit_your_profile');?></p>
+                <p><?= Functions::Translation('text.edit_profile');?></p>
             </div>
             <div>
-                <a href="/user/settings/password" class="btn btn-sm btn-success mb-2 mb-md-0"><?= Functions::Translation('change_password');?></a>
+                <a href="/user/settings/password" class="btn btn-sm btn-success mb-2 mb-md-0"><?= Functions::Translation('text.change_password');?></a>
                 <!--<a href="" class="btn btn-sm btn-warning">Reset Profile Picture</a>-->
             </div>
         </div>
         <form action="/user/settings" method="POST" class="">
             <div class="form-group mb-2">
-                <label for="username"><?= Functions::$translations['username'];?></label>
+                <label for="username"><?= Functions::Translation('global.username');?></label>
                 <input type="text" name="username" id="username" class="form-control" value="<?= $user_data['username'];?>" <?= Functions::UserCanChangeName(Functions::$user['id']) == false ? 'disabled' : '';?>>
             </div>
-            <span><?= Functions::Translation('username_last_changed');?>: <?= Functions::UserLastNameChange($user_data['id']);?></span>
+            <span><?= Functions::Translation('text.username_lastchange');?>: <?= Functions::UserLastNameChange($user_data['id']);?></span>
 
             <div class="form-group mt-3">
-                <label for="language"><?= Functions::$translations['language'];?></label>
+                <label for="language"><?= Functions::Translation('global.language');?></label>
                 <select class="form-control" id="language" name="language">
                     <?php foreach($all_languages as $language) { ?>
                         <option value="<?= $language['language_code'];?>" <?= $language['language_code'] == $user_data['language'] ? 'selected':'';?>><?= $language['language_name'];?></option>
@@ -59,7 +59,7 @@ else {
                     <label for="link_mc">Link Minecraft-Account</label>
                     <?php
                     if(strlen($user_data['mc_verify_code']) > 1) {
-                        echo '<br>'.Functions::Translation('use_mc_verify_code', ['verify_code'], [$user_data['mc_verify_code']]);
+                        echo '<br>'.Functions::Translation('text.profile.mc_verify_code', ['verify_code'], [$user_data['mc_verify_code']]);
                     }
                     else {
                     ?><input type="submit" class="btn btn-sm btn-success" value="Link Minecraft Account" id="link_mc" name="link_mc"><?php
@@ -83,7 +83,7 @@ else {
 
             <?php Functions::AddCSRFCheck(); $_SESSION['user_id'] = $user_data['id'];?>
             <input type="hidden" name="user_id" value="<?= $user_data['id'];?>">
-            <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::$translations['edit'];?>">
+            <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.edit');?>">
         </form>
     </div>
 <?php } ?>

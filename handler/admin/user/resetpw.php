@@ -14,13 +14,13 @@ if(strpos($ref, Functions::$website_url) == 0) {
             $all_ranks = Functions::GetAllRanks();
             if(($all_ranks[$user_ranks[0]]['is_staff'] == 1 || $all_ranks[$user_ranks[1]]['is_staff']) && !Functions::UserHasPermission('admin_staff_management')) {
                 $_SESSION['error_title'] = 'Permissions - Edit Staff';
-                $_SESSION['error_message'] = Functions::Translation('error.edit_staff');
+                $_SESSION['error_message'] = Functions::Translation('text.error.edit_staff');
                 header("Location: /admin/user/list");
                 exit;
             }
             if(($all_ranks[$user_ranks[0]]['is_upperstaff'] == 1 || $all_ranks[$user_ranks[1]]['is_upperstaff']) && !Functions::UserHasPermission('admin_upperstaff_management')) {
                 $_SESSION['error_title'] = 'Permissions - Edit Upper-Staff';
-                $_SESSION['error_message'] = Functions::Translation('error.edit_upperstaff');
+                $_SESSION['error_message'] = Functions::Translation('text.error.edit_upperstaff');
                 header("Location: /admin/user/list");
                 exit;
             }

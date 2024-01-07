@@ -25,6 +25,9 @@ switch($page) {
                 case 'ranks':
                     LoadAdminView($GET['1'],'admin_rank_management');
                     break;
+                case 'translation':
+                    LoadAdminView($GET['1'],'admin_translation_list');
+                    break;
 				default:
 					LoadAdminView($GET[1]);
 					break;
