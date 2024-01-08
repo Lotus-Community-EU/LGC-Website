@@ -38,8 +38,10 @@ if(strpos($ref, Functions::$website_url) == 0) {
             $user_agent = $_SERVER["HTTP_USER_AGENT"];
             Functions::$mysqli->query("INSERT INTO web_users_logins (user_id,login_time,ip_address,user_agent) VALUES ('".$row['id']."','".$time."','".$ip."','".$user_agent."')");
 			$_SESSION['user_token'] = $login_token;
-			if($_POST['remember'] == 'on') {
-				?><script>SetCookie('remember', <?= $login_token;?>, time()+2592000,'/');</script><?php // 30 Tage
+			if(isset($_POST['remember'])) {
+				if($_COOKIE['cookie_consent'] == 1) {
+					setcookie('remember', $login_token, time()+2592000,'/');
+				}
 			}
 			header("Location: /");
 			exit;

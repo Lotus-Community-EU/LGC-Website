@@ -34,6 +34,10 @@ $language = $GET[3];
                 <input class="form-check-input" type="radio" name="filter" id="filter_web" value="filter_web">
                 <label class="form-check-label" for="filter_web">Web</label>
             </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="filter" id="filter_none" value="filter_none">
+                <label class="form-check-label" for="filter_none">"None"</label>
+            </div>
         </div>
         <div class="w-100 d-flex justify-content-end">
             <input type="text" name="filter" id="filter" placeholder="Filter" onkeyup="FilterTable()" class="form-control w-25">
@@ -60,7 +64,7 @@ $language = $GET[3];
                 foreach($result as $res) {
                     ?>
                     <tr>
-                        <td>
+                        <td <?= ($res[$language] == 'none' || strlen($res[$language]) < 1) ? 'style="color: red;"' : '';?>>
                             <?= $res['path'];?>
                         </td>
                         <td>
@@ -74,7 +78,7 @@ $language = $GET[3];
                         </td>
                         <td>
                             <div class="form-group">
-                                <input type="text" name="<?= $res['path'];?>" class="form-control" value="<?= $res[$language];?>">
+                                <textarea name="<?= $res['path'];?>" rows="1" class="form-control"><?= $res[$language];?></textarea>
                             </div>
                         </td>
                     </tr>
@@ -123,7 +127,7 @@ $language = $GET[3];
                 }
             }      
         }
-    }
+    };
 
     $("#filter_bot").on('click', function() {
         var input, filter, table, tr, td, i, txtValue;
@@ -145,7 +149,7 @@ $language = $GET[3];
                 }
             }      
         }
-    })
+    });
 
     $("#filter_game").on('click', function() {
         var input, filter, table, tr, td, i, txtValue;
@@ -167,7 +171,7 @@ $language = $GET[3];
                 }
             }      
         }
-    })
+    });
 
     $("#filter_web").on('click', function() {
         var input, filter, table, tr, td, i, txtValue;
@@ -189,7 +193,7 @@ $language = $GET[3];
                 }
             }      
         }
-    })
+    });
 
     $("#filter_all").on('click', function() {
         var input, filter, table, tr, td, i, txtValue;
@@ -209,5 +213,27 @@ $language = $GET[3];
                 }
             }
         }
-    })
+    });
+
+    $("#filter_none").on('click', function() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("filter");
+        filter = input.value = '';
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[4];
+            if (td) {
+                txtValue = tr[i].getElementsByTagName("td")[0];
+                txtValue = txtValue.textContent || txtValue.innerText;
+                var text = td.getElementsByTagName('textarea')[0];
+                if(text.value == 'none' || text.value.length < 1) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }      
+        }
+    });
 </script>
