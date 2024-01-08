@@ -14,15 +14,24 @@ if(!Functions::LanguageExists($GET[3])) {
 
 $language = $GET[3];
 $language_name = Functions::GetLanguageName($language);
+$csrf_token = Functions::CreateCSRFToken();
 ?>
 
 <div class="row justify-content-end mb-3">
-    <div class="col-12 col-md-5">
+    <div class="col-12 col-md-5 mb-3">
         <?php
         if(Functions::UserHasPermission('admin_translation_add')) {
             ?>
-                <label for="language_name"><?= Functions::Translation('text.translation.language.edit.language_name');?></label>
-                <input type="text" name="language_name" id="language_name" class="form-control" value="<?= $language_name;?>">
+                <form class="row row-cols-lg-auto g-3 align-items-center" id="0" action="/admin/translation/edit" method="POST">
+                    <div class="col-12">
+                        <input type="text" name="new_language_name" class="form-control" value="<?= $language_name;?>" maxlength="32" required>
+                    </div>
+                    <div class="col-12">
+                        <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['language_name'] = $language;?>
+                        <input type="hidden" name="language_name" value="<?= $language;?>">
+                        <button type="button" id="submit_language" onclick="SubmitForm(0)" key="<?= $res['id'];?>" class="btn btn-success w-100"><?= Functions::Translation('text.translation.language.language_name.button');?></button>
+                    </div>
+                </form>
             <?php
         }
         else {
@@ -58,57 +67,88 @@ $language_name = Functions::GetLanguageName($language);
         </div>
     </div>
 </div>
-<form action="/admin/translation/edit" method="POST">
-    <div class="table-responsive">
-        <table id="table" class="table table-dark table-borderless">
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>isBot</th>
-                    <th>isGame</th>
-                    <th>isWeb</th>
-                    <th>Text</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    $prepare = Functions::$mysqli->prepare("SELECT id,path,isBot,isGame,isWeb,".$language." FROM core_translations WHERE path != 'dev.control'");
-                    $prepare->execute();
-                    $result = $prepare->get_result();
-                    $result = $result->fetch_all(MYSQLI_ASSOC);
-                    foreach($result as $res) {
-                        ?>
+<div id="ergebnis" class="alert text-dark" style="display: none;"></div>
+<div class="table-responsive">
+    <table id="table" class="table table-dark table-borderless">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>isBot</th>
+                <th>isGame</th>
+                <th>isWeb</th>
+                <th>Text</th>
+                <th>Save</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                $prepare = Functions::$mysqli->prepare("SELECT id,path,isBot,isGame,isWeb,".$language." FROM core_translations WHERE path != 'dev.control'");
+                $prepare->execute();
+                $result = $prepare->get_result();
+                $result = $result->fetch_all(MYSQLI_ASSOC);
+                foreach($result as $res) {
+                    ?>
+                    <form action="/admin/translation/edit" id="<?= $res['id'];?>" method="POST">
                         <tr>
                             <td <?= ($res[$language] == 'none' || strlen($res[$language]) < 1) ? 'style="color: red;"' : '';?>>
                                 <?= $res['path'];?>
                             </td>
                             <td>
-                                <input type="checkbox" name="<?= $res['id'];?>_isBot" class="form-check-input" <?= $res['isBot'] == 1 ? 'checked' : '';?>>
+                                <input type="checkbox" name="isBot" class="form-check-input" <?= $res['isBot'] == 1 ? 'checked' : '';?>>
                             </td>
                             <td>
-                                <input type="checkbox" name="<?= $res['id'];?>_isGame" class="form-check-input" <?= $res['isGame'] == 1 ? 'checked' : '';?>>
+                                <input type="checkbox" name="isGame" class="form-check-input" <?= $res['isGame'] == 1 ? 'checked' : '';?>>
                             </td>
                             <td>
-                                <input type="checkbox" name="<?= $res['id'];?>_isWeb" class="form-check-input" <?= $res['isWeb'] == 1 ? 'checked' : '';?>>
+                                <input type="checkbox" name="isWeb" class="form-check-input" <?= $res['isWeb'] == 1 ? 'checked' : '';?>>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <textarea name="<?= $res['path'];?>" rows="1" class="form-control"><?= $res[$language];?></textarea>
+                                    <textarea name="new_language" rows="1" class="form-control"><?= $res[$language];?></textarea>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['language_name'] = $language;?>
+                                    <input type="hidden" name="path" value="<?= $res['path'];?>">
+                                    <input type="hidden" name="language_name" value="<?= $language;?>">
+                                    <button type="button" id="submit_language_<?= $res['id'];?>" onclick="SubmitForm(<?= $res['id'];?>)" key="<?= $res['id'];?>" class="btn btn-success"><?= Functions::Translation('global.edit');?></button>
                                 </div>
                             </td>
                         </tr>
-                        <?php
-                    }
-                ?>
-            </tbody>
-        </table>
-        <div class="w-100 text-end">
-            <input type="submit" class="btn btn-success form-control" value="<?= Functions::Translation('global.edit');?>">
-        </div>
-    </div>
+                    </form>
+                    <?php
+                }
+            ?>
+        </tbody>
+    </table>
 </div>
 
 <script>
+    function SubmitForm(id) {
+        var FormularData = new FormData(document.getElementById(id));
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/translation/edit',
+            data: FormularData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if(response.status == 'success') {
+                    $("#ergebnis").css("display","block");
+                    $("#ergebnis").addClass("alert-success");
+                    $("#ergebnis").html(response.message);
+                }
+                else {
+                    $("#ergebnis").css("display","block");
+                    $("#ergebnis").addClass("alert-danger");
+                    $("#ergebnis").html(response.message);
+                }
+            }
+        });
+    }
+
     function FilterTable() {
         var input, filter, table, tr, td, i, txtValue, bot, game, web;
         var test, test2;

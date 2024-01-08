@@ -142,8 +142,8 @@ class Functions {
     static function ConnectDB() {
         $data = array(
             'host'      => '45.81.233.154',
-            'user'      => 'web_lokal',
-            'password'  => 'gfREDTE%6t34&§T$EWRTF',
+            'user'      => 'root', // web_lokal
+            'password'  => 'ChrisWille2856', // gfREDTE%6t34&§T$EWRTF
             'database'  => 'LotusGaming'
         );
 
@@ -214,6 +214,9 @@ class Functions {
     }
 
     static function LoadUserdData($login_token) {
+        if($login_token == 'guest' && isset($_COOKIE['remember'])) {
+            $login_token = $_COOKIE['remember'];
+        }
         if($login_token == 'guest') {
             self::$user = array(
                 'id' => 0,
