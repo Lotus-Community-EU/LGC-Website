@@ -13,10 +13,24 @@ if(!Functions::LanguageExists($GET[3])) {
 }
 
 $language = $GET[3];
+$language_name = Functions::GetLanguageName($language);
 ?>
 
 <div class="row justify-content-end mb-3">
-    <div class="col-12 col-md-2 w-100">
+    <div class="col-12 col-md-5">
+        <?php
+        if(Functions::UserHasPermission('admin_translation_add')) {
+            ?>
+                <label for="language_name"><?= Functions::Translation('text.translation.language.edit.language_name');?></label>
+                <input type="text" name="language_name" id="language_name" class="form-control" value="<?= $language_name;?>">
+            <?php
+        }
+        else {
+            echo Functions::Translation('text.translation.language.edit', ['language'], [$language_name]);
+        }
+        ?>
+    </div>
+    <div class="col-12 col-md-7">
         <div class="d-flex justify-content-end">
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="filter" id="filter_all" value="filter_all" checked>
@@ -44,49 +58,54 @@ $language = $GET[3];
         </div>
     </div>
 </div>
-<div class="table-responsive">
-    <table id="table" class="table table-dark table-borderless">
-        <thead>
-            <tr>
-                <th>Code</th>
-                <th>isBot</th>
-                <th>isGame</th>
-                <th>isWeb</th>
-                <th>Text</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-                $prepare = Functions::$mysqli->prepare("SELECT id,path,isBot,isGame,isWeb,".$language." FROM core_translations WHERE path != 'dev.control'");
-                $prepare->execute();
-                $result = $prepare->get_result();
-                $result = $result->fetch_all(MYSQLI_ASSOC);
-                foreach($result as $res) {
-                    ?>
-                    <tr>
-                        <td <?= ($res[$language] == 'none' || strlen($res[$language]) < 1) ? 'style="color: red;"' : '';?>>
-                            <?= $res['path'];?>
-                        </td>
-                        <td>
-                            <input type="checkbox" name="<?= $res['id'];?>_isBot" class="form-check-input" <?= $res['isBot'] == 1 ? 'checked' : '';?>>
-                        </td>
-                        <td>
-                            <input type="checkbox" name="<?= $res['id'];?>_isGame" class="form-check-input" <?= $res['isGame'] == 1 ? 'checked' : '';?>>
-                        </td>
-                        <td>
-                            <input type="checkbox" name="<?= $res['id'];?>_isWeb" class="form-check-input" <?= $res['isWeb'] == 1 ? 'checked' : '';?>>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <textarea name="<?= $res['path'];?>" rows="1" class="form-control"><?= $res[$language];?></textarea>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php
-                }
-            ?>
-        </tbody>
-    </table>
+<form action="/admin/translation/edit" method="POST">
+    <div class="table-responsive">
+        <table id="table" class="table table-dark table-borderless">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>isBot</th>
+                    <th>isGame</th>
+                    <th>isWeb</th>
+                    <th>Text</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    $prepare = Functions::$mysqli->prepare("SELECT id,path,isBot,isGame,isWeb,".$language." FROM core_translations WHERE path != 'dev.control'");
+                    $prepare->execute();
+                    $result = $prepare->get_result();
+                    $result = $result->fetch_all(MYSQLI_ASSOC);
+                    foreach($result as $res) {
+                        ?>
+                        <tr>
+                            <td <?= ($res[$language] == 'none' || strlen($res[$language]) < 1) ? 'style="color: red;"' : '';?>>
+                                <?= $res['path'];?>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="<?= $res['id'];?>_isBot" class="form-check-input" <?= $res['isBot'] == 1 ? 'checked' : '';?>>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="<?= $res['id'];?>_isGame" class="form-check-input" <?= $res['isGame'] == 1 ? 'checked' : '';?>>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="<?= $res['id'];?>_isWeb" class="form-check-input" <?= $res['isWeb'] == 1 ? 'checked' : '';?>>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <textarea name="<?= $res['path'];?>" rows="1" class="form-control"><?= $res[$language];?></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                ?>
+            </tbody>
+        </table>
+        <div class="w-100 text-end">
+            <input type="submit" class="btn btn-success form-control" value="<?= Functions::Translation('global.edit');?>">
+        </div>
+    </div>
 </div>
 
 <script>

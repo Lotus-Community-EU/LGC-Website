@@ -384,6 +384,24 @@ class Functions {
 
     // Check if Language exists SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'translations' AND COLUMN_NAME = 'bla';
 
+    static function GetLanguageName($language) {
+        if(self::LanguageExists($language) == false) {
+            return 'NOT_EXIST';
+        }
+        $prepare = self::$mysqli->prepare("SELECT COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'core_translations' AND COLUMN_NAME = ?");
+        $prepare->bind_param('s', $language);
+        $prepare->execute();
+
+        $result = $prepare->get_result();
+        if($result->num_rows > 0) {
+            $result = $result->fetch_array();
+            return $result['COLUMN_COMMENT'];
+        }
+        else {
+            return 'NOT_EXIST';
+        }
+    }
+
     static function GetTranslations($language) {
         if(self::LanguageExists($language) == false) {
             $language = 'English';
