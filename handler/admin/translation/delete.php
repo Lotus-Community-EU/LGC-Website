@@ -13,6 +13,8 @@ if(strpos($ref, Functions::$website_url) == 0) {
             if($language_name != 'English') {
 
                 $language_name = Functions::$mysqli->real_escape_string($language_name);
+
+                Functions::AddTranslationEditLog($language_name, Functions::$user['id'],"Language Deleted",'','Deleted');
                 
                 Functions::$mysqli->query("ALTER TABLE `core_translations` DROP `".$language_name."`");
 

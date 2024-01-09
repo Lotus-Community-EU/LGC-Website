@@ -40,6 +40,8 @@ if(strpos($ref, Functions::$website_url) == 0) {
         $database = Functions::$mysqli->real_escape_string($database);
         $language_name = Functions::$mysqli->real_escape_string($language_name);
 
+        Functions::AddTranslationEditLog($database, Functions::$user['id'],"Language Created",'','Created');
+
         Functions::$mysqli->query("ALTER TABLE `core_translations` ADD `".$database."` VARCHAR(2000) NOT NULL COMMENT '".$language_name."'");
 
         $_SESSION['success_message'] = 'Successfully added the language!';

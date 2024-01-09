@@ -204,6 +204,13 @@ class Functions {
         $prepare->execute();
     }
 
+    static function AddTranslationEditLog($language_path, $changed_by, $changed_what, $changed_old, $changed_new) {
+        $time = gmdate('U');
+        $prepare = self::$mysqli->prepare("INSERT INTO web_translation_edit_logs (language_path,changed_by,changed_what,changed_old,changed_new,changed_time) VALUES (?,?,?,?,?,?)");
+        $prepare->bind_param("sisssi", $language_path, $changed_by, $changed_what, $changed_old, $changed_new, $time);
+        $prepare->execute();
+    }
+
     static function GetUserRanks($user_id) {
         $prepare = self::$mysqli->prepare("SELECT main_rank,secondary_rank FROM web_users WHERE id = ?");
         $prepare->bind_param('i', $user_id);

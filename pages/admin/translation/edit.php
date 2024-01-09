@@ -165,11 +165,13 @@ $csrf_token = Functions::CreateCSRFToken();
             success: function(response) {
                 if(response.status == 'success') {
                     $("#ergebnis").css("display","block");
+                    $("#ergebnis").removeClass("alert-danger");
                     $("#ergebnis").addClass("alert-success");
                     $("#ergebnis").html(response.message);
                 }
                 else {
                     $("#ergebnis").css("display","block");
+                    $("#ergebnis").removeClass("alert-success");
                     $("#ergebnis").addClass("alert-danger");
                     $("#ergebnis").html(response.message);
                 }
