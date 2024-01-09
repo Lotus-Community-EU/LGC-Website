@@ -1,5 +1,5 @@
 <?php
-if(!Functions::UserHasPermission('admin_rank_management')) { // User has no permission to edit Users
+if(!Functions::UserHasPermission('admin_rank_management')) {
     $_SESSION['error_title'] = 'Permissions - Delete Rank';
     $_SESSION['error_message'] = 'You don\'t have permissions to delete ranks!';
     header("Location: /admin/ranks/list");

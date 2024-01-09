@@ -65,6 +65,11 @@ $csrf_token = Functions::CreateCSRFToken();
         <div class="w-100 d-flex justify-content-end">
             <input type="text" name="filter" id="filter" placeholder="Filter" onkeyup="FilterTable()" class="form-control w-25">
         </div>
+        <?php if(Functions::UserHasPermission('admin_translation_delete') && $language != 'English') { ?>
+            <div class="w-100 d-flex justify-content-end mt-3">
+                <a href="" class="btn btn-danger btn-sm w-25" data-bs-toggle="modal" data-bs-target="#delete_language"><?= Functions::Translation('text.translation.language.delete.button');?></a>
+            </div>
+        <?php } ?>
     </div>
 </div>
 <div id="ergebnis" class="alert text-dark" style="display: none;"></div>
@@ -123,6 +128,29 @@ $csrf_token = Functions::CreateCSRFToken();
         </tbody>
     </table>
 </div>
+
+<?php if(Functions::UserHasPermission('admin_translation_delete') && $language != 'English') { ?>
+<div class="modal" id="delete_language" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?= Functions::Translation('text.translation.language.delete.title', ['language_name'], [$language_name]); ?></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p><?= Functions::Translation('text.translation.language.delete.text', ['language_name'], [$language_name]);?></p>
+            </div>
+            <div class="modal-footer">
+                <form action="/admin/translation/delete>" method="POST" class="">
+                    <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['language_name'] = $language?>
+                    <input type="hidden" name="language_name" value="<?= $language;?>">
+                    <input type="submit" name="reset_password" class="btn btn-success" value="<?= Functions::Translation('text.translation.language.delete.button');?>">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
 
 <script>
     function SubmitForm(id) {

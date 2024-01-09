@@ -26,7 +26,7 @@ $all_permissions = Functions::GetAllPermissions();
             <input type="text" name="short" class="form-control" id="short" placeholder="<?= $short;?>">
         </div>
         <div class="form-group mt-3">
-            <?php $colour = Functions::Translation('text-rank.rank_colour');?>
+            <?php $colour = Functions::Translation('text.rank.rank_colour');?>
             <label for="colour"><?= $colour;?></label>
             <input type="color" name="colour" class="form-control" id="colour" placeholder="<?= $colour;?>">
         </div>
