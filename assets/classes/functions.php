@@ -461,13 +461,6 @@ class Functions {
     static function GetNonesFromLanguages() {
         $all_languages = self::GetAllLanguages();
 
-        /*
-        SELECT 
-            SUM(CASE WHEN German = 'none' THEN 1 ELSE 0 END) AS German_None_Count,
-            SUM(CASE WHEN Swedish = 'none' THEN 1 ELSE 0 END) AS Swedish_None_Count
-        FROM core_translations;
-        */
-
         $query_imp = array();
         foreach($all_languages as $language) {
             $query_imp[] = 'SUM(CASE WHEN ('.$language['language_code'].' = \'none\' OR '.$language['language_code'].' = \'\') AND path != \'dev.control\' THEN 1 ELSE 0 END) AS '.$language['language_code'];
