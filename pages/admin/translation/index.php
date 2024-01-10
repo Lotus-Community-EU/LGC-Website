@@ -9,6 +9,8 @@ elseif(isset($GET[2]) && $GET[2] == 'logs') {
 }
 else {
 $languages = Functions::GetAllLanguages();
+$count_nones = Functions::GetNonesFromLanguages();
+$translation_rows = Functions::GetTranslationRows();
 ?>
 
 <div class="row justify-content-end mb-3">
@@ -29,6 +31,7 @@ $languages = Functions::GetAllLanguages();
         <thead>
             <tr>
                 <th><?= Functions::Translation('global.language');?></th>
+                <th>"None" (<?= $translation_rows;?>)</th>
                 <th><?= Functions::Translation('global.edit');?></th>
             </tr>
         </thead>
@@ -38,6 +41,7 @@ $languages = Functions::GetAllLanguages();
                     ?>
                     <tr>
                         <td><?= $language['language_name'];?></td>
+                        <td><?= $count_nones[$language['language_code']];?></td>
                         <td><a href="/admin/translation/edit/<?= $language['language_code'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::Translation('text.translation.language.edit');?></a></td>
                     </tr>
                     <?php

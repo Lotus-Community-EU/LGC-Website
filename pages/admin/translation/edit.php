@@ -18,58 +18,63 @@ $csrf_token = Functions::CreateCSRFToken();
 ?>
 
 <div class="row justify-content-end mb-3">
-    <div class="col-12 col-md-5 mb-3">
-        <?php
-        if(Functions::UserHasPermission('admin_translation_add')) {
-            ?>
-                <form class="row row-cols-lg-auto g-3 align-items-center" id="0" action="/admin/translation/edit" method="POST">
-                    <div class="col-12">
-                        <input type="text" name="new_language_name" class="form-control" value="<?= $language_name;?>" maxlength="32" required>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <a href="/admin/translation/list" class="btn btn-primary btn-sm mb-2"><?= Functions::Translation('text.back_to_overview');?></a>
+                <?php
+                if(Functions::UserHasPermission('admin_translation_add')) {
+                    ?>
+                        <form class="row row-cols-lg-auto g-3 align-items-center" id="0" action="/admin/translation/edit" method="POST">
+                            <div class="col-12">
+                                <input type="text" name="new_language_name" class="form-control" value="<?= $language_name;?>" maxlength="32" required>
+                            </div>
+                            <div class="col-12">
+                                <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['language_name'] = $language;?>
+                                <input type="hidden" name="language_name" value="<?= $language;?>">
+                                <button type="button" id="submit_language" onclick="SubmitForm(0)" key="<?= $res['id'];?>" class="btn btn-success w-100"><?= Functions::Translation('text.translation.language.language_name.button');?></button>
+                            </div>
+                        </form>
+                    <?php
+                }
+                else {
+                    echo Functions::Translation('text.translation.language.edit', ['language'], [$language_name]);
+                }
+                ?>
+            </div>
+            <div class="col-12 col-lg-6 mt-3 mt-lg-0">
+                <div class="d-flex justify-content-end">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="filter" id="filter_all" value="filter_all" checked>
+                        <label class="form-check-label" for="filter_all">All</label>
                     </div>
-                    <div class="col-12">
-                        <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['language_name'] = $language;?>
-                        <input type="hidden" name="language_name" value="<?= $language;?>">
-                        <button type="button" id="submit_language" onclick="SubmitForm(0)" key="<?= $res['id'];?>" class="btn btn-success w-100"><?= Functions::Translation('text.translation.language.language_name.button');?></button>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="filter" id="filter_bot" value="filter_bot">
+                        <label class="form-check-label" for="filter_bot">Bot</label>
                     </div>
-                </form>
-            <?php
-        }
-        else {
-            echo Functions::Translation('text.translation.language.edit', ['language'], [$language_name]);
-        }
-        ?>
-    </div>
-    <div class="col-12 col-md-7">
-        <div class="d-flex justify-content-end">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="filter" id="filter_all" value="filter_all" checked>
-                <label class="form-check-label" for="filter_all">All</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="filter" id="filter_bot" value="filter_bot">
-                <label class="form-check-label" for="filter_bot">Bot</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="filter" id="filter_game" value="filter_game">
-                <label class="form-check-label" for="filter_game">Game</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="filter" id="filter_web" value="filter_web">
-                <label class="form-check-label" for="filter_web">Web</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="filter" id="filter_none" value="filter_none">
-                <label class="form-check-label" for="filter_none">"None"</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="filter" id="filter_game" value="filter_game">
+                        <label class="form-check-label" for="filter_game">Game</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="filter" id="filter_web" value="filter_web">
+                        <label class="form-check-label" for="filter_web">Web</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="filter" id="filter_none" value="filter_none">
+                        <label class="form-check-label" for="filter_none">"None"</label>
+                    </div>
+                </div>
+                <div class="w-100 d-flex justify-content-end">
+                    <input type="text" name="filter" id="filter" placeholder="Filter" onkeyup="FilterTable()" class="form-control w-50">
+                </div>
+                <?php if(Functions::UserHasPermission('admin_translation_delete') && $language != 'English') { ?>
+                    <div class="w-100 d-flex justify-content-end mt-3">
+                        <a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_language"><?= Functions::Translation('text.translation.language.delete.button');?></a>
+                    </div>
+                <?php } ?>
             </div>
         </div>
-        <div class="w-100 d-flex justify-content-end">
-            <input type="text" name="filter" id="filter" placeholder="Filter" onkeyup="FilterTable()" class="form-control w-25">
-        </div>
-        <?php if(Functions::UserHasPermission('admin_translation_delete') && $language != 'English') { ?>
-            <div class="w-100 d-flex justify-content-end mt-3">
-                <a href="" class="btn btn-danger btn-sm w-25" data-bs-toggle="modal" data-bs-target="#delete_language"><?= Functions::Translation('text.translation.language.delete.button');?></a>
-            </div>
-        <?php } ?>
     </div>
 </div>
 <div id="ergebnis" class="alert text-dark" style="display: none;"></div>
