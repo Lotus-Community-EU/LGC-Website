@@ -3,7 +3,7 @@
 class Functions {
 
     public static $website_url = 'https://localhost';
-    public static $website_version = 'v0.0.2';
+    public static $website_version = 'v0.0.3';
 
     public static $csrf = array('TFE$RW§5e342wREw','FT$§E%TR§$E3tzrterTrtgre');
     public static $csrf_token;
@@ -25,6 +25,32 @@ class Functions {
     
     static function DecryptString($string = '') {
         return openssl_decrypt($string,"AES-256-CBC","fmiogfdjdtzkmiporzufngikugouhifd", 0,"kdpiotgrkedposlg");
+    }
+
+    static function RemoveScriptFromString($string) {
+        if(strpos($string,'<script') !== false) {
+            $string = str_replace('<script','', $string);
+        }
+        if(strpos($string,'&#60;script') !== false) {
+            $string = str_replace('&#60;script','', $string);
+        }
+        if(strpos($string,'&lt;script') !== false) {
+            $string = str_replace('&lt;script','', $string);
+        }
+        return $string;
+    }
+
+    static function RemoveIFrameFromString($string) {
+        if(strpos($string,'<iframe') !== false) {
+            $string = str_replace('<iframe','', $string);
+        }
+        if(strpos($string,'&#60;iframe') !== false) {
+            $string = str_replace('&#60;iframe','', $string);
+        }
+        if(strpos($string,'&lt;iframe') !== false) {
+            $string = str_replace('&lt;iframe','', $string);
+        }
+        return $string;
     }
     
     static function GetIP() {
@@ -253,7 +279,7 @@ class Functions {
 
     static function LogoutUser() {
         unset($_SESSION['login_token']);
-        ?><script>setcookie('remember','', 1,'/');</script><?php
+        ?><script>setcookie('remember','', 1,'/');</scrip><?php
         session_destroy();
         header("Location: /");
     }

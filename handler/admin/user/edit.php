@@ -41,6 +41,9 @@ if(strpos($ref, Functions::$website_url) == 0) {
                 }
                 else {
                     if(strcmp($new_username, $user_data['username'])) {
+                        $new_username = Functions::RemoveScriptFromString($new_username);
+                        $new_username = Functions::RemoveIFrameFromString($new_username);
+                        $new_username = htmlspecialchars($new_username);
                         Functions::AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Username', $user_data['username'], $new_username);
                         $prepare = Functions::$mysqli->prepare("UPDATE web_users SET username = ? WHERE id = ?");
                         $prepare->bind_param("si", $new_username, $user_data['id']);
@@ -102,7 +105,9 @@ if(strpos($ref, Functions::$website_url) == 0) {
                 $error_msg = '- The entered Bio is too long (4096 Character max - including HMTL)';
             }
             else {
-                if($user_data['bio'] != $new_bio) {
+                if(strcmp($user_data['bio'], $new_bio)) {
+                    $new_bio = Functions::RemoveScriptFromString($new_bio);
+                    $new_bio = Functions::RemoveIFrameFromString($new_bio);
                     AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Bio', $user_data['bio'], $new_bio);
                     $prepare = Functions::$mysqli->prepare("UPDATE web_users SET bio = ? WHERE id = ?");
                     $prepare->bind_param("si", $new_bio, $user_data['id']);

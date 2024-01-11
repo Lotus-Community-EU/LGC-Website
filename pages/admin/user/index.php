@@ -1,6 +1,9 @@
 <?php if(isset($GET[2]) && $GET[2] == 'edit') {
     include('edit.php');
 }
+elseif(isset($GET[2]) && $GET[2] == 'logs') {
+    include('logs.php');
+}
 else { ?>
 
 <div class="table-responsive">

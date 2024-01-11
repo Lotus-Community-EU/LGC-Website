@@ -26,6 +26,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
                     }
                     else {
                         if(strcmp($now_name, $new_name)) {
+                            $new_name = Functions::RemoveScriptFromString($new_name);
                             Functions::AddTranslationEditLog($language_name, Functions::$user['id'],"Language Name", $now_name, $new_name);
 
                             $language_name = Functions::$mysqli->real_escape_string($language_name);
@@ -105,6 +106,8 @@ if(strpos($ref, Functions::$website_url) == 0) {
                     if(strcmp($current_translations[$path], $new_language)) {
                         Functions::AddTranslationEditLog($path, Functions::$user['id'], $language_name, $current_translations[$path], $new_language);
                     }
+
+                    $new_language = Functions::RemoveScriptFromString($new_language);
 
                     $prepare = Functions::$mysqli->prepare("UPDATE core_translations SET isBot = ?, isGame = ?, isWeb = ?, ".$language_name." = ? WHERE path = ?");
                     $prepare->bind_param('iiiss', $new_bot, $new_game, $new_web, $new_language, $path);
