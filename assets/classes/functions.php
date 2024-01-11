@@ -199,14 +199,14 @@ class Functions {
 
     static function AddProfileEditLog($user_id, $changed_by, $visibility, $changed_what, $changed_old, $changed_new) {
         $time = gmdate('U');
-        $prepare = self::$mysqli->prepare("INSERT INTO web_profile_edit_logs (user_id,changed_by,log_visibility,changed_what,changed_old,changed_new,changed_time) VALUES (?,?,?,?,?,?,?)");
+        $prepare = self::$mysqli->prepare("INSERT INTO web_logs_profile_edit (user_id,changed_by,log_visibility,changed_what,changed_old,changed_new,changed_time) VALUES (?,?,?,?,?,?,?)");
         $prepare->bind_param("iiisssi", $user_id, $changed_by, $visibility, $changed_what, $changed_old, $changed_new, $time);
         $prepare->execute();
     }
 
     static function AddTranslationEditLog($language_path, $changed_by, $changed_what, $changed_old, $changed_new) {
         $time = gmdate('U');
-        $prepare = self::$mysqli->prepare("INSERT INTO web_translation_edit_logs (language_path,changed_by,changed_what,changed_old,changed_new,changed_time) VALUES (?,?,?,?,?,?)");
+        $prepare = self::$mysqli->prepare("INSERT INTO web_logs_translation_edit (language_path,changed_by,changed_what,changed_old,changed_new,changed_time) VALUES (?,?,?,?,?,?)");
         $prepare->bind_param("sisssi", $language_path, $changed_by, $changed_what, $changed_old, $changed_new, $time);
         $prepare->execute();
     }

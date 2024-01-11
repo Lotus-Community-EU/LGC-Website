@@ -28,10 +28,10 @@ $csrf_token = Functions::CreateCSRFToken();
         <tbody>
                 <?php
                     if(Functions::UserHasPermission('admin_translation_log_delete')) {
-                        $all_logs = Functions::$mysqli->query("SELECT * FROM web_translation_edit_logs WHERE id > 0 ORDER BY changed_time DESC");
+                        $all_logs = Functions::$mysqli->query("SELECT * FROM web_logs_translation_edit WHERE id > 0 ORDER BY changed_time DESC");
                     }
                     else {
-                        $all_logs = Functions::$mysqli->query("SELECT * FROM web_translation_edit_logs WHERE id > 0 AND deleted = '0' ORDER BY changed_time DESC");
+                        $all_logs = Functions::$mysqli->query("SELECT * FROM web_logs_translation_edit WHERE id > 0 AND deleted = '0' ORDER BY changed_time DESC");
                     }
                     while($log = $all_logs->fetch_array()) {
                         ?>

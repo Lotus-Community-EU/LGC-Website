@@ -173,12 +173,14 @@ $csrf_token = Functions::CreateCSRFToken();
                     $("#ergebnis").removeClass("alert-danger");
                     $("#ergebnis").addClass("alert-success");
                     $("#ergebnis").html(response.message);
+                    console.log(response);
                 }
                 else {
                     $("#ergebnis").css("display","block");
                     $("#ergebnis").removeClass("alert-success");
                     $("#ergebnis").addClass("alert-danger");
-                    $("#ergebnis").html(response.message);
+                    $("#ergebnis").html(response);
+                    console.log(response);
                 }
             }
         });

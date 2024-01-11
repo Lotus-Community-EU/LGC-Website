@@ -63,7 +63,6 @@ if(strpos($ref, Functions::$website_url) == 0) {
                     }
                 }
 
-
                 $_SESSION['csrf_token'] = Functions::$csrf[0].$_POST['token'].Functions::$csrf[1];
                 $_SESSION['language_name'] = $language_name;
 
