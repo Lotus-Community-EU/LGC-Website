@@ -92,7 +92,7 @@ $csrf_token = Functions::CreateCSRFToken();
         </thead>
         <tbody>
             <?php
-                $prepare = Functions::$mysqli->prepare("SELECT id,path,isBot,isGame,isWeb,".$language." FROM core_translations WHERE path != 'dev.control'");
+                $prepare = Functions::$mysqli->prepare("SELECT id,path,isBot,isGame,isWeb,".$language." FROM core_translations WHERE path != 'dev.control' AND path != 'mcinternal.language'");
                 $prepare->execute();
                 $result = $prepare->get_result();
                 $result = $result->fetch_all(MYSQLI_ASSOC);
