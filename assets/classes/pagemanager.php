@@ -3,6 +3,9 @@
 Functions::ConnectDB();
 Functions::GetAllSettings();
 
+include('assets/classes/log.php');
+include('assets/classes/user.php');
+
 $page = isset($_GET['url']) ? $_GET['url'] : 'index';
 
 $GET = explode('/', $page);
