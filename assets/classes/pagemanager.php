@@ -5,6 +5,7 @@ Functions::GetAllSettings();
 
 include('assets/classes/log.php');
 include('assets/classes/user.php');
+include('assets/classes/rank.php');
 
 $page = isset($_GET['url']) ? $_GET['url'] : 'index';
 
@@ -20,7 +21,7 @@ switch($page) {
 			break;
 		}
 		else {
-            Functions::LoadUserdData(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
+            $user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
 			switch($GET[1]) {
                 case 'user': 
                     LoadAdminView($GET['1'],'admin_user_list');
@@ -50,7 +51,7 @@ switch($page) {
                     LoadHandler('logout');
                     break;
 				default:
-                    Functions::LoadUserdData(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
+                    $user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
                     if($page == 'login' && Functions::$user['id'] != 0) {
                         header("Location: /");
                         exit;
@@ -77,7 +78,7 @@ function CheckCookies() {
 }
 
 function LoadView($page = '', $page_title = 'Lotus Gaming Community') {
-    global $GET;
+    global $GET, $user;
 	if(!file_exists('pages/homepage/'.$page.'/index.php')) {
         $page = 'index';
     }
@@ -104,8 +105,8 @@ function LoadView($page = '', $page_title = 'Lotus Gaming Community') {
 }
 
 function LoadAdminView($page = '', $needed_permission = '', $page_title = 'Lotus Gaming Community') {
-    global $GET;
-	if(!Functions::UserHasPermission($needed_permission)) {
+    global $GET, $user;
+	if(!$user->hasPermission($needed_permission)) {
 		header("Location: /");
 		exit;
 	}
@@ -136,7 +137,7 @@ function LoadAdminView($page = '', $needed_permission = '', $page_title = 'Lotus
 */
 
 function LoadHandler($handler = '') {
-    Functions::LoadUserdData(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
+    $user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
 	global $GET;
     include('handler/'.$handler.'.php');
 }

@@ -16,7 +16,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <?php if(Functions::UserHasPermission('admin_admin_tab') == 1) { ?>
+                <?php if($user->hasPermission('admin_admin_tab')) { ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Administration
@@ -31,17 +31,17 @@
                         </ul>
                     </li>
                 <?php } ?>
-                <?php if(Functions::$user['id'] == 0) { // User not loggedin ?>
+                <?php if($user->getID() == 0) { // User not loggedin ?>
                     <li class="nav-item">
                         <a class="nav-link" href="/login"><?= Functions::Translation('text.login');?></a>
                     </li>
                 <?php } else { // User loggedin ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?= Functions::$user['username'];?>
+                            <?= $user->getUsername();?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
-                            <a class="dropdown-item" href="/user/<?= Functions::$user['id'];?>"><?= Functions::Translation('text.profile');?></a>
+                            <a class="dropdown-item" href="/user/<?= $user->getID();?>"><?= Functions::Translation('text.profile');?></a>
                             <a class="dropdown-item" href="/user/settings"><?= Functions::Translation('text.account_settings');?></a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/logout"><?= Functions::Translation('text.logout');?></a>

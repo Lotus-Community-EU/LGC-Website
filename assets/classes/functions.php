@@ -246,7 +246,7 @@ class Functions {
         return [$result[0], $result[1]];
     }
 
-    static function LoadUserdData($login_token) {
+    /*static function LoadUserdData($login_token) {
         if($login_token == 'guest' && isset($_COOKIE['remember'])) {
             $login_token = $_COOKIE['remember'];
         }
@@ -275,7 +275,7 @@ class Functions {
         }
         self::GetTranslations(self::$user['language']);
         self::GetUserPermissions();
-    }
+    }*/
 
     static function LogoutUser() {
         unset($_SESSION['login_token']);
@@ -284,15 +284,16 @@ class Functions {
         header("Location: /");
     }
 
-    static function UserHasPermission($permission) {
+    /*static function UserHasPermission($permission) {
         if(isset(self::$user_permissions[$permission]) && self::$user_permissions[$permission] == 1) {
             return true;
         }
         return false;
-    }
+    }*/
 
     static function AddAdminTabLink($link, $icon, $permission, $text) {
-        if(self::UserHasPermission($permission) == 1) {
+        global $user;
+        if($user->hasPermission($permission) == 1) {
             if(strlen($icon) > 0) {
                 echo '<a class="dropdown-item" href="'.$link.'"><i class="'.$icon.'"></i> '.$text.'</a>';
             }

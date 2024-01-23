@@ -5,26 +5,53 @@ class User {
     private $id = null;
 
     private $data = array();
+    private $permissions = array();
 
     function __construct($search = null) {
-
+        
         if($search != null) {
-            if(is_numeric($search)) {
-                $prepare = Functions::$mysqli->prepare("SELECT * FROM web_users WHERE id = ? LIMIT 1");
-                $prepare->bind_param('i', $search);
+            if($search == 'guest') {
+                $this->id = 0;
+                $this->data = array(
+                    'id' => 0,
+                    'username' => 'Guest',
+                    'language' => 'English',
+                    'main_rank' => 1,
+                    'secondary_rank' => 0
+                );
             }
             else {
-                $prepare = Functions::$mysqli->prepare("SELECT * FROM web_users WHERE login_token = ? LIMIT 1");
-                $prepare->bind_param('s', $search);
+                if(is_numeric($search)) {
+                    $prepare = Functions::$mysqli->prepare("SELECT * FROM web_users WHERE id = ? LIMIT 1");
+                    $prepare->bind_param('i', $search);
+                }
+                else {
+                    $prepare = Functions::$mysqli->prepare("SELECT * FROM web_users WHERE login_token = ? LIMIT 1");
+                    $prepare->bind_param('s', $search);
+                }
+                $prepare->execute();
+                $result = $prepare->get_result();
+                $result = $result->fetch_array();
+                
+                $this->id = $result['id'];
+                $this->data = $result;
             }
-            $prepare->execute();
-            $result = $prepare->get_result();
-            $result = $result->fetch_array();
-            
-            $this->id = $result['id'];
-            $this->data = $result;
+
+            Functions::GetTranslations($this->data['language']);
+
+            $prepare_ranks = Functions::$mysqli->prepare("SELECT * FROM web_ranks_permissions WHERE rank_id = ? OR rank_id = ?");
+            $prepare_ranks->bind_param('ii', $this->data['main_rank'], $this->data['secondary_rank']);
+            $prepare_ranks->execute();
+            $result_ranks = $prepare_ranks->get_result();
+            $result_ranks = $result_ranks->fetch_all(MYSQLI_ASSOC);
+
+            foreach($result_ranks as $rank) {
+                $this->permissions[$rank['permission_name']] = 1;
+            }
         }
     }
+
+    function getID() { return $this->id; }
 
     function getUsername() { return $this->data['username']; }
     function setUsername($username) {
@@ -98,6 +125,10 @@ class User {
         return $this;
     }
 
+    function hasPermission($permission) {
+        return (isset($this->permissions[$permission]) && $this->permissions[$permission] == 1) ? true : false;
+    }
+
     function update() {
         if($this->id == null) {
             return null;
@@ -124,8 +155,8 @@ class User {
 
         $vars = implode(',', $vars);
 
-        $prepare = Functions::$mysqli->prepare("UPDATE web_users SET ".$vars." WHERE id = ?");
-        $prepare->bind_param("ssssssisiisii",
+        $prepare = Functions::$mysqli->prepare("UPDATE web_users SET ".$vars." WHERE id = ? LIMIT 1");
+        $prepare->bind_param('ssssssisiisii',
             $this->data['username'],
             $this->data['email'],
             $this->data['created_at'],
@@ -141,5 +172,15 @@ class User {
             $this->data['id']
         );
         $prepare->execute();
+    }
+
+    function logout() {
+        if($this->id == null) {
+            return null;
+        }
+        unset($_SESSION['login_token']);
+        ?><script>setcookie('remember','', 1,'/');</scrip><?php
+        session_destroy();
+        header("Location: /");
     }
 }

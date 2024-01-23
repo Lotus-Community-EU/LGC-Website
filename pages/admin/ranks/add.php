@@ -1,8 +1,3 @@
-<?php
-$rank_names = Functions::GetRankComments();
-$all_permissions = Functions::GetAllPermissions();
-?>
-
 <div class="container w-50 mb-5">
     <div class="d-flex justify-content-between">
         <div>
@@ -68,11 +63,15 @@ $all_permissions = Functions::GetAllPermissions();
         </div>
 
         <?php
+            $rank = new Rank();
+
+            $all_permissions = $rank->getAllPermissions();
+
             foreach($all_permissions as $permission) {
                 ?>
                 <div class="form-check mt-3">
-                    <input type="checkbox" name="<?= $permission;?>" class="form-check-input" id="<?= $permission;?>" value="<?= $permission;?>">
-                    <label class="form-check-label" for="<?= $permission;?>"><?= $rank_names[$permission].' (<b>'.$permission.'</b>)';?></label>
+                    <input type="checkbox" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="1">
+                    <label class="form-check-label" for="<?= $permission['permission_code'];?>"><?= $permission['permission_code'].' (<b>'.$permission['permission_description'].'</b>)';?></label>
                 </div>
                 <?php
             }

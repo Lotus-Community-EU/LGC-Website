@@ -2,10 +2,13 @@
 
 <?php
 
-$user = new User(1);
-
 //$user->setUsername('Test');
 
 //echo $user->getUsername();
 
 //$user->update();
+
+$rank = new Rank(4);
+
+
+echo var_dump($rank->nameExists('Bla'));
