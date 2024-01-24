@@ -1,26 +1,29 @@
 <?php
 
-// AddProfileEditLog($user_id, $changed_by, $visibility, $changed_what, $changed_old, $changed_new)
-
 $ref = $_SERVER['HTTP_REFERER'];
 $user_id = $_POST['user_id']; $s_id = $_SESSION['user_id']; unset($_SESSION['user_id']);
 if(strpos($ref, Functions::$website_url) == 0) {
     if(Functions::CheckCSRF($_POST['token'])) {
         if($user_id == $s_id) {
             if(isset($_POST['link_mc'])) {
-                $key = Functions::GenerateLinkKey(Functions::$user['id']);
-                $prepare = Functions::$mysqli->prepare("UPDATE web_users SET mc_verify_code = ? WHERE id = ?");
-                $prepare->bind_param("si", $key, Functions::$user['id']);
-                $prepare->execute();
+                $key = Functions::GenerateLinkKey(Functions::$user->getID());
+                $user->setMCVerifyCode($key);
+                $user->update();
                 header("Location: /user/settings");
                 exit;
             }
 
             if(isset($_POST['unlink_mc'])) {
-                Functions::AddProfileEditLog(Functions::$user['id'], Functions::$user['id'], 1,'MC-UUID', Functions::$user['mc_uuid'],'');
-                $prepare = Functions::$mysqli->prepare("UPDATE web_users SET mc_uuid = '' WHERE id = ?");
-                $prepare->bind_param("i", Functions::$user['id']);
-                $prepare->execute();
+                $log = new Log();
+                $log->setCategory('Profile_Edit');
+                $log->setUser($user->getID())->setTarget($user->getID());
+                $log->setChangedWhat('MC-UUID');
+                $log->setChangedOld($user->getMCUUID())->setChangedNew('');
+                $log->setTime(gmdate('U'));
+                $log->create();
+
+                $user->setMCUUID('');
+                $user->update();
                 $_SESSION['success_message'] = Functions::Translation('text.success.minecraft_unlink');
                 header("Location: /user/settings");
                 exit;
@@ -38,22 +41,28 @@ if(strpos($ref, Functions::$website_url) == 0) {
                     $error_msg = '- The input Username is invalid!';
                 }
                 else {
-                    if(Functions::IsUsernameRegistered($new_username) && strcmp($new_username, Functions::$user['username'])) {
+                    if($user->isUsernameRegistered($new_username) && strcmp($new_username, $user->getUsername())) {
                         $error = 1;
                         if(strlen($error_msg) > 0) { $error_msg .='<br>';}
                         $error_msg = '- The new username ('.$new_username.') is already taken by another Account!';
                     }
                     else {
-                        if(Functions::UserCanChangeName(Functions::$user['id'])) {
-                            if(strcmp($new_username, Functions::$user['username'])) {
+                        if(Functions::UserCanChangeName($user->getID())) {
+                            if(strcmp($new_username, $user->getUsername())) {
                                 $new_username = Functions::RemoveScriptFromString($new_username);
                                 $new_username = Functions::RemoveIFrameFromString($new_username);
                                 $new_username = htmlspecialchars($new_username);
-                                Functions::AddProfileEditLog(Functions::$user['id'], Functions::$user['id'], 1,'Username', Functions::$user['username'], $new_username);
-                                $prepare = Functions::$mysqli->prepare("UPDATE web_users SET username = ?,last_username_change = ? WHERE id = ?");
-                                $time = gmdate('U');
-                                $prepare->bind_param("sii", $new_username, $time, Functions::$user['id']);
-                                $prepare->execute();
+                                
+                                $log = new Log();
+                                $log->setCategory('Profile_Edit');
+                                $log->setUser($user->getID())->setTarget($user->getID());
+                                $log->setChangedWhat('Username');
+                                $log->setChangedOld($user->getUsername())->setChangedNew($new_username);
+                                $log->setTime(gmdate('U'));
+                                $log->create();
+
+                                $user->setUsername($new_username);
+                                $user->setLastUsernameChange(gmdate('U'));
                                 $changed ++;
                             }
                         }
@@ -72,20 +81,32 @@ if(strpos($ref, Functions::$website_url) == 0) {
                 $error_msg = '- The selected language does not exist!';
             }
             else {
-                if(Functions::$user['language'] != $new_language) {
-                    Functions::AddProfileEditLog(Functions::$user['id'], Functions::$user['id'], 1,'Language', Functions::$user['language'], $new_language);
-                    $prepare = Functions::$mysqli->prepare("UPDATE web_users SET language = ? WHERE id = ?");
-                    $prepare->bind_param("si", $new_language, Functions::$user['id']);
-                    $prepare->execute();
+                if($user->getLanguage() != $new_language) {
+                   
+                    $log = new Log();
+                    $log->setCategory('Profile_Edit');
+                    $log->setUser($user->getID())->setTarget($user->getID());
+                    $log->setChangedWhat('Language');
+                    $log->setChangedOld($user->getLanguage())->setChangedNew($new_language);
+                    $log->setTime(gmdate('U'));
+                    $log->create();
+
+                    $user->setLanguage($new_language);
                     $changed ++;
                 }
             }
 
-            if($new_show_mc_name != Functions::$user['show_mc_name'] && ($new_show_mc_name == 0 || $new_show_mc_name == 1)) {
-                Functions::AddProfileEditLog(Functions::$user['id'], Functions::$user['id'], 1,'Show MC-Name', Functions::$user['show_mc_name'], $new_show_mc_name);
-                $prepare = Functions::$mysqli->prepare("UPDATE web_users SET show_mc_name = ? WHERE id = ?");
-                $prepare->bind_param("si", $new_show_mc_name, Functions::$user['id']);
-                $prepare->execute();
+            if($new_show_mc_name != $user->getShowMCName() && ($new_show_mc_name == 0 || $new_show_mc_name == 1)) {
+                
+                $log = new Log();
+                $log->setCategory('Profile_Edit');
+                $log->setUser($user->getID())->setTarget($user->getID());
+                $log->setChangedWhat('Show MC-Name');
+                $log->setChangedOld($user->getShowMCName())->setChangedNew($new_show_mc_name);
+                $log->setTime(gmdate('U'));
+                $log->create();
+
+                $user->setShowMCName($new_show_mc_name);
                 $changed ++;
             }
 
@@ -98,13 +119,22 @@ if(strpos($ref, Functions::$website_url) == 0) {
                 if(strcmp(Functions::$user['bio'], $new_bio)) {
                     $new_bio = Functions::RemoveScriptFromString($new_bio);
                     $new_bio = Functions::RemoveIFrameFromString($new_bio);
-                    Functions::AddProfileEditLog(Functions::$user['id'], Functions::$user['id'], 1,'Bio', Functions::$user['bio'], $new_bio);
-                    $prepare = Functions::$mysqli->prepare("UPDATE web_users SET bio = ? WHERE id = ?");
-                    $prepare->bind_param("si", $new_bio, Functions::$user['id']);
-                    $prepare->execute();
+                    
+                    $log = new Log();
+                    $log->setCategory('Profile_Edit');
+                    $log->setUser($user->getID())->setTarget($user->getID());
+                    $log->setChangedWhat('Bio');
+                    $log->setChangedOld($user->getBio())->setChangedNew($new_bio);
+                    $log->setTime(gmdate('U'));
+                    $log->create();
+
+                    $user->setBio($new_bio);
+
                     $changed ++;
                 }
             }
+
+            $user->update();
 
             if($error == 1) {
                 $_SESSION['error_title'] = 'Edit Profile';

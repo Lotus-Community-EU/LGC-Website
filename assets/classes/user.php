@@ -6,6 +6,8 @@ class User {
 
     private $data = array();
     private $permissions = array();
+    private $is_staff = 0;
+    private $is_upperstaff = 0;
 
     function __construct($search = null) {
         
@@ -48,10 +50,32 @@ class User {
             foreach($result_ranks as $rank) {
                 $this->permissions[$rank['permission_name']] = 1;
             }
+
+            $prepare_staff = Functions::$mysqli->prepare("SELECT is_staff,is_upperstaff FROM core_ranks WHERE id = ? OR id = ?");
+            $prepare_staff->bind_param('ii', $this->data['main_rank'], $this->data['secondary_rank']);
+            $prepare_staff->execute();
+            $result_staff = $prepare_staff->get_result();
+            $result_staff = $result_staff->fetch_all(MYSQLI_ASSOC);
+
+            if(sizeof($result_staff) == 1) {
+                $this->is_staff = $result_staff[0]['is_staff'];
+                $this->is_upperstaff = $result_staff[0]['is_upperstaff'];
+            }
+            else {
+                if($result_staff[0]['is_staff'] == 1 || $result_staff[1]['is_staff'] == 1) {
+                    $this->is_staff = 1;
+                }
+                if($result_staff[0]['is_upperstaff'] == 1 || $result_staff[1]['is_upperstaff'] == 1) {
+                    $this->is_upperstaff = 1;
+                }
+            }
         }
     }
 
     function getID() { return $this->id; }
+
+    function getIsStaff() { return $this->is_staff; }
+    function getIsUpperStaff() { return $this->is_upperstaff; }
 
     function getUsername() { return $this->data['username']; }
     function setUsername($username) {
@@ -182,5 +206,18 @@ class User {
         ?><script>setcookie('remember','', 1,'/');</scrip><?php
         session_destroy();
         header("Location: /");
+    }
+
+    function isUsernameRegistered($name) {
+        $prepare = Functions::$mysqli->prepare("SELECT id FROM web_users WHERE username = ? LIMIT 1");
+        $prepare->bind_param('s', $name);
+        $prepare->execute();
+        $result = $prepare->get_result();
+        if($result->num_rows > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
