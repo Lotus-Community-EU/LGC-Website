@@ -4,6 +4,17 @@ class User {
 
     private $id = null;
 
+    public $lengths = array(
+        'username' => array(
+            'min' => 1,
+            'max' => 64
+        ),
+        'bio' => array(
+            'min' => 0,
+            'max' => '4096'
+        )
+    );
+
     private $data = array();
     private $permissions = array();
     private $is_staff = 0;
@@ -33,10 +44,15 @@ class User {
                 }
                 $prepare->execute();
                 $result = $prepare->get_result();
-                $result = $result->fetch_array();
+                if($result->num_rows > 0) {
+                    $result = $result->fetch_array();
                 
-                $this->id = $result['id'];
-                $this->data = $result;
+                    $this->id = $result['id'];
+                    $this->data = $result;
+                }
+                else {
+                    return null;
+                }
             }
 
             Functions::GetTranslations($this->data['language']);
@@ -149,6 +165,24 @@ class User {
         return $this;
     }
 
+    function getMCName() {
+        if(strlen($this->data['mc_uuid']) < 1) {
+            return 'No Account linked';
+        }
+
+        $prepare = Functions::$mysqli->prepare("SELECT name FROM mc_users WHERE mcuuid = ? LIMIT 1");
+        $prepare->bind_param('s', $this->data['mc_uuid']);
+        $prepare->execute();
+        $result = $prepare->get_result();
+        if($result->num_rows > 0) {
+            $result = $result->fetch_array();
+            return $result['name'];
+        }
+        else {
+            return 'Never connected to MC-Server!';
+        }
+    }
+
     function hasPermission($permission) {
         return (isset($this->permissions[$permission]) && $this->permissions[$permission] == 1) ? true : false;
     }
@@ -214,7 +248,7 @@ class User {
         $prepare->execute();
         $result = $prepare->get_result();
         if($result->num_rows > 0) {
-            return true;
+            return $result->fetch_array()['id'];
         }
         else {
             return false;

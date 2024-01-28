@@ -9,12 +9,12 @@
             </li>
         </ul>
 
-        <?php if(Functions::GetSetting('copyright_show') == 1) { ?>
-        <p class="text-center mb-0"><?= Functions::GetSetting('copyright_text');?></p>
+        <?php if($settings->getCopyrightShow() == 1) { ?>
+        <p class="text-center mb-0"><?= $settings->getCopyrightText();?></p>
         <?php } ?>
 
-        <?php if(Functions::GetSetting('show_mcheads') == 1) { ?>
-        <p class="text-center mb-0">Thanks to <a href="https://mc-heads.net">MCHeads</a> for providing Minecraft Avatars.</p>
+        <?php if($settings->getShowMCHeads() == 1) { ?>
+            <p class="text-center mb-0">Thanks to <a href="https://mc-heads.net">MCHeads</a> for providing Minecraft Avatars.</p>
         <?php } ?>
     </footer>
 </div>

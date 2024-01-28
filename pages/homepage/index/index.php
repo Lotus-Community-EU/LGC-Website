@@ -8,7 +8,4 @@
 
 //$user->update();
 
-$rank = new Rank(4);
-
-
-echo var_dump($rank->nameExists('Bla'));
+echo $settings->getPasswordResetText();

@@ -25,25 +25,30 @@ class Rank {
 
     function __construct($rank_id = null) {
 
-        if($rank_id != null) {
-            $prepare = Functions::$mysqli->prepare("SELECT * FROM core_ranks WHERE id = ?");
+        if($rank_id != null || $rank_id == 0) {
+            $prepare = Functions::$mysqli->prepare("SELECT * FROM core_ranks WHERE id = ? LIMIT 1");
             $prepare->bind_param('i', $rank_id);
             $prepare->execute();
 
             $result = $prepare->get_result();
-            $result = $result->fetch_array();
+            if($result->num_rows > 0) {
+                $result = $result->fetch_array();
 
-            $this->id = $result['id'];
-            $this->data = $result;
+                $this->id = $result['id'];
+                $this->data = $result;
 
-            $prepare_ranks = Functions::$mysqli->prepare("SELECT * FROM web_ranks_permissions WHERE rank_id = ?");
-            $prepare_ranks->bind_param('i', $this->data['id']);
-            $prepare_ranks->execute();
-            $result_ranks = $prepare_ranks->get_result();
-            $result_ranks = $result_ranks->fetch_all(MYSQLI_ASSOC);
+                $prepare_ranks = Functions::$mysqli->prepare("SELECT * FROM web_ranks_permissions WHERE rank_id = ?");
+                $prepare_ranks->bind_param('i', $this->data['id']);
+                $prepare_ranks->execute();
+                $result_ranks = $prepare_ranks->get_result();
+                $result_ranks = $result_ranks->fetch_all(MYSQLI_ASSOC);
 
-            foreach($result_ranks as $rank) {
-                $this->permissions[$rank['permission_name']] = 1;
+                foreach($result_ranks as $rank) {
+                    $this->permissions[$rank['permission_name']] = 1;
+                }
+            }
+            else {
+                return null;
             }
         }
 
@@ -101,6 +106,13 @@ class Rank {
 
     function hasPermission($permission) {
         return (isset($this->permissions[$permission]) && $this->permissions[$permission] == 1) ? true : false;
+    }
+
+    static function getAllRanks() {
+        $query = Functions::$mysqli->query("SELECT * FROM core_ranks WHERE id > 0");
+        if($query->num_rows > 0) {
+            return $query->fetch_all(MYSQLI_ASSOC);
+        }
     }
 
     function nameExists($name) {

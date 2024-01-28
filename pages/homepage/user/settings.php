@@ -35,7 +35,7 @@ else {
             </div>
 
             <?php if(strlen($user->getMCUUID()) > 1) {
-                $mc_username = json_decode(file_get_contents('https://mc-heads.net/minecraft/profile/'.$user->getMCUUID()))->name;
+                $mc_username = $user->getMCName();
                 ?>
                     <div class="form-group mt-3">
                         <input type="submit" class="btn btn-sm btn-danger" value="Unlink Minecraft Account" name="unlink_mc"> (<?= $mc_username;?>)
@@ -59,7 +59,7 @@ else {
                         echo '<br>'.Functions::Translation('text.profile.mc_verify_code', ['verify_code'], [$user->getMCVerifyCode()]);
                     }
                     else {
-                    ?><input type="submit" class="btn btn-sm btn-success" value="Link Minecraft Account" id="link_mc" name="link_mc"><?php
+                        ?><input type="submit" class="btn btn-sm btn-success" value="Link Minecraft Account" id="link_mc" name="link_mc"><?php
                     }?>
                 </div>
                 <?php

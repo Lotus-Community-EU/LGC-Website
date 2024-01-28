@@ -1,11 +1,12 @@
 <?php
 
 Functions::ConnectDB();
-Functions::GetAllSettings();
 
 include('assets/classes/log.php');
 include('assets/classes/user.php');
 include('assets/classes/rank.php');
+include('assets/classes/settings.php');
+$settings = new Settings();
 
 $page = isset($_GET['url']) ? $_GET['url'] : 'index';
 
@@ -32,6 +33,9 @@ switch($page) {
                 case 'translation':
                     LoadAdminView($GET['1'],'admin_translation_list');
                     break;
+                case 'website_settings':
+                    LoadAdminView($GET['1'],'admin_website_settings');
+                    break;
 				default:
 					LoadAdminView($GET[1]);
 					break;
@@ -52,7 +56,7 @@ switch($page) {
                     break;
 				default:
                     $user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
-                    if($page == 'login' && Functions::$user['id'] != 0) {
+                    if($page == 'login' && $user->getID() != 0) {
                         header("Location: /");
                         exit;
                     }
@@ -78,9 +82,12 @@ function CheckCookies() {
 }
 
 function LoadView($page = '', $page_title = 'Lotus Gaming Community') {
-    global $GET, $user;
+    global $GET, $user, $settings;
 	if(!file_exists('pages/homepage/'.$page.'/index.php')) {
-        $page = 'index';
+        $_SESSION['error_title'] = 'Not existing';
+        $_SESSION['error_message'] = 'The page you tried to access doesn\'t exist!';
+        header("Location: /");
+        exit;
     }
     ?>
 	<!DOCTYPE html>
@@ -105,8 +112,10 @@ function LoadView($page = '', $page_title = 'Lotus Gaming Community') {
 }
 
 function LoadAdminView($page = '', $needed_permission = '', $page_title = 'Lotus Gaming Community') {
-    global $GET, $user;
+    global $GET, $user, $settings;
 	if(!$user->hasPermission($needed_permission)) {
+        $_SESSION['error_title'] = 'No Permission';
+        $_SESSION['error_message'] = 'You don\'t have the permissions to view that page!';
 		header("Location: /");
 		exit;
 	}

@@ -19,14 +19,7 @@ else {
     $all_languages = Functions::GetAllLanguages();
 
     if(strlen($user_data->getMCUUID()) > 1) {
-        /*if($content = file_get_contents('https://mc-heads.net/minecraft/profile/'.$user_data->getMCUUID())) {
-            $content = json_decode($content);
-            $mc_username = $content->name;
-        }
-        else {
-            $mc_username = 'Failed';
-        }*/
-        $mc_username = 'Bla';
+        $mc_username = $user->getMCName();
     }
     else {
         $mc_username = 'Unset';

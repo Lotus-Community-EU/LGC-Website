@@ -1,5 +1,5 @@
 <?php
-if(!Functions::UserHasPermission('admin_translation_log_view')) { // User has no permission to edit Users
+if(!$user->hasPermission('admin_translation_log_view')) { // User has no permission to edit Users
     $_SESSION['error_title'] = 'Permissions - Translation Logs';
     $_SESSION['error_message'] = 'You don\'t have permissions to view Translation Logs!';
     header("Location: /admin/translation/list");
@@ -15,39 +15,39 @@ $csrf_token = Functions::CreateCSRFToken();
         <thead>
             <tr>
                 <th>Timestamp (UTC)</th>
-                <th>Path</th>
+                <th>Target</th>
                 <th>User</th>
                 <th>What</th>
                 <td>Old</td>
                 <td>New</td>
-                <?php if(Functions::UserHasPermission('admin_translation_log_delete')) {?>
+                <?php if($user->hasPermission('admin_translation_log_delete')) {?>
                 <th><?= Functions::Translation('global.delete');?>?</th>
                 <?php } ?>
             </tr>
         </thead>
         <tbody>
                 <?php
-                    if(Functions::UserHasPermission('admin_translation_log_delete')) {
-                        $all_logs = Functions::$mysqli->query("SELECT * FROM web_logs_translation_edit WHERE id > 0 ORDER BY changed_time DESC");
+                    if($user->hasPermission('admin_translation_log_delete')) {
+                        $all_logs = Functions::$mysqli->query("SELECT * FROM web_logs WHERE category = 'Translation' AND id > 0 ORDER BY time DESC");
                     }
                     else {
-                        $all_logs = Functions::$mysqli->query("SELECT * FROM web_logs_translation_edit WHERE id > 0 AND deleted = '0' ORDER BY changed_time DESC");
+                        $all_logs = Functions::$mysqli->query("SELECT * FROM web_logs WHERE category = 'Translation' AND id > 0 AND deleted = '0' ORDER BY time DESC");
                     }
                     while($log = $all_logs->fetch_array()) {
                         ?>
-                        <tr <?= (Functions::UserHasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="table-danger"' : '';?>>
+                        <tr <?= ($user->hasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="table-danger"' : '';?>>
                             <td>
-                                <span <?= (Functions::UserHasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'style="cursor: help;" title="Deleted at: '.date('d.m.Y - H:i', $log['deleted_time']).'"' : '';?>>
-                                    <?= date('d.m.Y - H:i', $log['changed_time']);?>
+                                <span <?= ($user->hasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'style="cursor: help;" title="Deleted at: '.date('d.m.Y - H:i', $log['deleted_time']).'"' : '';?>>
+                                    <?= date('d.m.Y - H:i', $log['time']);?>
                                 </span>
                             </td>
                             <td>
-                                <?= $log['language_path'];?>
+                                <?= $log['target'];?>
                             </td>
                             <td>
-                                <a href="/user/<?= $log['changed_by'];?>" <?= (Functions::UserHasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Hyperlink (<?= $log['changed_by'];?>)</a>
+                                <a href="/user/<?= $log['user'];?>" <?= ($user->hasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Hyperlink (<?= $log['user'];?>)</a>
                                 <?php if($log['deleted'] == 1) {?>
-                                    | <a href="/user/<?= $log['deleted_by'];?>" <?= (Functions::UserHasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Deleted by (<?= $log['deleted_by'];?>)</a>
+                                    | <a href="/user/<?= $log['deleted_by'];?>" <?= ($user->hasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Deleted by (<?= $log['deleted_by'];?>)</a>
                                 <?php }?>
                             </td>
                             <td>
@@ -59,14 +59,13 @@ $csrf_token = Functions::CreateCSRFToken();
                             <td>
                                 <?= $log['changed_new'];?>
                             </td>
-                            <?php if(Functions::UserHasPermission('admin_translation_log_delete')) {?>
+                            <?php if($user->hasPermission('admin_translation_log_delete')) {?>
                             <td>
                                 <?php if($log['deleted'] == 1) {?>
                                     <form action="/admin/translation/logs" method="POST">
                                         <?php Functions::AddCSRFCheck($csrf_token);?>
                                         <input type="hidden" name="log_id" value="<?= $log['id'];?>">
                                         <input type="submit" name="recover" value="Recover" class="btn btn-primary btn-sm w-100 fw-bold">
-                                        <!--<a href="/admin/translation/delete" class="btn btn-danger btn-sm w-100 fw-bold">&times;</a>-->
                                     </form>
                                 <?php }
                                 else {?>
@@ -74,7 +73,6 @@ $csrf_token = Functions::CreateCSRFToken();
                                         <?php Functions::AddCSRFCheck($csrf_token);?>
                                         <input type="hidden" name="log_id" value="<?= $log['id'];?>">
                                         <input type="submit" name="delete" value="&times;" class="btn btn-danger btn-sm w-100 fw-bold">
-                                        <!--<a href="/admin/translation/delete" class="btn btn-danger btn-sm w-100 fw-bold">&times;</a>-->
                                     </form>
                                 <?php }?>
                             </td>

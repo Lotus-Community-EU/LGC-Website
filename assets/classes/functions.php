@@ -517,25 +517,6 @@ class Functions {
         else return $code;
     }
 
-    static function GetAllSettings() {
-        $query = self::$mysqli->query("SELECT * FROM web_settings WHERE id > 0");
-        
-        $all = $query->fetch_all(MYSQLI_ASSOC);
-
-        foreach($all as $setting) {
-            self::$settings[$setting['code']] = $setting['value'];
-        }
-    }
-
-    static function GetSetting($setting) {
-        if(isset(self::$settings[$setting])) {
-            return self::$settings[$setting];
-        }
-        else {
-            return 0;
-        }
-    }
-
     static function GenerateLinkKey($id) {
         $alphabet = '123456789';
         $pass = array();

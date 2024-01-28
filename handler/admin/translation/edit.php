@@ -5,7 +5,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
     if(Functions::CheckCSRF($_POST['token'])) {
         if($language_name == $s_language_name) {
             if(isset($_POST['new_language_name'])) {
-                if(Functions::UserHasPermission("admin_translation_add")) {
+                if($user->hasPermission("admin_translation_add")) {
                     $now_name = Functions::GetLanguageName($language_name);
                     $new_name = Functions::$mysqli->real_escape_string($_POST['new_language_name']);
                     $error = 0; $error_msg = '';
@@ -27,7 +27,14 @@ if(strpos($ref, Functions::$website_url) == 0) {
                     else {
                         if(strcmp($now_name, $new_name)) {
                             $new_name = Functions::RemoveScriptFromString($new_name);
-                            Functions::AddTranslationEditLog($language_name, Functions::$user['id'],"Language Name", $now_name, $new_name);
+                            $new_name = Functions::RemoveIFrameFromString($new_name);
+                            
+                            $log = new Log();
+                            $log->setCategory('Translation');
+                            $log->setUser($user->getID())->setTarget($language_name);
+                            $log->setChangedWhat('Name')->setChangedOld($now_name)->setChangedNew($new_name);
+                            $log->setTime(gmdate('U'));
+                            $log->create();
 
                             $language_name = Functions::$mysqli->real_escape_string($language_name);
                             $prepare = Functions::$mysqli->prepare("ALTER TABLE core_translations CHANGE `".$language_name."` `".$language_name."` VARCHAR(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'none' COMMENT '".$new_name."'");
@@ -86,7 +93,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
                     );
                 }
                 else {
-                    //AddTranslationEditLog($language_path, $changed_by, $changed_what, $changed_old, $changed_new)
+                    
                     $prepare = Functions::$mysqli->prepare("SELECT * FROM core_translations WHERE path = ?");
                     $prepare->bind_param('s', $path);
                     $prepare->execute();
@@ -94,20 +101,41 @@ if(strpos($ref, Functions::$website_url) == 0) {
 
                     $now_translation = $result->fetch_array();
 
+                    $new_language = Functions::RemoveScriptFromString($new_language);
+                    $new_language = Functions::RemoveIFrameFromString($new_language);
+
                     if($now_translation['isBot'] != $new_bot) {
-                        Functions::AddTranslationEditLog($path, Functions::$user['id'],"isBot", $now_translation['isBot'], $new_bot);
+                        $log = new Log();
+                        $log->setCategory('Translation');
+                        $log->setUser($user->getID())->setTarget($path);
+                        $log->setChangedWhat('isBot')->setChangedOld($now_translation['isBot'])->setChangedNew($new_bot);
+                        $log->setTime(gmdate('U'));
+                        $log->create();
                     }
                     if($now_translation['isGame'] != $new_game) {
-                        Functions::AddTranslationEditLog($path, Functions::$user['id'],"isGame", $now_translation['isGame'], $new_game);
+                        $log = new Log();
+                        $log->setCategory('Translation');
+                        $log->setUser($user->getID())->setTarget($path);
+                        $log->setChangedWhat('isGame')->setChangedOld($now_translation['isGame'])->setChangedNew($new_game);
+                        $log->setTime(gmdate('U'));
+                        $log->create();
                     }
                     if($now_translation['isWeb'] != $new_web) {
-                        Functions::AddTranslationEditLog($path, Functions::$user['id'],"isWeb", $now_translation['isWeb'], $new_web);
+                        $log = new Log();
+                        $log->setCategory('Translation');
+                        $log->setUser($user->getID())->setTarget($path);
+                        $log->setChangedWhat('isWeb')->setChangedOld($now_translation['isWeb'])->setChangedNew($new_web);
+                        $log->setTime(gmdate('U'));
+                        $log->create();
                     }
                     if(strcmp($current_translations[$path], $new_language)) {
-                        Functions::AddTranslationEditLog($path, Functions::$user['id'], $language_name, $current_translations[$path], $new_language);
+                        $log = new Log();
+                        $log->setCategory('Translation');
+                        $log->setUser($user->getID())->setTarget($path);
+                        $log->setChangedWhat($language_name)->setChangedOld($current_translations[$path])->setChangedNew($new_language);
+                        $log->setTime(gmdate('U'));
+                        $log->create();
                     }
-
-                    $new_language = Functions::RemoveScriptFromString($new_language);
 
                     $prepare = Functions::$mysqli->prepare("UPDATE core_translations SET isBot = ?, isGame = ?, isWeb = ?, ".$language_name." = ? WHERE path = ?");
                     $prepare->bind_param('iiiss', $new_bot, $new_game, $new_web, $new_language, $path);

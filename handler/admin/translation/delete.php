@@ -1,5 +1,5 @@
 <?php
-if(!Functions::UserHasPermission('admin_translation_delete')) {
+if(!$user->hasPermission('admin_translation_delete')) {
     $_SESSION['error_title'] = 'Permissions - Delete Language';
     $_SESSION['error_message'] = 'You don\'t have permissions to delete languages!';
     header("Location: /admin/translation/list");
@@ -14,7 +14,12 @@ if(strpos($ref, Functions::$website_url) == 0) {
 
                 $language_name = Functions::$mysqli->real_escape_string($language_name);
 
-                Functions::AddTranslationEditLog($language_name, Functions::$user['id'],"Language Deleted",'','Deleted');
+                $log = new Log();
+                $log->setCategory('Translation');
+                $log->setUser($user->getID())->setTarget($language_name);
+                $log->setChangedWhat('Deleted')->setChangedOld('')->setChangedNew('Deleted');
+                $log->setTime(gmdate('U'));
+                $log->create();
                 
                 Functions::$mysqli->query("ALTER TABLE `core_translations` DROP `".$language_name."`");
 

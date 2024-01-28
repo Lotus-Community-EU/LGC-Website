@@ -1,6 +1,6 @@
 <?php
 //ALTER TABLE `core_translations` ADD `test` VARCHAR(2000) NOT NULL DEFAULT 'none';
-if(!Functions::UserHasPermission('admin_translation_add')) {
+if(!$user->hasPermission('admin_translation_add')) {
     $_SESSION['error_title'] = 'Permissions - Add Language';
     $_SESSION['error_message'] = 'You don\'t have permissions to add languages!';
     header("Location: /admin/translation/list");
@@ -40,8 +40,13 @@ if(strpos($ref, Functions::$website_url) == 0) {
         $database = Functions::$mysqli->real_escape_string($database);
         $language_name = Functions::$mysqli->real_escape_string($language_name);
 
-        Functions::AddTranslationEditLog($database, Functions::$user['id'],"Language Created",'','Created');
-
+        $log = new Log();
+        $log->setCategory('Translation');
+        $log->setUser($user->getID())->setTarget($database);
+        $log->setChangedWhat('Added')->setChangedOld('')->setChangedNew('Added');
+        $log->setTime(gmdate('U'));
+        $log->create();
+        
         Functions::$mysqli->query("ALTER TABLE `core_translations` ADD `".$database."` VARCHAR(2000) NOT NULL COMMENT '".$language_name."'");
 
         $_SESSION['success_message'] = 'Successfully added the language!';

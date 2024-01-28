@@ -27,6 +27,7 @@
                                 Functions::AddAdminTabLink('/admin/user/list','fa-solid fa-users','admin_user_list', Functions::Translation('nav.admin.user_list'));
                                 Functions::AddAdminTabLink('/admin/ranks/list','fa-solid fa-user-gear','admin_rank_management', Functions::Translation('nav.admin.rank_management'));
                                 Functions::AddAdminTabLink('/admin/translation/list','fa-solid fa-language','admin_translation_list', Functions::Translation('nav.admin.translation_management'));
+                                Functions::AddAdminTabLink('/admin/website_settings','fa-solid fa-wrench','admin_website_settings', Functions::Translation('nav.admin.website_settings'));
                             ?>
                         </ul>
                     </li>

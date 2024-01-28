@@ -1,5 +1,5 @@
 <?php
-if(!Functions::UserHasPermission('admin_translation_log_delete')) {
+if(!$user->hasPermission('admin_translation_log_delete')) {
     $_SESSION['error_title'] = 'Permissions - Delete Log';
     $_SESSION['error_message'] = 'You don\'t have permissions to delete log entries!';
     header("Location: /admin/translation/logs");
@@ -11,9 +11,9 @@ $log_id = $_POST['log_id'];
 if(strpos($ref, Functions::$website_url) == 0) {
     if(Functions::CheckCSRF($_POST['token'])) {
         if(isset($_POST['delete'])) {
-            $prepare = Functions::$mysqli->prepare("UPDATE web_logs_translation_edit SET deleted = '1',deleted_by = ?,deleted_time = ? WHERE id = ?");
+            $prepare = Functions::$mysqli->prepare("UPDATE web_logs SET deleted = '1',deleted_by = ?,deleted_time = ? WHERE id = ?");
             $time = gmdate('U');
-            $user_id = Functions::$user['id'];
+            $user_id = $user->getID();
             $prepare->bind_param('iii', $user_id, $time, $log_id);
             $prepare->execute();
 
@@ -23,7 +23,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
             exit;
         }
         if(isset($_POST['recover'])) {
-            $prepare = Functions::$mysqli->prepare("UPDATE web_logs_translation_edit SET deleted = '0' WHERE id = ?");
+            $prepare = Functions::$mysqli->prepare("UPDATE web_logs SET deleted = '0' WHERE id = ?");
             $time = gmdate('U');
             $prepare->bind_param('i', $log_id);
             $prepare->execute();

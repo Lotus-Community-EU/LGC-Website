@@ -11,17 +11,17 @@ if(strpos($ref, Functions::$website_url) == 0) {
             $new_bio = $_POST['bio'];
             $changed = 0; $error = 0; $error_msg = '';
 
-            $user_data = Functions::GetUserData($id);
+            $user_data = new User($id);
+            $main_rank = new Rank($user_data->getMainRank());
+            $secondary_rank = new Rank($user_data->getSecondaryRank());
 
-            $user_ranks = Functions::GetUserRanks($id);
-            $all_ranks = Functions::GetAllRanks();
-            if(($all_ranks[$user_ranks[0]]['is_staff'] == 1 || $all_ranks[$user_ranks[1]]['is_staff']) && !Functions::UserHasPermission('admin_staff_management')) {
+            if(($main_rank->getIsStaff() == 1 || $secondary_rank->getIsStaff() == 1) && !$user->hasPermission('admin_staff_management')) {
                 $_SESSION['error_title'] = 'Permissions - Edit Staff';
                 $_SESSION['error_message'] = Functions::Translation('text.error.edit_staff');
                 header("Location: /admin/user/list");
                 exit;
             }
-            if(($all_ranks[$user_ranks[0]]['is_upperstaff'] == 1 || $all_ranks[$user_ranks[1]]['is_upperstaff']) && !Functions::UserHasPermission('admin_upperstaff_management')) {
+            if(($main_rank->getIsUpperStaff() == 1 || $secondary_rank->getIsUpperStaff() == 1) && !$user->hasPermission('admin_upperstaff_management')) {
                 $_SESSION['error_title'] = 'Permissions - Edit Upper-Staff';
                 $_SESSION['error_message'] = Functions::Translation('text.error.edit_upperstaff');
                 header("Location: /admin/user/list");
@@ -29,25 +29,30 @@ if(strpos($ref, Functions::$website_url) == 0) {
             }
 
 
-            if(strlen($new_username) < 1 || strlen($new_username) > 64) {
+            if(strlen($new_username) < $user_data->lengths['username']['min'] || strlen($new_username) > $user_data->lengths['username']['max']) {
                 $error = 1;
-                $error_msg = '- The input Username is invalid!';
+                $error_msg = '- The input Username has to be between '.$user_data->lengths['username']['min'].' and '.$user_data->lengths['username']['max'].' characters!';
             }
             else { 
-                if(Functions::IsUsernameRegistered($new_username) && strcmp($new_username, $user_data['username'])) {
+                if($registered_id = $user_data->isUsernameRegistered($new_username) && strcmp($new_username, $user_data->getUsername())) {
                     $error = 1;
                     if(strlen($error_msg) > 0) { $error_msg .='<br>';}
-                    $error_msg = '- The new username ('.$new_username.') is already taken by another Account!';
+                    $error_msg = '- The new username (<a href="/user/'.$registered_id.'" target="_blank">'.$new_username.'</a>) is already taken by another Account!';
                 }
                 else {
-                    if(strcmp($new_username, $user_data['username'])) {
+                    if(strcmp($new_username, $user_data->getUsername())) {
                         $new_username = Functions::RemoveScriptFromString($new_username);
                         $new_username = Functions::RemoveIFrameFromString($new_username);
                         $new_username = htmlspecialchars($new_username);
-                        Functions::AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Username', $user_data['username'], $new_username);
-                        $prepare = Functions::$mysqli->prepare("UPDATE web_users SET username = ? WHERE id = ?");
-                        $prepare->bind_param("si", $new_username, $user_data['id']);
-                        $prepare->execute();
+                        $log = new Log();
+                        $log->setCategory('Profile_Edit');
+                        $log->setUser($user->getID())->setTarget($user_data->getID());
+                        $log->setChangedWhat('Username')->setChangedOld($user_data->getUsername())->setChangedNew($new_username);
+                        $log->setTime(gmdate('U'));
+                        $log->create();
+                        
+                        $user_data->setUsername($new_username);
+                        
                         $changed ++;
                     }
                 }
@@ -59,62 +64,85 @@ if(strpos($ref, Functions::$website_url) == 0) {
                 $error_msg = '- The selected language does not exist!';
             }
             else {
-                if($user_data['language'] != $new_language) {
-                    Functions::AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Language', $user_data['language'], $new_language);
-                    $prepare = Functions::$mysqli->prepare("UPDATE web_users SET language = ? WHERE id = ?");
-                    $prepare->bind_param("si", $new_language, $user_data['id']);
-                    $prepare->execute();
+                if($user_data->getLanguage() != $new_language) {
+                    $log = new Log();
+                    $log->setCategory('Profile_Edit');
+                    $log->setUser($user->getID())->setTarget($user_data->getID());
+                    $log->setChangedWhat('Language')->setChangedOld($user_data->getLanguage())->setChangedNew($new_language);
+                    $log->setTime(gmdate('U'));
+                    $log->create();
+
+                    $user_data->setLanguage($new_language);
+                    
                     $changed ++;
                 }
             }
 
-            $new_main_rank = $user_data['main_rank'];
-            $new_secondary_rank = $user_data['secondary_rank'];
-            if(Functions::UserHasPermission('admin_upperstaff_management')) {
-                $all_ranks = Functions::GetAllRanks();
-                $new_main_rank = $_POST['main_rank'];
-                $new_secondary_rank = $_POST['secondary_rank'];
-            }
-            else {
-                if(!Functions::RankExists($new_main_rank)) {
+            $new_main_rank = $user_data->getMainRank();
+            $new_secondary_rank = $user_data->getSecondaryRank();
+            if($user->hasPermission('admin_upperstaff_management')) {
+                $new_main_rank = new Rank($_POST['main_rank']);
+                $new_secondary_rank = new Rank($_POST['secondary_rank']);
+
+                if($new_main_rank == null || $new_secondary_rank == null) {
                     $error = 1;
                     if(strlen($error_msg) > 0) { $error_msg .='<br>';}
-                    $error_msg = '- The new username is already registered!';
+                    $error_msg = '- The new new Main-Rank or Secondary-Rank do not exist!';
                 }
                 else {
-                    if($user_data['main_rank'] != $new_main_rank) {
-                        AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Main-Rank', $all_ranks[$user_data['main_rank']]['rank_name'], $all_ranks[$new_main_rank]['rank_name']);
-                        $prepare = Functions::$mysqli->prepare("UPDATE web_users SET main_rank = ? WHERE id = ?");
-                        $prepare->bind_param("ii", $new_main_rank, $user_data['id']);
-                        $prepare->execute();
+                    if($user_data->getMainRank() != $new_main_rank->getID()) {
+                        
+                        $log = new Log();
+                        $log->setCategory('Profile_Edit');
+                        $log->setUser($user->getID())->setTarget($user_data->getID());
+                        $log->setChangedWhat('Main-Rank')->setChangedOld($main_rank->getName().' ('.$main_rank->getID().')')->setChangedNew($new_main_rank->getName().' ('.$new_main_rank->getID().')');
+                        $log->setTime(gmdate('U'));
+                        $log->create();
+
+                        $user_data->setMainRank($new_main_rank->getID());
+                        
                         $changed ++;
                     }
-                    if($user_data['secondary_rank'] != $new_secondary_rank) {
-                        AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Secondary-Rank', $all_ranks[$user_data['secondary_rank']]['rank_name'], $all_ranks[$new_secondary_rank]['rank_name']);
-                        $prepare = Functions::$mysqli->prepare("UPDATE web_users SET secondary_rank = ? WHERE id = ?");
-                        $prepare->bind_param("ii", $new_secondary_rank, $user_data['id']);
-                        $prepare->execute();
+                    if($user_data->getSecondaryRank() != $new_secondary_rank->getID()) {
+
+                        $log = new Log();
+                        $log->setCategory('Profile_Edit');
+                        $log->setUser($user->getID())->setTarget($user_data->getID());
+                        $log->setChangedWhat('Secondary-Rank')->setChangedOld($secondary_rank->getName().' ('.$secondary_rank->getID().')')->setChangedNew($new_secondary_rank->getName().' ('.$new_secondary_rank->getID().')');
+                        $log->setTime(gmdate('U'));
+                        $log->create();
+
+                        $user_data->setSecondaryRank($new_secondary_rank->getID());
+                        
                         $changed ++;
                     }
                 }
             }
 
-            if(strlen($new_bio) > 4096) {
+            if(strlen($new_bio) > $user_data->lengths['bio']['max']) {
                 $error = 1;
                 if(strlen($error_msg) > 0) { $error_msg .='<br>';}
-                $error_msg = '- The entered Bio is too long (4096 Character max - including HMTL)';
+                $error_msg = '- The entered Bio is too long ('.$user_data->lengths['bio']['max'].' Character max - including HMTL/Formatting)';
             }
             else {
-                if(strcmp($user_data['bio'], $new_bio)) {
+                if(strcmp($user_data->getBio(), $new_bio)) {
                     $new_bio = Functions::RemoveScriptFromString($new_bio);
                     $new_bio = Functions::RemoveIFrameFromString($new_bio);
-                    AddProfileEditLog($user_data['id'], Functions::$user['id'], 1,'Bio', $user_data['bio'], $new_bio);
-                    $prepare = Functions::$mysqli->prepare("UPDATE web_users SET bio = ? WHERE id = ?");
-                    $prepare->bind_param("si", $new_bio, $user_data['id']);
-                    $prepare->execute();
+                    
+                    $log = new Log();
+                    $log->setCategory('Profile_Edit');
+                    $log->setUser($user->getID())->setTarget($user_data->getID());
+                    $log->setChangedWhat('Bio')->setChangedOld($user_data->getBio())->setChangedNew($new_bio);
+                    $log->setTime(gmdate('U'));
+                    $log->create();
+
+                    $user_data->setBio($new_bio);
+
                     $changed ++;
                 }
             }
+
+            $user_data->update();
 
             if($error == 1) {
                 $_SESSION['error_title'] = 'Edit User';
@@ -123,26 +151,26 @@ if(strpos($ref, Functions::$website_url) == 0) {
             if($changed > 0) {
                 $_SESSION['success_message'] = 'Account edited successfully';
             }
-            header("Location: /admin/user/edit/".$user_data['id']);
+            header("Location: /admin/user/edit/".$user_data->getID());
             exit;
         }
         else {
             $_SESSION['error_title'] = 'Edit User';
             $_SESSION['error_message'] = 'An error occured while editing the User. Please try again! (3)';
-            header("Location: /admin/user/edit/".$user_id);
+            header("Location: /admin/user/edit/".$id);
             exit;
         }
     }
     else {
         $_SESSION['error_title'] = 'Edit User';
         $_SESSION['error_message'] = 'An error occured while editing the User. Please try again! (2)';
-        header("Location: /admin/user/edit/".$user_id);
+        header("Location: /admin/user/edit/".$id);
         exit;
     }
 }
 else {
     $_SESSION['error_title'] = 'Edit User';
     $_SESSION['error_message'] = 'An error occured while editing the User. Please try again! (1)';
-    header("Location: /admin/user/edit/".$user_id);
+    header("Location: /admin/user/edit/".$id);
     exit;
 }

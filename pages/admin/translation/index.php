@@ -16,11 +16,11 @@ $translation_rows = Functions::GetTranslationRows();
 <div class="row justify-content-end mb-3">
     <div class="col-12 col-md-2">
         <div class="text-end">
-        <?php if(Functions::UserHasPermission('admin_translation_add')) {?>
+        <?php if($user->hasPermission('admin_translation_add')) {?>
             <a class="btn btn-success" href="/admin/translation/add"><?= Functions::Translation('text.translation.language.add');?></a>
         <?php } ?>
-        <?php if(Functions::UserHasPermission('admin_translation_log_view')) {?>
-            <a class="btn btn-primary mt-2" href="/admin/translation/logs">Logs</a>
+        <?php if($user->hasPermission('admin_translation_log_view')) {?>
+            <a class="btn btn-primary" href="/admin/translation/logs">Logs</a>
         <?php } ?>
         </div>
     </div>

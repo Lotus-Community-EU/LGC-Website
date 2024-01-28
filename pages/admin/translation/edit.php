@@ -1,5 +1,5 @@
 <?php
-if(!Functions::UserHasPermission('admin_translation_edit')) { // User has no permission to edit Users
+if(!$user->hasPermission('admin_translation_edit')) {
     $_SESSION['error_title'] = 'Permissions - Edit Translation';
     $_SESSION['error_message'] = 'You don\'t have permissions to edit translations!';
     header("Location: /admin/translation/list");
@@ -23,7 +23,7 @@ $csrf_token = Functions::CreateCSRFToken();
             <div class="col-12 col-lg-6">
                 <a href="/admin/translation/list" class="btn btn-primary btn-sm mb-2"><?= Functions::Translation('text.back_to_overview');?></a>
                 <?php
-                if(Functions::UserHasPermission('admin_translation_add')) {
+                if($user->hasPermission('admin_translation_add')) {
                     ?>
                         <form class="row row-cols-lg-auto g-3 align-items-center" id="0" action="/admin/translation/edit" method="POST">
                             <div class="col-12">
@@ -68,7 +68,7 @@ $csrf_token = Functions::CreateCSRFToken();
                 <div class="w-100 d-flex justify-content-end">
                     <input type="text" name="filter" id="filter" placeholder="Filter" onkeyup="FilterTable()" class="form-control w-50">
                 </div>
-                <?php if(Functions::UserHasPermission('admin_translation_delete') && $language != 'English') { ?>
+                <?php if($user->hasPermission('admin_translation_delete') && $language != 'English') { ?>
                     <div class="w-100 d-flex justify-content-end mt-3">
                         <a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_language"><?= Functions::Translation('text.translation.language.delete.button');?></a>
                     </div>
@@ -134,7 +134,7 @@ $csrf_token = Functions::CreateCSRFToken();
     </table>
 </div>
 
-<?php if(Functions::UserHasPermission('admin_translation_delete') && $language != 'English') { ?>
+<?php if($user->hasPermission('admin_translation_delete') && $language != 'English') { ?>
 <div class="modal" id="delete_language" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
