@@ -147,6 +147,6 @@ function LoadAdminView($page = '', $needed_permission = '', $page_title = 'Lotus
 
 function LoadHandler($handler = '') {
     $user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : 'guest');
-	global $GET;
+	global $GET, $settings;
     include('handler/'.$handler.'.php');
 }

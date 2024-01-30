@@ -18,7 +18,7 @@ class Settings {
 
     function getPasswordResetSubject() { return $this->data['password_reset_email_subject']; }
     function setPasswordResetSubject($subject) {
-        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET password_reset_email_subject = ?");
+        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET value = ? WHERE code = 'password_reset_email_subject'");
         $prepare->bind_param('s', $subject);
         $prepare->execute();
         return $this;
@@ -26,7 +26,7 @@ class Settings {
 
     function getPasswordResetText() { return $this->data['password_reset_email_text']; }
     function setPasswordResetText($text) {
-        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET password_reset_email_text = ?");
+        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET value = ? WHERE code = 'password_reset_email_text'");
         $prepare->bind_param('s', $text);
         $prepare->execute();
         return $this;
@@ -34,15 +34,15 @@ class Settings {
 
     function getCopyrightShow() { return $this->data['copyright_show']; }
     function setCopyrightShow($show) {
-        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET copyright_show = ?");
+        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET value = ? WHERE code = 'copyright_show'");
         $prepare->bind_param('i', $show);
         $prepare->execute();
         return $this;
     }
 
     function getCopyrightText() { return $this->data['copyright_text']; }
-    function setSCopyrightText($text) {
-        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET copyright_text = ?");
+    function setCopyrightText($text) {
+        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET value = ? WHERE code = 'copyright_text'");
         $prepare->bind_param('s', $text);
         $prepare->execute();
         return $this;
@@ -50,7 +50,7 @@ class Settings {
 
     function getShowMCHeads() { return $this->data['show_mcheads']; }
     function setShowMCHeads($show) {
-        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET show_mcheads = ?");
+        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET value = ? WHERE code = 'show_mcheads'");
         $prepare->bind_param('i', $show);
         $prepare->execute();
         return $this;
@@ -58,7 +58,7 @@ class Settings {
 
     function getUsernameChangeUnit() { return $this->data['username_change_unit']; }
     function setUsernameChangeUnit($unit) {
-        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET username_change_unit = ?");
+        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET value = ? WHERE code = 'username_change_unit'");
         $prepare->bind_param('s', $unit);
         $prepare->execute();
         return $this;
@@ -66,7 +66,7 @@ class Settings {
 
     function getUsernameChangeValue() { return $this->data['username_change_value']; }
     function setUsernameChangeValue($value) {
-        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET username_change_value = ?");
+        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET value = ? WHERE code = 'username_change_value'");
         $prepare->bind_param('i', $value);
         $prepare->execute();
         return $this;
