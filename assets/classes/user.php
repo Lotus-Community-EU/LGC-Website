@@ -165,6 +165,55 @@ class User {
         return $this;
     }
 
+    function getChangeProfilePicture() { return $this->data['change_profilepicture']; }
+    function setChangeProfilePicture($new_profilepicture) {
+        $this->data['change_profilepicture'] = $new_profilepicture;
+        return $this;
+    }
+
+    function getProfilePicture() { return $this->data['profile_picture']; }
+    function setProfilePicture($new_profilepicture) {
+        $this->data['profile_picture'] = $new_profilepicture;
+        return $this;
+    }
+
+    function deleteProfilePictureFile() {
+        if($this->data['profile_picture'] != 'none.png') {
+            unlink('assets/images/avatar/'.$this->data['profile_picture']);
+            return $this;
+        }
+        else return null;
+    }
+
+    function canChangeUsername() {
+        global $settings;
+        if($this->data['last_username_change'] == 0) {
+            return true;
+        }
+        else {
+            $change_value = $settings->getUsernameChangeValue();
+            $change_unit = $settings->getUsernameChangeUnit();
+            $change_final = 0;
+            switch($change_unit) {
+                case 'hours':
+                    $change_final = $change_value*3600; // 1 Hour = 3600 Seconds
+                case 'days':
+                    $change_final = $change_value*86400; // 1 Day = 86400 Seconds
+                    break;
+                case 'month':
+                    $change_final = $change_value*2628000; // 1 Month = 2628000 Seconds
+                    break;
+            }
+
+            if(time() > ($this->data['last_username_change']+$change_final)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
     function getMCName() {
         if(strlen($this->data['mc_uuid']) < 1) {
             return 'No Account linked';
@@ -204,7 +253,9 @@ class User {
             'main_rank',
             'secondary_rank',
             'bio',
-            'last_username_change'
+            'last_username_change',
+            'change_profilepicture',
+            'profile_picture'
         );
 
         foreach($vars as $key => $var) {
@@ -214,7 +265,7 @@ class User {
         $vars = implode(',', $vars);
 
         $prepare = Functions::$mysqli->prepare("UPDATE web_users SET ".$vars." WHERE id = ? LIMIT 1");
-        $prepare->bind_param('ssssssisiisii',
+        $prepare->bind_param('ssssssisiisiisi',
             $this->data['username'],
             $this->data['email'],
             $this->data['created_at'],
@@ -227,6 +278,8 @@ class User {
             $this->data['secondary_rank'],
             $this->data['bio'],
             $this->data['last_username_change'],
+            $this->data['change_profilepicture'],
+            $this->data['profile_picture'],
             $this->data['id']
         );
         $prepare->execute();

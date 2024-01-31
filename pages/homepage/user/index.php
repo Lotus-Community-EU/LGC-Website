@@ -61,25 +61,26 @@ else {
     <div class="row mt-2">
         <div class="col-12 col-md-4 d-flex justify-content-center">
 
-            <?php if(strlen($user_data->getMCUUID()) < 1) {
-                ?><img src="https://mc-heads.net/avatar/MHF_Steve" width="180" height="180"><?php
-            }
-            else {
-                ?><img src="https://mc-heads.net/avatar/<?= $user_data->getMCUUID();?>/nohelm" height="180" width="180"><?php
-            } ?>
+            <img src="/assets/images/avatar/<?= $user_data->getProfilePicture();?>" height="180" width="180">
 
         </div>
         <div class="col-12 col-md-8">
             <b><?= Functions::Translation('global.username');?>:</b> <?= $user_data->getUsername();?><br>
+
             <b>Main Rank:</b> <?= '<font color="'.$main_rank->getColour().'">'.$main_rank->getName().'</font>';?><br>
+
             <?= $user_data->getSecondaryRank() != 0 ? '<b>Secondary Rank:</b> <font color="'.$secondary_rank->getColour().'">'.$secondary_rank->getName().'</font><br>' : '';?>
+
             <b><?= Functions::Translation('text.member_since');?>:</b> <?= date('d.m.Y - H:i', $user_data->getCreatedAt());?><br>
+
             <b><?= Functions::Translation('global.language');?>:</b> <?= $all_languages[$user_data->getLanguage()]['language_name'];?><br>
+
             <?php if($user->getIsStaff() || $user->getIsUpperStaff() || $user_data->getShowMCName() == 1 || $user_data->getID() == $user->getID()) {?>
-            <b>Minecraft-Account:</b> <?= $user_data->getMCUUID() > 1 ? 'Linked ('.$mc_username.')<br>' : 'Not Linked!';?>
+            <b>Minecraft-Account:</b> <?= $user_data->getMCUUID() > 1 ? 'Linked ('.$mc_username.($user_data->getShowMCName() == 0 ? ' <span class="text-danger">(Hidden)</span>)' : ')') : 'Not Linked!';?>
             <?php } else {
                 ?><b>Minecraft-Account:</b> <?= $user_data->getMCUUID() > 1 ? 'Linked<br>' : 'Not Linked!';?><?php
             } ?>
+
             <br><br>
             <?= $user_data->getBio();?>
         </div>

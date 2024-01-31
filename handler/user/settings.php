@@ -47,8 +47,8 @@ if(strpos($ref, Functions::$website_url) == 0) {
                         $error_msg = '- The new username ('.$new_username.') is already taken by another Account!';
                     }
                     else {
-                        if(Functions::UserCanChangeName($user->getID())) {
-                            if(strcmp($new_username, $user->getUsername())) {
+                        if(strcmp($new_username, $user->getUsername())) {
+                            if($user->canChangeUsername()) {
                                 $new_username = Functions::RemoveScriptFromString($new_username);
                                 $new_username = Functions::RemoveIFrameFromString($new_username);
                                 $new_username = htmlspecialchars($new_username);
@@ -65,11 +65,11 @@ if(strpos($ref, Functions::$website_url) == 0) {
                                 $user->setLastUsernameChange(gmdate('U'));
                                 $changed ++;
                             }
-                        }
-                        else {
-                            $error = 1;
-                            if(strlen($error_msg) > 0) { $error_msg .='<br>';}
-                            $error_msg = '- You can not change your username yet!';
+                            else {
+                                $error = 1;
+                                if(strlen($error_msg) > 0) { $error_msg .='<br>';}
+                                $error_msg = '- You can not change your username yet!';
+                            }
                         }
                     }
                 }

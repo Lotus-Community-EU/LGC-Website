@@ -6,6 +6,11 @@ else {
 
     $all_languages = Functions::GetAllLanguages();
 
+    $csrf_token = Functions::CreateCSRFToken();
+
+    //$test = file_get_contents('https://mc-heads.net/avatar/d672499f-6506-4b57-85ee-a6fe435ca4f8/nohelm');
+    //file_put_contents('assets/images/test.png', $test);
+
     ?>
 
     <div class="container w-50 mb-5">
@@ -18,12 +23,36 @@ else {
                 <!--<a href="" class="btn btn-sm btn-warning">Reset Profile Picture</a>-->
             </div>
         </div>
+        <?php if($user->getChangeProfilePicture() == 1) {?>
+        <form action="/user/profile_picture" method="post" class="mt-5 mb-5">
+            <?php if($user->getProfilePicture() != 'none.png') {?>
+            <div class="form-group d-flex justify-content-end mb-2">
+                <input type="submit" name="remove_avatar" value="Remove Avatar" class="btn btn-danger">
+            </div>
+            <?php } ?>
+            <div class="form-group">
+                <label for="profile_picture" class="form-label">Upload Profile Picture (5MB max)</label>
+                <input class="form-control" type="file" id="profile_picture">
+            </div>
+            <div class="row mt-2">
+                <div class="col-12 col-lg-6 mt-2">
+                    <input type="submit" name="submit" value="Upload" class="btn btn-success">
+                </div>
+                <?php if(strlen($user->getMCUUID()) > 1) {?>
+                <div class="col-12 col-lg-6 mt-2 text-lg-end">
+                    <input type="submit" name="use_mc_avatar" value="Use Minecraft-Avatar" class="btn btn-primary">
+                </div>
+                <?php } ?>
+            </div>
+            <?php Functions::AddCSRFCheck($csrf_token);?>
+        </form>
+        <?php } ?>
         <form action="/user/settings" method="POST" class="">
             <div class="form-group mb-2">
                 <label for="username"><?= Functions::Translation('global.username');?></label>
-                <input type="text" name="username" id="username" class="form-control" value="<?= $user->getUsername();?>" <?= Functions::UserCanChangeName($user->getID()) == false ? 'disabled' : '';?>>
+                <input type="text" name="username" id="username" class="form-control" value="<?= $user->getUsername();?>" <?= $user->canChangeUsername() == false ? 'disabled' : '';?>>
             </div>
-            <span><?= Functions::Translation('text.username_lastchange');?>: <?= Functions::UserLastNameChange($user->getID());?></span>
+            <span><?= Functions::Translation('text.username_lastchange');?>: <?= date('d.m.Y - H:i:s', $user->getLastUsernameChange());?></span>
 
             <div class="form-group mt-3">
                 <label for="language"><?= Functions::Translation('global.language');?></label>
@@ -42,7 +71,7 @@ else {
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="show_mc_name"><?= Functions::Translation('show_mc_name');?></label>
+                        <label for="show_mc_name"><?= Functions::Translation('text.show_mc_name');?></label>
                         <select class="form-control" id="show_mc_name" name="show_mc_name">
                             <option value="0" <?= $user->getShowMCName() == 0 ? 'selected' : '';?>><?= Functions::Translation('no');?></option>
                             <option value="1" <?= $user->getShowMCName() == 1 ? 'selected' : '';?>><?= Functions::Translation('yes');?></option>
@@ -78,7 +107,7 @@ else {
                 </script>
             </div>
 
-            <?php Functions::AddCSRFCheck(); $_SESSION['user_id'] = $user->getID();?>
+            <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['user_id'] = $user->getID();?>
             <input type="hidden" name="user_id" value="<?= $user->getID();?>">
             <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.edit');?>">
         </form>
