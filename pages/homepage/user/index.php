@@ -61,7 +61,7 @@ else {
     <div class="row mt-2">
         <div class="col-12 col-md-4 d-flex justify-content-center">
 
-            <img src="/assets/images/avatar/<?= $user_data->getProfilePicture();?>" height="180" width="180">
+            <img src="/assets/images/avatar/<?= $user_data->getAvatar();?>" height="180" width="180">
 
         </div>
         <div class="col-12 col-md-8">

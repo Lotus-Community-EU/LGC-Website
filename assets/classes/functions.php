@@ -3,7 +3,7 @@
 class Functions {
 
     public static $website_url = 'https://localhost';
-    public static $website_version = 'v0.0.3';
+    public static $website_version = 'v0.0.4';
 
     public static $csrf = array('TFE$RW§5e342wREw','FT$§E%TR§$E3tzrterTrtgre');
     public static $csrf_token;

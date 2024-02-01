@@ -3,30 +3,103 @@
 $ref = $_SERVER['HTTP_REFERER'];
 if(strpos($ref, Functions::$website_url) == 0) {
     if(Functions::CheckCSRF($_POST['token'])) {
-        if(isset($_POST['use_mc_avatar'])) {
-            if(strlen($user->getMCUUID()) > 1) {
-                $user->deleteProfilePictureFile();
-                $avatar = file_get_contents('https://mc-heads.net/avatar/'.$user->getMCUUID().'/nohelm');
-                $avatar_name = $user->getID().'.'.time();
-                file_put_contents('assets/images/avatar/'.$avatar_name.'.png', $avatar);
-                $user->setProfilePicture($avatar_name.'.png');
+        if($user->getCanChangeAVatar() == 1) {
+            if(isset($_POST['use_mc_avatar'])) {
+                if(strlen($user->getMCUUID()) > 1) {
+                    $user->deleteAvatarFile();
+                    $avatar = file_get_contents('https://mc-heads.net/avatar/'.$user->getMCUUID().'/nohelm');
+                    $avatar_name = $user->getID().'.'.time().'.png';
+
+                    $log = new Log();
+                    $log->setCategory('Profile_Edit');
+                    $log->setUser($user->getID())->setTarget($user->getID());
+                    $log->setChangedWhat('Profile Picture');
+                    $log->setChangedOld($user->getAvatar())->setChangedNew($avatar_name);
+                    $log->setTime(gmdate('U'));
+                    $log->create();
+
+                    file_put_contents('assets/images/avatar/'.$avatar_name, $avatar);
+                    $user->setAvatar($avatar_name);
+                    $user->update();
+                    $_SESSION['success_message'] = 'You are now using your Minecraft-Avatar as Avatar!';
+                    header("Location: /user/settings");
+                    exit;
+                }
+                else {
+                    $_SESSION['error_title'] = 'Edit Profile Picture';
+                    $_SESSION['error_message'] = 'You didn\'t link your Minecraft-Account!';
+                    header("Location: /user/settings");
+                    exit;
+                }
+            }
+            if(isset($_POST['remove_avatar'])) {
+                $user->deleteAvatarFile();
+
+                $log = new Log();
+                $log->setCategory('Profile_Edit');
+                $log->setUser($user->getID())->setTarget($user->getID());
+                $log->setChangedWhat('Profile Picture');
+                $log->setChangedOld($user->getAvatar())->setChangedNew('none.png');
+                $log->setTime(gmdate('U'));
+                $log->create();
+
+                $user->setAvatar('none.png');
                 $user->update();
-                $_SESSION['success_message'] = 'You are now using your Minecraft-Avatar as Avatar!';
+                $_SESSION['success_message'] = 'You removed your Avatar!';
                 header("Location: /user/settings");
                 exit;
             }
-            else {
-                $_SESSION['error_title'] = 'Edit Profile Picture';
-                $_SESSION['error_message'] = 'You didn\'t link your Minecraft-Account!';
-                header("Location: /user/settings");
-                exit;
+            if(isset($_POST['submit'])) {
+                $avatar = $_FILES['avatar'];
+                if(strlen($avatar['name']) > 0) {
+                    if($avatar['size'] <= 5000000) {
+                        if($avatar['type'] == 'image/jpeg' || $avatar['type'] == 'image/png' || $avatar['type'] == 'image/gif') {
+                            $user->deleteAvatarFile();
+                            $name = $avatar['name'];
+                            $name = explode('.', $name);
+                            $ending = end($name);
+                            $avatar_name = $user->getID().'.'.time().'.'.$ending;
+
+                            $log = new Log();
+                            $log->setCategory('Profile_Edit');
+                            $log->setUser($user->getID())->setTarget($user->getID());
+                            $log->setChangedWhat('Profile Picture');
+                            $log->setChangedOld($user->getAvatar())->setChangedNew($avatar_name);
+                            $log->setTime(gmdate('U'));
+                            $log->create();
+
+                            move_uploaded_file($avatar['tmp_name'],'assets/images/avatar/'.$avatar_name);
+                            $user->setAvatar($avatar_name);
+                            $user->update();
+                            $_SESSION['success_message'] = 'You successfully uploaded an Avatar!';
+                            header("Location: /user/settings");
+                            exit;
+                        }
+                        else {
+                            $_SESSION['error_title'] = 'Edit Profile Picture';
+                            $_SESSION['error_message'] = 'Avatars can only be .png, .jpeg or .gif files!';
+                            header("Location: /user/settings");
+                            exit;
+                        }
+                    }
+                    else {
+                        $_SESSION['error_title'] = 'Edit Profile Picture';
+                        $_SESSION['error_message'] = 'Avatar can not be bigger than 5 MB!';
+                        header("Location: /user/settings");
+                        exit;
+                    }
+                }
+                else {
+                    $_SESSION['error_title'] = 'Edit Profile Picture';
+                    $_SESSION['error_message'] = 'Please select an Avatar you want to upload!';
+                    header("Location: /user/settings");
+                    exit;
+                }
             }
         }
-        if(isset($_POST['remove_avatar'])) {
-            $user->deleteProfilePictureFile();
-            $user->setProfilePicture('none.png');
-            $user->update();
-            $_SESSION['success_message'] = 'You removed your Avatar!';
+        else {
+            $_SESSION['error_title'] = 'Edit Profile Picture';
+            $_SESSION['error_message'] = 'Your permissions to change your Profile Picture have been rejected. Contact Staff, if you think that this is an error!';
             header("Location: /user/settings");
             exit;
         }

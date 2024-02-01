@@ -45,8 +45,10 @@ class User {
                 $prepare->execute();
                 $result = $prepare->get_result();
                 if($result->num_rows > 0) {
-                    $result = $result->fetch_array();
-                
+                    //$result = $result->fetch_array();
+                    $result = $result->fetch_all(MYSQLI_ASSOC)[0];
+                    //die(var_dump($result));
+
                     $this->id = $result['id'];
                     $this->data = $result;
                 }
@@ -165,21 +167,21 @@ class User {
         return $this;
     }
 
-    function getChangeProfilePicture() { return $this->data['change_profilepicture']; }
-    function setChangeProfilePicture($new_profilepicture) {
-        $this->data['change_profilepicture'] = $new_profilepicture;
+    function getCanChangeAvatar() { return $this->data['change_avatar']; }
+    function setCanChangeAvatar($new_avatar) {
+        $this->data['change_avatar'] = $new_avatar;
         return $this;
     }
 
-    function getProfilePicture() { return $this->data['profile_picture']; }
-    function setProfilePicture($new_profilepicture) {
-        $this->data['profile_picture'] = $new_profilepicture;
+    function getAvatar() { return $this->data['avatar']; }
+    function setAvatar($new_avatar) {
+        $this->data['avatar'] = $new_avatar;
         return $this;
     }
 
-    function deleteProfilePictureFile() {
-        if($this->data['profile_picture'] != 'none.png') {
-            unlink('assets/images/avatar/'.$this->data['profile_picture']);
+    function deleteAvatarFile() {
+        if($this->data['avatar'] != 'none.png') {
+            unlink('assets/images/avatar/'.$this->data['avatar']);
             return $this;
         }
         else return null;
@@ -241,47 +243,31 @@ class User {
             return null;
         }
 
-        $vars = array(
-            'username',
-            'email',
-            'created_at',
-            'login_token',
-            'mc_uuid',
-            'mc_verify_code',
-            'show_mc_name',
-            'language',
-            'main_rank',
-            'secondary_rank',
-            'bio',
-            'last_username_change',
-            'change_profilepicture',
-            'profile_picture'
-        );
+        $keys = array_keys($this->data);
+        $tmp = $keys[0];
+        unset($keys[0]);
 
-        foreach($vars as $key => $var) {
-            $vars[$key] = $var.' = ?';
+        $vars = array();
+        foreach($keys as $key => $var) {
+            $vars[$key] = $var.' = ?'; 
         }
 
         $vars = implode(',', $vars);
 
+        array_push($keys, $tmp);
+
+        $types = ''; $bind_keys = array();
+        foreach($keys as $id => $key) {
+            $bind_keys[$id] = $this->data[$key];
+            if(is_numeric($this->data[$key])) {
+                $types .= 'i';
+            }
+            else {
+                $types .= 's';
+            }
+        }
         $prepare = Functions::$mysqli->prepare("UPDATE web_users SET ".$vars." WHERE id = ? LIMIT 1");
-        $prepare->bind_param('ssssssisiisiisi',
-            $this->data['username'],
-            $this->data['email'],
-            $this->data['created_at'],
-            $this->data['login_token'],
-            $this->data['mc_uuid'],
-            $this->data['mc_verify_code'],
-            $this->data['show_mc_name'],
-            $this->data['language'],
-            $this->data['main_rank'],
-            $this->data['secondary_rank'],
-            $this->data['bio'],
-            $this->data['last_username_change'],
-            $this->data['change_profilepicture'],
-            $this->data['profile_picture'],
-            $this->data['id']
-        );
+        $prepare->bind_param($types, ...$bind_keys);
         $prepare->execute();
     }
 
@@ -290,7 +276,7 @@ class User {
             return null;
         }
         unset($_SESSION['login_token']);
-        ?><script>setcookie('remember','', 1,'/');</scrip><?php
+        ?><script>setcookie('remember','', 1,'/');</script><?php
         session_destroy();
         header("Location: /");
     }

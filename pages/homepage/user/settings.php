@@ -23,24 +23,24 @@ else {
                 <!--<a href="" class="btn btn-sm btn-warning">Reset Profile Picture</a>-->
             </div>
         </div>
-        <?php if($user->getChangeProfilePicture() == 1) {?>
-        <form action="/user/profile_picture" method="post" class="mt-5 mb-5">
-            <?php if($user->getProfilePicture() != 'none.png') {?>
+        <?php if($user->getCanChangeAvatar() == 1) {?>
+        <form action="/user/profile_picture" method="post" class="mt-5 mb-5" enctype="multipart/form-data">
+            <?php if($user->getAVatar() != 'none.png') {?>
             <div class="form-group d-flex justify-content-end mb-2">
-                <input type="submit" name="remove_avatar" value="Remove Avatar" class="btn btn-danger">
+                <input type="submit" name="remove_avatar" value="Remove Avatar" class="btn btn-danger btn-sm">
             </div>
             <?php } ?>
             <div class="form-group">
-                <label for="profile_picture" class="form-label">Upload Profile Picture (5MB max)</label>
-                <input class="form-control" type="file" id="profile_picture">
+                <label for="avatar" class="form-label">Upload own Avatar (5MB max)</label>
+                <input class="form-control" type="file" name="avatar" id="avatar">
             </div>
             <div class="row mt-2">
                 <div class="col-12 col-lg-6 mt-2">
-                    <input type="submit" name="submit" value="Upload" class="btn btn-success">
+                    <input type="submit" name="submit" value="Upload" class="btn btn-success btn-sm">
                 </div>
                 <?php if(strlen($user->getMCUUID()) > 1) {?>
                 <div class="col-12 col-lg-6 mt-2 text-lg-end">
-                    <input type="submit" name="use_mc_avatar" value="Use Minecraft-Avatar" class="btn btn-primary">
+                    <input type="submit" name="use_mc_avatar" value="Use Minecraft-Avatar" class="btn btn-primary btn-sm">
                 </div>
                 <?php } ?>
             </div>

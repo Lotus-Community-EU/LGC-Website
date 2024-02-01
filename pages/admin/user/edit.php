@@ -65,6 +65,25 @@ $csrf_token = Functions::CreateCSRFToken();
             </select>
         </div>
 
+        <div class="form-group mt-3">
+            <div class="row">
+                <div class="col-6 col-lg-6 mt-2">
+                    <label for="can_change_avatar"><?= Functions::Translation('text.can_change_avatar');?></label>
+                </div>
+                <div class="col-6 col-lg-6 mt-2 text-end">
+                    <!--<input type="submit" name="remove_avatar" value="Remove Avatar" class="btn btn-danger btn-sm">-->
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="remove_avatar" name="remove_avatar" value="1">
+                        <label class="form-check-label" for="remove_avatar">Remove Avatar</label>
+                    </div>
+                </div>
+            </div>
+            <select name="can_change_avatar" id="can_change_avatar" class="form-control">
+                <option value="1" <?= $user_data->getCanChangeAvatar() == 1 ? 'selected' : '';?>><?= Functions::Translation('global.yes');?></option>
+                <option value="0" <?= $user_data->getCanChangeAvatar() == 0 ? 'selected' : '';?>><?= Functions::Translation('global.no');?></option>
+            </select>
+        </div>
+
         <?php if($user->hasPermission('admin_upperstaff_management')) { ?>
             <div class="form-group mt-3">
             <label for="main_rank">Main Rank</label>
@@ -92,7 +111,8 @@ $csrf_token = Functions::CreateCSRFToken();
             <script>
                 $(document).ready(function() {
                     $('#bio').summernote({
-                        minHeight: 200
+                        minHeight: 200,
+                        theme: 'bs4-dark'
                     });
                 });
             </script>

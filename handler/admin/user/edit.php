@@ -9,6 +9,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
             $new_username = $_POST['username'];
             $new_language = $_POST['language'];
             $new_bio = $_POST['bio'];
+            $new_can_change_avatar = is_numeric($_POST['can_change_avatar']) ? $_POST['can_change_avatar'] : 0;
             $changed = 0; $error = 0; $error_msg = '';
 
             $user_data = new User($id);
@@ -76,6 +77,34 @@ if(strpos($ref, Functions::$website_url) == 0) {
                     
                     $changed ++;
                 }
+            }
+
+            if($user_data->getCanChangeAvatar() != $new_can_change_avatar) {
+                $log = new Log();
+                $log->setCategory('Profile_Edit');
+                $log->setUser($user->getID())->setTarget($user_data->getID());
+                $log->setChangedWhat('Change Avatar')->setChangedOld($user_data->getCanChangeAvatar())->setChangedNew($new_can_change_avatar);
+                $log->setTime(gmdate('U'));
+                $log->create();
+
+                $user_data->setCanChangeAvatar($new_can_change_avatar);
+                
+                $changed ++;
+            }
+
+            if(isset($_POST['remove_avatar'])) {
+                $log = new Log();
+                $log->setCategory('Profile_Edit');
+                $log->setUser($user->getID())->setTarget($user_data->getID());
+                $log->setChangedWhat('Profile Picture');
+                $log->setChangedOld($user->getAvatar())->setChangedNew('none.png');
+                $log->setTime(gmdate('U'));
+                $log->create();
+
+                $user_data->deleteAvatarFile();
+                $user_data->setAvatar('none.png');
+
+                $changed ++;
             }
 
             $new_main_rank = $user_data->getMainRank();
