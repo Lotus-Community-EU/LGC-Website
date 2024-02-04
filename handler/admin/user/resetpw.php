@@ -4,9 +4,8 @@ $user_id = $GET['2'];
 $ref = $_SERVER['HTTP_REFERER'];
 $id = $_POST['user_id']; $s_id = $_SESSION['user_id']; unset($_SESSION['user_id']);
 if(strpos($ref, Functions::$website_url) == 0) {
-    if(Functions::CheckCSRF($_POST['token'])) {
+    if(Functions::CheckCSRF('admin_edit_user', $_POST['token'])) {
         if($id == $s_id) {
-            //AddLog($staff_id, $user_id, $category, $visibility, $text)
 
             $user_data = new User($id);
             $main_rank = new Rank($user_data->getMainRank());

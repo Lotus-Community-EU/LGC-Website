@@ -8,7 +8,7 @@ if(!$user->hasPermission('admin_translation_add')) {
 }
 $ref = $_SERVER['HTTP_REFERER'];
 if(strpos($ref, Functions::$website_url) == 0) {
-    if(Functions::CheckCSRF($_POST['token'])) {
+    if(Functions::CheckCSRF('admin_translation_add', $_POST['token'])) {
         $database = $_POST['database'];
         $language_name = $_POST['language_name'];
         $error = 0; $error_msg = '';

@@ -9,7 +9,7 @@ $all_ranks = Functions::GetAllRanks();
 $rank = new Rank($rank_id);
 $rank_permissions = $rank->getPermissions();
 
-$csrf_token = Functions::CreateCSRFToken();
+$csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
 ?>
 <div class="container w-50 mb-5">
     <div class="d-flex justify-content-between">
@@ -108,7 +108,7 @@ $csrf_token = Functions::CreateCSRFToken();
             ?>
             </table>
 
-        <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['rank_id'] = $rank->getID();?>
+        <?php Functions::AddCSRFCheck('admin_ranks_edit', $csrf_token); $_SESSION['rank_id'] = $rank->getID();?>
         <input type="hidden" name="rank_id" value="<?= $rank->getID();?>">
         <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.edit');?>">
     </form>
@@ -128,7 +128,7 @@ $csrf_token = Functions::CreateCSRFToken();
             </div>
             <div class="modal-footer">
                 <form action="/admin/ranks/delete>" method="POST" class="">
-                    <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['rank_id'] = $rank->getID();?>
+                    <?php Functions::AddCSRFCheck('admin_ranks_edit', $csrf_token); $_SESSION['rank_id'] = $rank->getID();?>
                     <input type="hidden" name="rank_id" value="<?= $rank->getID();?>">
                     <input type="submit" name="reset_password" class="btn btn-success" value="<?= Functions::Translation('text.rank.delete.button');?>">
                 </form>

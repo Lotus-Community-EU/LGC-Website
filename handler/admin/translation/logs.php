@@ -9,7 +9,7 @@ if(!$user->hasPermission('admin_translation_log_delete')) {
 $ref = $_SERVER['HTTP_REFERER'];
 $log_id = $_POST['log_id'];
 if(strpos($ref, Functions::$website_url) == 0) {
-    if(Functions::CheckCSRF($_POST['token'])) {
+    if(Functions::CheckCSRF('admin_translation_edit', $_POST['token'])) {
         if(isset($_POST['delete'])) {
             $prepare = Functions::$mysqli->prepare("UPDATE web_logs SET deleted = '1',deleted_by = ?,deleted_time = ? WHERE id = ?");
             $time = gmdate('U');

@@ -33,7 +33,7 @@ $all_languages = Functions::GetAllLanguages();
 
 $all_ranks = Rank::getAllRanks();
 
-$csrf_token = Functions::CreateCSRFToken();
+$csrf_token = Functions::CreateCSRFToken('admin_edit_user');
 ?>
 
 <div class="container w-50 mb-5">
@@ -43,7 +43,6 @@ $csrf_token = Functions::CreateCSRFToken();
         </div>
         <div>
             <a href="" class="btn btn-sm btn-danger mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#reset_password"><?= Functions::Translation('text.reset_password.button');?></a>
-            <!--<a href="" class="btn btn-sm btn-warning">Reset Profile Picture</a>-->
         </div>
     </div>
     <form action="/admin/user/edit" method="POST">
@@ -118,7 +117,7 @@ $csrf_token = Functions::CreateCSRFToken();
             </script>
         </div>
 
-        <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['user_id'] = $user_data->getID();?>
+        <?php Functions::AddCSRFCheck('admin_edit_user', $csrf_token); $_SESSION['user_id'] = $user_data->getID();?>
         <input type="hidden" name="user_id" value="<?= $user_data->getID();?>">
         <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.edit');?>">
     </form>
@@ -137,7 +136,7 @@ $csrf_token = Functions::CreateCSRFToken();
             </div>
             <div class="modal-footer">
                 <form action="/admin/user/resetpw" method="POST" class="">
-                    <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['user_id'] = $user_data->getID();?>
+                    <?php Functions::AddCSRFCheck('admin_edit_user', $csrf_token); $_SESSION['user_id'] = $user_data->getID();?>
                     <input type="hidden" name="user_id" value="<?= $user_data->getID();?>">
                     <input type="submit" name="reset_password" class="btn btn-success" value="<?= Functions::Translation('text.reset_password.button');?>">
                 </form>

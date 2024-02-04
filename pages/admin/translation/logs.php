@@ -5,7 +5,7 @@ if(!$user->hasPermission('admin_translation_log_view')) { // User has no permiss
     header("Location: /admin/translation/list");
     exit;
 }
-$csrf_token = Functions::CreateCSRFToken();
+$csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
 ?>
 
 <a href="/admin/translation/list" class="btn btn-primary btn-sm mb-2"><?= Functions::Translation('text.back_to_overview');?></a>
@@ -63,14 +63,14 @@ $csrf_token = Functions::CreateCSRFToken();
                             <td>
                                 <?php if($log['deleted'] == 1) {?>
                                     <form action="/admin/translation/logs" method="POST">
-                                        <?php Functions::AddCSRFCheck($csrf_token);?>
+                                        <?php Functions::AddCSRFCheck('admin_translation_edit', $csrf_token);?>
                                         <input type="hidden" name="log_id" value="<?= $log['id'];?>">
                                         <input type="submit" name="recover" value="Recover" class="btn btn-primary btn-sm w-100 fw-bold">
                                     </form>
                                 <?php }
                                 else {?>
                                     <form action="/admin/translation/logs" method="POST">
-                                        <?php Functions::AddCSRFCheck($csrf_token);?>
+                                        <?php Functions::AddCSRFCheck('admin_translation_edit', $csrf_token);?>
                                         <input type="hidden" name="log_id" value="<?= $log['id'];?>">
                                         <input type="submit" name="delete" value="&times;" class="btn btn-danger btn-sm w-100 fw-bold">
                                     </form>

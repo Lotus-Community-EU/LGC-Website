@@ -6,7 +6,7 @@ else {
 
     $all_languages = Functions::GetAllLanguages();
 
-    $csrf_token = Functions::CreateCSRFToken();
+    $csrf_token = Functions::CreateCSRFToken('user_settings');
 
     //$test = file_get_contents('https://mc-heads.net/avatar/d672499f-6506-4b57-85ee-a6fe435ca4f8/nohelm');
     //file_put_contents('assets/images/test.png', $test);
@@ -24,14 +24,14 @@ else {
             </div>
         </div>
         <?php if($user->getCanChangeAvatar() == 1) {?>
-        <form action="/user/profile_picture" method="post" class="mt-5 mb-5" enctype="multipart/form-data">
+        <form action="/user/avatar" method="post" class="mt-5 mb-5" enctype="multipart/form-data">
             <?php if($user->getAVatar() != 'none.png') {?>
             <div class="form-group d-flex justify-content-end mb-2">
                 <input type="submit" name="remove_avatar" value="Remove Avatar" class="btn btn-danger btn-sm">
             </div>
             <?php } ?>
             <div class="form-group">
-                <label for="avatar" class="form-label">Upload own Avatar (5MB max)</label>
+                <label for="avatar" class="form-label">Upload own Avatar</label>
                 <input class="form-control" type="file" name="avatar" id="avatar">
             </div>
             <div class="row mt-2">
@@ -44,7 +44,7 @@ else {
                 </div>
                 <?php } ?>
             </div>
-            <?php Functions::AddCSRFCheck($csrf_token);?>
+            <?php Functions::AddCSRFCheck('user_settings', $csrf_token);?>
         </form>
         <?php } ?>
         <form action="/user/settings" method="POST" class="">
@@ -107,7 +107,7 @@ else {
                 </script>
             </div>
 
-            <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['user_id'] = $user->getID();?>
+            <?php Functions::AddCSRFCheck('user_settings', $csrf_token); $_SESSION['user_id'] = $user->getID();?>
             <input type="hidden" name="user_id" value="<?= $user->getID();?>">
             <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.edit');?>">
         </form>

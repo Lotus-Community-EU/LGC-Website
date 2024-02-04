@@ -78,7 +78,7 @@
         ?>
 
 
-        <?php Functions::AddCSRFCheck();?>
+        <?php Functions::AddCSRFCheck('admin_ranks_add');?>
         <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.add');?>">
     </form>
 </div>

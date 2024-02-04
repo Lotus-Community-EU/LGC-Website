@@ -80,18 +80,19 @@ class Functions {
         }
     }
 
-    static function AddCSRFCheck($token = '') {
+    static function AddCSRFCheck($token_for, $token = '') {
         if(strlen($token) < 1) {
-            $token = self::CreateCSRFToken();
+            $token = self::CreateCSRFToken($token_for);
         }
         self::CreateCSRFInput($token);
         return true;
     }
 
-    static function CreateCSRFToken() {
+    static function CreateCSRFToken($token_for) {
         $token = uniqid();
         self::$csrf_token = $token;
-        $_SESSION['csrf_token'] = self::$csrf[0].$token.self::$csrf[1];
+        $_SESSION['csrf_token'][$token_for]['token'] = self::$csrf[0].$token.self::$csrf[1];
+        $_SESSION['csrf_token'][$token_for]['expire'] = time()+1800; // 30 Minutes = 1800 Seconds
         return $token;
     }
 
@@ -100,10 +101,16 @@ class Functions {
         return true;
     }
 
-    static function CheckCSRF($input) {
-        if(self::$csrf[0].$input.self::$csrf[1] == $_SESSION['csrf_token']) {
-            unset($_SESSION['csrf_token']);
-            return true;
+    static function CheckCSRF($token_for, $input) {
+        if(self::$csrf[0].$input.self::$csrf[1] == $_SESSION['csrf_token'][$token_for]['token']) {
+            if(time() <= $_SESSION['csrf_token'][$token_for]['expire']) {
+                unset($_SESSION['csrf_token'][$token_for]);
+                return true;
+            }
+            else {
+                unset($_SESSION['csrf_token'][$token_for]);
+                return false;
+            }
         }
         return false;
     }

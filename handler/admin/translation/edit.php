@@ -2,7 +2,7 @@
 $ref = $_SERVER['HTTP_REFERER'];
 $language_name = $_POST['language_name']; $s_language_name = $_SESSION['language_name']; unset($_SESSION['language_name']);
 if(strpos($ref, Functions::$website_url) == 0) {
-    if(Functions::CheckCSRF($_POST['token'])) {
+    if(Functions::CheckCSRF('admin_translation_edit', $_POST['token'])) {
         if($language_name == $s_language_name) {
             if(isset($_POST['new_language_name'])) {
                 if($user->hasPermission("admin_translation_add")) {

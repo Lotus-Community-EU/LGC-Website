@@ -2,7 +2,7 @@
 
 $ref = $_SERVER['HTTP_REFERER'];
 if(strpos($ref, Functions::$website_url) == 0) {
-    if(Functions::CheckCSRF($_POST['token'])) {
+    if(Functions::CheckCSRF('user_settings', $_POST['token'])) {
         if($user->getCanChangeAVatar() == 1) {
             if(isset($_POST['use_mc_avatar'])) {
                 if(strlen($user->getMCUUID()) > 1) {
@@ -52,7 +52,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
             if(isset($_POST['submit'])) {
                 $avatar = $_FILES['avatar'];
                 if(strlen($avatar['name']) > 0) {
-                    if($avatar['size'] <= 5000000) {
+                    if($avatar['size'] <= ($settings->getMaxAvatarSize()*1024)*1000000) { // 1024KB = 1 MB | 1.000.000 Byte = 1MB
                         if($avatar['type'] == 'image/jpeg' || $avatar['type'] == 'image/png' || $avatar['type'] == 'image/gif') {
                             $user->deleteAvatarFile();
                             $name = $avatar['name'];
@@ -84,7 +84,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
                     }
                     else {
                         $_SESSION['error_title'] = 'Edit Profile Picture';
-                        $_SESSION['error_message'] = 'Avatar can not be bigger than 5 MB!';
+                        $_SESSION['error_message'] = 'Avatar can not be bigger than '.$settings->getMaxAvatarSize().' MB!';
                         header("Location: /user/settings");
                         exit;
                     }

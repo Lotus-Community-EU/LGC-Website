@@ -14,7 +14,7 @@ if(!Functions::LanguageExists($GET[3])) {
 
 $language = $GET[3];
 $language_name = Functions::GetLanguageName($language);
-$csrf_token = Functions::CreateCSRFToken();
+$csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
 ?>
 
 <div class="row justify-content-end mb-3">
@@ -30,7 +30,7 @@ $csrf_token = Functions::CreateCSRFToken();
                                 <input type="text" name="new_language_name" class="form-control" value="<?= $language_name;?>" maxlength="32" required>
                             </div>
                             <div class="col-12">
-                                <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['language_name'] = $language;?>
+                                <?php Functions::AddCSRFCheck('admin_translation_edit', $csrf_token); $_SESSION['language_name'] = $language;?>
                                 <input type="hidden" name="language_name" value="<?= $language;?>">
                                 <button type="button" id="submit_language" onclick="SubmitForm(0)" key="<?= $res['id'];?>" class="btn btn-success w-100"><?= Functions::Translation('text.translation.language.language_name.button');?></button>
                             </div>
@@ -119,7 +119,7 @@ $csrf_token = Functions::CreateCSRFToken();
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['language_name'] = $language;?>
+                                    <?php Functions::AddCSRFCheck('admin_translation_edit', $csrf_token); $_SESSION['language_name'] = $language;?>
                                     <input type="hidden" name="path" value="<?= $res['path'];?>">
                                     <input type="hidden" name="language_name" value="<?= $language;?>">
                                     <button type="button" id="submit_language_<?= $res['id'];?>" onclick="SubmitForm(<?= $res['id'];?>)" key="<?= $res['id'];?>" class="btn btn-success"><?= Functions::Translation('global.edit');?></button>
@@ -147,7 +147,7 @@ $csrf_token = Functions::CreateCSRFToken();
             </div>
             <div class="modal-footer">
                 <form action="/admin/translation/delete>" method="POST" class="">
-                    <?php Functions::AddCSRFCheck($csrf_token); $_SESSION['language_name'] = $language?>
+                    <?php Functions::AddCSRFCheck('admin_translation_edit', $csrf_token); $_SESSION['language_name'] = $language?>
                     <input type="hidden" name="language_name" value="<?= $language;?>">
                     <input type="submit" name="reset_password" class="btn btn-success" value="<?= Functions::Translation('text.translation.language.delete.button');?>">
                 </form>

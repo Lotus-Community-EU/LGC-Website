@@ -61,13 +61,11 @@
     <h5 class="mt-5"><?= Functions::Translation('text.settings.mc_heads');?></h5>
     <div class="row mt-3">
         <div class="col-12 col-lg-5">
-            <div class="form-group">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" name="show_mc_heads" id="show_mc_heads" <?= $settings->getShowMCHeads() == 1 ? 'checked' : '';?>>
-                    <label class="form-check-label" for="show_mc_heads">
-                        <?= Functions::Translation('text.settings.mc_heads.label');?>
-                    </label>
-                </div>
+                <label class="form-check-label" for="show_mc_heads">
+                    <?= Functions::Translation('text.settings.mc_heads.label');?>
+                </label>
             </div>
         </div>
     </div>
@@ -92,6 +90,19 @@
         </div>
     </div>
 
-    <?php Functions::AddCSRFCheck();?>
+    <h5 class="mt-5"><?= Functions::Translation('text.settings.max_avatar_size');?></h5>
+    <div class="row mt-3">
+        <div class="col-12 col-lg-5">
+            <div class="form-group">
+                <label for="max_avatar_size"><?= Functions::Translation('text.settings.max_avatar_size');?></label>
+                <div class="input-group w-25">
+                    <input type="text" class="form-control" name="max_avatar_size" id="max_avatar_size" value="<?= $settings->getMaxAvatarSize();?>">
+                    <span class="input-group-text">MB</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php Functions::AddCSRFCheck('website_settings');?>
     <input type="submit" value="<?= Functions::Translation('global.edit');?>" class="btn btn-success w-100 mt-5">
 </form>

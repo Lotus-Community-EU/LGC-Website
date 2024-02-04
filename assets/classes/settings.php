@@ -72,4 +72,12 @@ class Settings {
         return $this;
     }
 
+    function getMaxAvatarSize() { return $this->data['max_avatar_size']; }
+    function setMaxAvatarSize($size) {
+        $prepare = Functions::$mysqli->prepare("UPDATE web_settings SET value = ? WHERE code = 'max_avatar_size'");
+        $prepare->bind_param('i', $size);
+        $prepare->execute();
+        return $this;
+    }
+
 }

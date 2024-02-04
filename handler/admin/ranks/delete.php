@@ -8,7 +8,7 @@ if(!$user->hasPermission('admin_rank_management')) {
 $ref = $_SERVER['HTTP_REFERER'];
 $id = $_POST['rank_id']; $s_id = $_SESSION['rank_id']; unset($_SESSION['rank_id']);
 if(strpos($ref, Functions::$website_url) == 0) {
-    if(Functions::CheckCSRF($_POST['token'])) {
+    if(Functions::CheckCSRF('admin_ranks_edit', $_POST['token'])) {
         if($id == $s_id) {
             $rank = new Rank($id);
             if($rank->getID() != 1 && $rank->getID() != 2) {

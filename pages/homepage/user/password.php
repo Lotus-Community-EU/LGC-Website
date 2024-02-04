@@ -18,7 +18,7 @@
             <input type="password" name="repeat_new_password" class="form-control" id="repeat_new_password" placeholder="<?= Functions::Translation('text.repeat_password');?>">
         </div>
 
-        <?php Functions::AddCSRFCheck(); $_SESSION['user_id'] = $user->getID();?>
+        <?php Functions::AddCSRFCheck('user_settings'); $_SESSION['user_id'] = $user->getID();?>
         <input type="hidden" name="user_id" value="<?= $user->getID();?>">
         <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('text.change_password');?>">
     </form>
