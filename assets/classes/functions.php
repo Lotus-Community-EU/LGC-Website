@@ -175,8 +175,8 @@ class Functions {
     static function ConnectDB() {
         $data = array(
             'host'      => '45.81.233.154',
-            'user'      => 'root', // web_lokal
-            'password'  => 'ChrisWille2856', // gfREDTE%6t34&§T$EWRTF
+            'user'      => 'root',
+            'password'  => 'ChrisSucks2400',
             'database'  => 'LotusGaming'
         );
 
