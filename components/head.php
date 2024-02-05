@@ -10,5 +10,8 @@
 
     <script src="https://kit.fontawesome.com/0b9250afac.js"></script>
 
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+
     <title><?= $page_title;?></title>
 </head>
