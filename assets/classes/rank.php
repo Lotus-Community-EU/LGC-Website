@@ -6,6 +6,13 @@ class Rank {
     private $data = array();
     private $permissions = array();
 
+    public static $permission_categories = array(
+        1 => 'Admin - General',
+        2 => 'Admin - User Management',
+        3 => 'Admin - Rank Management',
+        4 => 'Admin - Translation-System',
+    );
+
     public $lengths = array(
         'name' => array(
             'min' => 4,

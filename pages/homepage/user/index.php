@@ -40,7 +40,9 @@ else {
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                                     <li><a class="dropdown-item" href="/admin/user/edit/<?= $user_data->getID();?>"><?= Functions::Translation('text.edit_user');?></a></li>
+                                    <?php if($user->hasPermission('admin_user_management_log_view')) {?>
                                     <li><a class="dropdown-item" href="/admin/user/logs/<?= $user_data->getID();?>"><?= Functions::Translation('text.view_logs');?></a></li>
+                                    <?php } ?>
                                 </ul>
                             </div>
                         <?php } ?>

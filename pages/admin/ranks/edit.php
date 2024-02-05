@@ -11,7 +11,7 @@ $rank_permissions = $rank->getPermissions();
 
 $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
 ?>
-<div class="container w-50 mb-5">
+<div class="container col-12 col-lg-6 mb-5">
     <div class="d-flex justify-content-between">
         <div>
             <p><?= Functions::Translation('text.rank.edit.header', ['rank_name'], [$rank->getName()]);?></p>
@@ -83,30 +83,39 @@ $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
             </div>
         </div>
 
-            <table class="w-100">
-            <?php
-                $all_permissions = $rank->getAllPermissions();
-                foreach($all_permissions as $permission) {
-                    ?>
-                    <tr>
-                        <td>
-                            <label class="form-check-label" for="<?= $permission['permission_code'];?>"><?= $permission['permission_code'].'<br>(<b>'.$permission['permission_description'].'</b>)';?></label>
-                        </td>
-                        <td class="">
-                            <div class="form-check form-check-inline mt-3">
-                                <input type="radio" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="0" <?= !$rank->hasPermission($permission['permission_code']) ? 'checked' : '';?>>
-                                <label class="form-check-label" for="<?= $permission['permission_code'];?>">0</label>
+        <?php
+            $all_permissions = $rank->getAllPermissions();
+            foreach(Rank::$permission_categories as $cat_key => $category) {
+                ?>
+                <div class="row mt-5">
+                    <h5 class="text-decoration-underline"><?= $category;?></h5>
+                <?php
+                foreach($all_permissions as $key => $permission) {
+                    if($permission['permission_category'] == $cat_key) {
+                        ?>
+                        <div class="row">
+                            <div class="col-8">
+                                <label class="form-check-label" for="<?= $permission['permission_code'];?>"><?= $permission['permission_code'].'<br>(<b>'.$permission['permission_description'].'</b>)';?></label>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="1" <?= $rank->hasPermission($permission['permission_code']) ? 'checked' : '';?>>
-                                <label class="form-check-label" for="<?= $permission['permission_code'];?>">1</label>
+                            <div class="col-4">
+                                <div class="form-check form-check-inline mt-3">
+                                    <input type="radio" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="0" <?= !$rank->hasPermission($permission['permission_code']) ? 'checked' : '';?>>
+                                    <label class="form-check-label" for="<?= $permission['permission_code'];?>">0</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="1" <?= $rank->hasPermission($permission['permission_code']) ? 'checked' : '';?>>
+                                    <label class="form-check-label" for="<?= $permission['permission_code'];?>">1</label>
+                                </div>
                             </div>
-                        </td>
-                    </tr>
-                    <?php
+                        </div>
+                        <?php
+                    }
                 }
-            ?>
-            </table>
+                ?>
+                </div>
+                <?php
+            }
+        ?>
 
         <?php Functions::AddCSRFCheck('admin_ranks_edit', $csrf_token); $_SESSION['rank_id'] = $rank->getID();?>
         <input type="hidden" name="rank_id" value="<?= $rank->getID();?>">

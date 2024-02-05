@@ -5,7 +5,7 @@ if(!$user->hasPermission('admin_translation_log_view')) { // User has no permiss
     header("Location: /admin/translation/list");
     exit;
 }
-$csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
+$csrf_token = Functions::CreateCSRFToken('admin_translation_log_delete');
 ?>
 
 <a href="/admin/translation/list" class="btn btn-primary btn-sm mb-2"><?= Functions::Translation('text.back_to_overview');?></a>
@@ -16,7 +16,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
             <tr>
                 <th>Timestamp (UTC)</th>
                 <th>Target</th>
-                <th>User</th>
+                <th>Admin</th>
                 <th>What</th>
                 <td>Old</td>
                 <td>New</td>

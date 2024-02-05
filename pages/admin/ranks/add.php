@@ -67,13 +67,18 @@
 
             $all_permissions = $rank->getAllPermissions();
 
-            foreach($all_permissions as $permission) {
-                ?>
-                <div class="form-check mt-3">
-                    <input type="checkbox" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="1">
-                    <label class="form-check-label" for="<?= $permission['permission_code'];?>"><?= $permission['permission_code'].' (<b>'.$permission['permission_description'].'</b>)';?></label>
-                </div>
-                <?php
+            foreach(Rank::$permission_categories as $cat_key => $category) {
+                ?><h4 class="mt-5 text-decoration-underline"><?= $category;?></h4><?php
+                foreach($all_permissions as $permission) {
+                    if($permission['permission_category'] == $cat_key) {
+                        ?>
+                        <div class="form-check mt-3">
+                            <input type="checkbox" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="1">
+                            <label class="form-check-label text-decoration-none" for="<?= $permission['permission_code'];?>"><?= $permission['permission_code'].' (<b>'.$permission['permission_description'].'</b>)';?></label>
+                        </div>
+                        <?php
+                    }
+                }
             }
         ?>
 

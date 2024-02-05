@@ -253,50 +253,12 @@ class Functions {
         return [$result[0], $result[1]];
     }
 
-    /*static function LoadUserdData($login_token) {
-        if($login_token == 'guest' && isset($_COOKIE['remember'])) {
-            $login_token = $_COOKIE['remember'];
-        }
-        if($login_token == 'guest') {
-            self::$user = array(
-                'id' => 0,
-                'username' => 'Guest',
-                'language' => 'en',
-                'main_rank' => 1,
-                'secondary_rank' => 0
-            );
-        }
-        else {
-            $prepare = self::$mysqli->prepare("SELECT * FROM web_users WHERE login_token = ?");
-            $prepare->bind_param('s', $login_token);
-            $prepare->execute();
-
-            $result = $prepare->get_result();
-            if($result->num_rows > 0) {
-                self::$user = $result->fetch_array();
-            }
-            else {
-                self::LogoutUser();
-                exit;
-            }
-        }
-        self::GetTranslations(self::$user['language']);
-        self::GetUserPermissions();
-    }*/
-
     static function LogoutUser() {
         unset($_SESSION['login_token']);
         ?><script>setcookie('remember','', 1,'/');</scrip><?php
         session_destroy();
         header("Location: /");
     }
-
-    /*static function UserHasPermission($permission) {
-        if(isset(self::$user_permissions[$permission]) && self::$user_permissions[$permission] == 1) {
-            return true;
-        }
-        return false;
-    }*/
 
     static function AddAdminTabLink($link, $icon, $permission, $text) {
         global $user;
@@ -310,52 +272,8 @@ class Functions {
         }
     }
 
-    static function RankHasPermission($role, $permission) {
-        if(is_numeric($role)) {
-            $prepare = self::$mysqli->prepare("SELECT id FROM web_ranks_permissions WHERE ? = 1 AND rank_id = ?");
-            $prepare->bind_param('si', $language, $role);
-        }
-        
-        $prepare->execute();
-
-        $result = $prepare->get_result();
-        if($result->num_rows > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    static function RankExists($rank_id) {
-        $prepare = self::$mysqli->prepare("SELECT * FROM core_ranks WHERE id = ?");
-        $prepare->bind_param('i', $rank_id);
-        $prepare->execute();
-
-        $result = $prepare->get_result();
-        if($result->num_rows > 0) {
-            return 1;
-        }
-        else {
-            return 0;
-        }
-    }
-
-    static function GetRankComments() {
-        $query = self::$mysqli->query("SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
-
-		$columns = array();
-		$values = array();
-
-		if($query->num_rows > 0) {
-			while($row = $query->fetch_assoc()) {
-				$columns[$row["COLUMN_NAME"]] = $row["COLUMN_COMMENT"];
-			}
-		}
-
-        return $columns;
-    }
-
     static function GetAllPermissions() {
-        $query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
+        /*$query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
 
 		$columns = array();
 		$values = array();
@@ -366,10 +284,20 @@ class Functions {
 			}
 		}
 
-        return $columns;
+        return $columns;*/
+
+        $return = array();
+
+        $query = self::$mysqli->query("SELECT * FROM web_permissions WHERE id > 0");
+        while($row = $query->fetch_all(MYSQLI_ASSOC)) {
+            $return[$row['id']]['permission_code'] = $row['permission_code'];
+            $return[$row['id']]['permission_description'] = $row['permission_description'];
+            $return[$row['id']]['permission_category'] = $row['permission_category'];
+        }
+        return $row;
     }
 
-    static function GetRankPermissions($rank_id) {
+    /*static function GetRankPermissions($rank_id) {
         $query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
 
 		$columns = array();
@@ -397,9 +325,9 @@ class Functions {
 			}
 		}
         return $permissions;
-    }
+    }*/
 
-    static function GetUserPermissions() {
+    /*static function GetUserPermissions() {
         $query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
 
 		$columns = array();
@@ -424,7 +352,7 @@ class Functions {
 				self::$user_permissions = $rowValues;
 			}
 		}
-    }
+    }*/
 
     // Check if Language exists SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'translations' AND COLUMN_NAME = 'bla';
 
@@ -549,64 +477,5 @@ class Functions {
             $pass[] = $alphabet[$n];
         }
         return implode($pass);
-    }
-
-    static function IsStaff($user) {
-        $all_ranks = self::GetAllRanks();
-        if($all_ranks[$user['main_rank']]['is_staff'] == 1 || $all_ranks[$user['secondary_rank']]['is_staff'] == 1) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    static function IsUpperStaff($user) {
-        $all_ranks = self::GetAllRanks();
-        if($all_ranks[$user['main_rank']]['is_upperstaff'] == 1 || $all_ranks[$user['secondary_rank']]['is_upperstaff'] == 1) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    static function UserLastNameChange($user_id) {
-        $user_data = self::GetUserData($user_id);
-        if($user_data['last_username_change'] == 0) {
-            return 'Never';
-        }
-        else {
-            return date('d.m.Y - H:i:s', $user_data['last_username_change']);
-        }
-    }
-
-    static function UserCanChangeName($user_id) {
-        $user_data = self::GetUserData($user_id);
-        if($user_data['last_username_change'] == 0) {
-            return true;
-        }
-        else {
-            $change_value = self::GetSetting('username_change_value');
-            $change_unit = self::GetSetting('username_change_unit');
-            $change_final = 0;
-            switch($change_unit) {
-                case 'hours':
-                    $change_final = $change_value*3600; // 1 Hour = 3600 Seconds
-                case 'days':
-                    $change_final = $change_value*86400; // 1 Day = 86400 Seconds
-                    break;
-                case 'month':
-                    $change_final = $change_value*2628000; // 1 Month = 2628000 Seconds
-                    break;
-            }
-
-            if(time() > ($user_data['last_username_change']+$change_final)) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
     }
 }

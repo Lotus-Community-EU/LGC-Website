@@ -1,4 +1,4 @@
-<div class="container w-50 mb-5">
+<div class="container col-12 col-lg-6 mb-5">
     <div class="d-flex justify-content-between">
         <div>
             <p><?= Functions::Translation('text.translation.language.add');?></p>
@@ -17,7 +17,7 @@
             <input type="text" name="language_name" class="form-control" id="language_name" placeholder="<?= $language_name;?>">
         </div>
 
-        <?php Functions::AddCSRFCheck();?>
+        <?php Functions::AddCSRFCheck('admin_translation_add');?>
         <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.add');?>">
     </form>
 </div>

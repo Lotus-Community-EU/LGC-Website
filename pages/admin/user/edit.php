@@ -36,7 +36,7 @@ $all_ranks = Rank::getAllRanks();
 $csrf_token = Functions::CreateCSRFToken('admin_edit_user');
 ?>
 
-<div class="container w-50 mb-5">
+<div class="container col-12 col-lg-6 mb-5">
     <div class="d-flex justify-content-between">
         <div>
             <p><?= Functions::Translation('text.edit_user.header', ['username'], [$user_data->getUsername()]);?></p>
