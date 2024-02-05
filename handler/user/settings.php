@@ -6,7 +6,7 @@ if(strpos($ref, Functions::$website_url) == 0) {
     if(Functions::CheckCSRF('user_settings', $_POST['token'])) {
         if($user_id == $s_id) {
             if(isset($_POST['link_mc'])) {
-                $key = Functions::GenerateLinkKey(Functions::$user->getID());
+                $key = Functions::GenerateLinkKey($user->getID());
                 $user->setMCVerifyCode($key);
                 $user->update();
                 header("Location: /user/settings");
