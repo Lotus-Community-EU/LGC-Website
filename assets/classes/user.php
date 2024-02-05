@@ -53,7 +53,8 @@ class User {
                     $this->data = $result;
                 }
                 else {
-                    return null;
+                    header("Location: /logout");
+                    exit;
                 }
             }
 
