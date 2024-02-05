@@ -8,8 +8,6 @@ include('assets/classes/rank.php');
 include('assets/classes/settings.php');
 $settings = new Settings();
 
-$user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : (isset($_COOKIE['remember']) ? $_COOKIE['remember'] : 'guest'));
-
 $page = isset($_GET['url']) ? $_GET['url'] : 'index';
 
 $GET = explode('/', $page);
@@ -24,7 +22,7 @@ switch($page) {
 			break;
 		}
 		else {
-            //$user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : (isset($_COOKIE['remember']) ? $_COOKIE['remember'] : 'guest'));
+            $user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : (isset($_COOKIE['remember']) ? $_COOKIE['remember'] : 'guest'));
 			switch($GET[1]) {
                 case 'user': 
                     LoadAdminView($GET['1'],'admin_user_list');
@@ -57,7 +55,7 @@ switch($page) {
                     LoadHandler('logout');
                     break;
 				default:
-                    //$user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : (isset($_COOKIE['remember']) ? $_COOKIE['remember'] : 'guest'));
+                    $user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : (isset($_COOKIE['remember']) ? $_COOKIE['remember'] : 'guest'));
                     if($page == 'login' && $user->getID() != 0) {
                         header("Location: /");
                         exit;

@@ -72,10 +72,10 @@ $csrf_token = Functions::CreateCSRFToken('admin_user_management_logs');
                             <?= $row['changed_what'];?>
                         </td>
                         <td>
-                            <?= $row['changed_old'];?>
+                            <?= htmlspecialchars($row['changed_old']);?>
                         </td>
                         <td>
-                            <?= $row['changed_new'];?>
+                            <?= htmlspecialchars($row['changed_new']);?>
                         </td>
 
                         <?php if($user->hasPermission('admin_user_management_log_delete')) {?>
