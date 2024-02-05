@@ -2,7 +2,7 @@
 
 class Functions {
 
-    public static $website_url = 'https://localhost';
+    public static $website_url = 'https://lotuscommunity.eu';
     public static $website_version = 'v0.0.4';
 
     public static $csrf = array('TFE$RW§5e342wREw','FT$§E%TR§$E3tzrterTrtgre');
@@ -296,63 +296,6 @@ class Functions {
         }
         return $row;
     }
-
-    /*static function GetRankPermissions($rank_id) {
-        $query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
-
-		$columns = array();
-		$values = array();
-
-		if($query->num_rows > 0) {
-			while($row = $query->fetch_assoc()) {
-				$columns[] = $row["COLUMN_NAME"];
-			}
-		}
-
-		$query2 = self::$mysqli->query("SELECT " . implode(",", $columns) . " FROM web_ranks_permissions WHERE rank_id = ".$rank_id);
-
-        $permissions = array();
-
-		if($query2->num_rows > 0) {
-			while($row = $query2->fetch_assoc()) {
-				$rowValues = array();
-				foreach($columns as $column) {
-                    if($row[$column] == 1) {
-					    $rowValues[$column] = (int)$row[$column];
-                    }
-				}
-				$permissions = $rowValues;
-			}
-		}
-        return $permissions;
-    }*/
-
-    /*static function GetUserPermissions() {
-        $query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
-
-		$columns = array();
-		$values = array();
-
-		if($query->num_rows > 0) {
-			while($row = $query->fetch_assoc()) {
-				$columns[] = $row["COLUMN_NAME"];
-			}
-		}
-
-		$query2 = self::$mysqli->query("SELECT " . implode(",", $columns) . " FROM web_ranks_permissions WHERE rank_id = ".self::$user['main_rank']." OR rank_id = ".self::$user['secondary_rank']);
-
-		if($query2->num_rows > 0) {
-			while($row = $query2->fetch_assoc()) {
-				$rowValues = array();
-				foreach($columns as $column) {
-                    if($row[$column] == 1) {
-					    $rowValues[$column] = (int)$row[$column];
-                    }
-				}
-				self::$user_permissions = $rowValues;
-			}
-		}
-    }*/
 
     // Check if Language exists SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'translations' AND COLUMN_NAME = 'bla';
 

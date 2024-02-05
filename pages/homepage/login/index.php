@@ -18,7 +18,7 @@
                     <label for="password2" class="form-label"><?= Functions::Translation('text.repeat_password');?></label>
                     <input type="password2" name="password2" class="form-control" id="password2" placeholder="<?= Functions::Translation('text.repeat_password');?>">
                 </div>
-                <?php Functions::AddCSRFCheck();?>
+                <?php Functions::AddCSRFCheck('Register');?>
 
                 <input type="submit" class="btn btn-success w-100" value="<?= Functions::Translation('text.login');?>">
             </form>
@@ -41,7 +41,7 @@
                         </label>
                     </div>
                 </div>
-                <?php Functions::AddCSRFCheck();?>
+                <?php Functions::AddCSRFCheck('Login');?>
 
                 <input type="submit" class="btn btn-success w-100" value="<?= Functions::Translation('text.login');?>">
             </form>
