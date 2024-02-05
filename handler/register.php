@@ -45,11 +45,10 @@ if(strpos($ref, Functions::$website_url) == 0) {
         }
 
         $password = Functions::HashPassword($password);
-        $statement = Functions::$mysqli->prepare("INSERT INTO web_users (username,password,email,created_at) VALUES (?,?,?,?)");
+        $prepare = Functions::$mysqli->prepare("INSERT INTO web_users (username,password,email,created_at) VALUES (?,?,?,?)");
         $time = gmdate('U');
-        $statement->bind_param('sssi', $username, $password, $email, $time);
-        $statement->execute();
-        $result = $statement->get_result();
+        $prepare->bind_param('sssi', $username, $password, $email, $time);
+        $prepare->execute();
 
         $row = Functions::$mysqli->insert_id;
         $login_token = Functions::CreateUniqueToken($row);

@@ -16,11 +16,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="password2" class="form-label"><?= Functions::Translation('text.repeat_password');?></label>
-                    <input type="password2" name="password2" class="form-control" id="password2" placeholder="<?= Functions::Translation('text.repeat_password');?>">
+                    <input type="password" name="password2" class="form-control" id="password2" placeholder="<?= Functions::Translation('text.repeat_password');?>">
                 </div>
                 <?php Functions::AddCSRFCheck('Register');?>
 
-                <input type="submit" class="btn btn-success w-100" value="<?= Functions::Translation('text.login');?>">
+                <input type="submit" class="btn btn-success w-100" value="<?= Functions::Translation('text.register');?>">
             </form>
             <a class="btn btn-primary float-end" href="/login"><?= Functions::Translation('login.back_to_register');?></a>
         <?php } else {?>
