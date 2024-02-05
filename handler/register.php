@@ -45,9 +45,9 @@ if(strpos($ref, Functions::$website_url) == 0) {
         }
 
         $password = Functions::HashPassword($password);
-        $prepare = Functions::$mysqli->prepare("INSERT INTO web_users (username,password,email,created_at) VALUES (?,?,?,?)");
+        $prepare = Functions::$mysqli->prepare("INSERT INTO web_users (username,password,email,created_at,last_username_change) VALUES (?,?,?,?,?)");
         $time = gmdate('U');
-        $prepare->bind_param('sssi', $username, $password, $email, $time);
+        $prepare->bind_param('sssi', $username, $password, $email, $time, $time);
         $prepare->execute();
 
         $row = Functions::$mysqli->insert_id;
