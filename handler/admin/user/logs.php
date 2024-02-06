@@ -8,7 +8,7 @@ if(!$user->hasPermission('admin_user_management')) {
 
 $ref = $_SERVER['HTTP_REFERER'];
 $log_id = $_POST['log_id'];
-if(strpos($ref, Functions::$website_url) == 0) {
+if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
     if(Functions::CheckCSRF('admin_user_management_logs', $_POST['token'])) {
         if(isset($_POST['delete'])) {
             $prepare = Functions::$mysqli->prepare("UPDATE web_logs SET deleted = '1',deleted_by = ?,deleted_time = ? WHERE id = ?");

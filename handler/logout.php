@@ -1,4 +1,4 @@
 <?php
-Functions::LogoutUser();
+$user->logout();
 header("Location: /");
 exit;

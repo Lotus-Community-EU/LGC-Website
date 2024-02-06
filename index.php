@@ -27,6 +27,7 @@ ini_set('display_startup_errors', 1);
 
 */
 
+require_once('config.php');
 require_once('assets/classes/functions.php');
 require_once('assets/classes/pagemanager.php');
 

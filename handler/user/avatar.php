@@ -1,7 +1,7 @@
 <?php
 
 $ref = $_SERVER['HTTP_REFERER'];
-if(strpos($ref, Functions::$website_url) == 0) {
+if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
     if(Functions::CheckCSRF('user_settings', $_POST['token'])) {
         if($user->getCanChangeAVatar() == 1) {
             if(isset($_POST['use_mc_avatar'])) {

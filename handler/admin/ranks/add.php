@@ -6,7 +6,7 @@ if(!$user->hasPermission('admin_rank_management')) {
     exit;
 }
 $ref = $_SERVER['HTTP_REFERER'];
-if(strpos($ref, Functions::$website_url) == 0) {
+if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
     if(Functions::CheckCSRF('admin_ranks_add', $_POST['token'])) {
 
         $rank = new Rank();

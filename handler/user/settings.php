@@ -2,7 +2,7 @@
 
 $ref = $_SERVER['HTTP_REFERER'];
 $user_id = $_POST['user_id']; $s_id = $_SESSION['user_id']; unset($_SESSION['user_id']);
-if(strpos($ref, Functions::$website_url) == 0) {
+if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
     if(Functions::CheckCSRF('user_settings', $_POST['token'])) {
         if($user_id == $s_id) {
             if(isset($_POST['link_mc'])) {

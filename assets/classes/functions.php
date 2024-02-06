@@ -2,7 +2,6 @@
 
 class Functions {
 
-    public static $website_url = 'https://lotuscommunity.eu';
     public static $website_version = 'v0.0.4';
 
     public static $csrf = array('TFE$RW§5e342wREw','FT$§E%TR§$E3tzrterTrtgre');
@@ -18,6 +17,11 @@ class Functions {
     public static $settings;
 
     public static $user_permissions;
+
+    static function GetWebsiteURL() {
+        global $config;
+        return $config['website_url'];
+    }
 
     static function EncryptString($string = '') {
         return openssl_encrypt($string,"AES-256-CBC","fmiogfdjdtzkmiporzufngikugouhifd", 0,"kdpiotgrkedposlg");

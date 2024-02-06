@@ -3,7 +3,7 @@
 
 $ref = $_SERVER['HTTP_REFERER'];
 $id = $_POST['user_id']; $s_id = $_SESSION['user_id']; unset($_SESSION['user_id']);
-if(strpos($ref, Functions::$website_url) == 0) {
+if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
     if(Functions::CheckCSRF('admin_edit_user', $_POST['token'])) {
         if($id == $s_id) {
             $new_username = $_POST['username'];

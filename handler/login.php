@@ -1,6 +1,6 @@
 <?php
 $ref = $_SERVER['HTTP_REFERER'];
-if(strpos($ref, Functions::$website_url) == 0) {
+if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
     if(Functions::CheckCSRF('Login', $_POST['token'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
