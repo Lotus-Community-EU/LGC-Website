@@ -64,7 +64,7 @@ else {
     <div class="row mt-2">
         <div class="col-12 col-md-4 mt-3 d-flex justify-content-center">
 
-            <img src="/assets/images/avatar/<?= $user_data->getAvatar();?>" height="200" width="200">
+            <img src="/assets/images/avatar/<?= $user_data->getAvatar();?>" height="250" width="250">
 
         </div>
         <div class="col-12 col-md-6 mt-3 p-2" style="background-color: #494B4D; border-radius: 10px;">
