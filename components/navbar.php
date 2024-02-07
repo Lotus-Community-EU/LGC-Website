@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark mb-5">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
-            <span style="color: var(--lotus_pink1);">Lotus</span> <span style="color: var(--lotus_green1);">Gaming</span>
+            <?= $config['lgc_text'];?>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

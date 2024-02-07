@@ -82,7 +82,7 @@ function CheckCookies() {
 }
 
 function LoadView($page = '', $page_title = 'Lotus Gaming Community') {
-    global $GET, $user, $settings;
+    global $GET, $user, $settings, $config;
 	if(!file_exists('pages/homepage/'.$page.'/index.php')) {
         $_SESSION['error_title'] = 'Not existing';
         $_SESSION['error_message'] = 'The page you tried to access doesn\'t exist!';
@@ -112,7 +112,7 @@ function LoadView($page = '', $page_title = 'Lotus Gaming Community') {
 }
 
 function LoadAdminView($page = '', $needed_permission = '', $page_title = 'Lotus Gaming Community') {
-    global $GET, $user, $settings;
+    global $GET, $user, $settings, $config;
 	if(!$user->hasPermission($needed_permission)) {
         $_SESSION['error_title'] = 'No Permission';
         $_SESSION['error_message'] = 'You don\'t have the permissions to view that page!';
@@ -147,6 +147,6 @@ function LoadAdminView($page = '', $needed_permission = '', $page_title = 'Lotus
 
 function LoadHandler($handler = '') {
     $user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : (isset($_COOKIE['remember']) ? $_COOKIE['remember'] : 'guest'));
-	global $GET, $settings;
+	global $GET, $settings, $config;
     include('handler/'.$handler.'.php');
 }
