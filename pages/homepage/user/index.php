@@ -13,6 +13,7 @@ else {
     $user_id = $GET[1];
 
     $user_data = new User($user_id);
+    $user_id = $user_data->getID();
     $main_rank = new Rank($user_data->getMainRank());
     $secondary_rank = new Rank($user_data->getSecondaryRank());
 
@@ -30,7 +31,7 @@ else {
                     (($user_data->getIsUpperStaff()) && $user->hasPermission('admin_upperstaff_management')) || 
                     (!$user_data->getIsStaff() && !$user_data->getIsUpperStaff() && $user->hasPermission('admin_user_management')) || $user_id == $user->getID()) { ?>
                 <div class="row">
-                    <div class="container-fluid d-flex justify-content-end">
+                    <div class="col-12 offset-md-4 col-md-6 p-0 d-flex justify-content-end">
                         <?php if((($user_data->getIsStaff()) && $user->hasPermission('admin_staff_management')) ||
                             (($user_data->getIsUpperStaff()) && $user->hasPermission('admin_upperstaff_management')) || 
                             (!$user_data->getIsStaff() && !$user_data->getIsUpperStaff() && $user->hasPermission('admin_user_management'))) {?>
@@ -61,12 +62,14 @@ else {
     <?php } ?>
 
     <div class="row mt-2">
-        <div class="col-12 col-md-4 d-flex justify-content-center">
+        <div class="col-12 col-md-4 mt-3 d-flex justify-content-center">
 
-            <img src="/assets/images/avatar/<?= $user_data->getAvatar();?>" height="180" width="180">
+            <img src="/assets/images/avatar/<?= $user_data->getAvatar();?>" height="200" width="200">
 
         </div>
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-6 mt-3 p-2" style="background-color: #494B4D; border-radius: 10px;">
+            <h5 class="text-decoration-underline text-center mb-2">User Info</h5>
+
             <b><?= Functions::Translation('global.username');?>:</b> <?= $user_data->getUsername();?><br>
 
             <b>Main Rank:</b> <?= '<font color="'.$main_rank->getColour().'">'.$main_rank->getName().'</font>';?><br>
@@ -83,8 +86,66 @@ else {
                 ?><b>Minecraft-Account:</b> <?= $user_data->getMCUUID() > 1 ? 'Linked<br>' : 'Not Linked!';?><?php
             } ?>
 
-            <br><br>
-            <?= $user_data->getBio();?>
+            <div class="mt-3">
+                <b>About me:</b><br>
+                <?= $user_data->getBio();?>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12 col-md-6 offset-md-4 p-2" style="background-color: #494B4D; border-radius: 10px;">
+            <h5 class="text-decoration-underline text-center mb-2">Position History</h5>
+            <?php
+                $prepare = Functions::$mysqli->prepare("SELECT * FROM web_users_position_history WHERE user_id = ? AND main_secondary = '1' ORDER BY timestamp DESC");
+                $prepare->bind_param('i', $user_id);
+                $prepare->execute();
+
+                $result = $prepare->get_result();
+                if($result->num_rows > 0) {
+                    ?>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Old Rank</th>
+                                    <th>New Rank</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                while($row = $result->fetch_array()) {
+                                    $old_rank = (array)json_decode($row['old_rank']);
+                                    $new_rank = (array)json_decode($row['new_rank']);
+                                    $time = $row['timestamp'] == -1 ? '-/-' : date('d.m.Y - H:i', $row['timestamp']);
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <?= $time;?>
+                                        </td>
+                                        <td>
+                                            <span style="color: <?= $old_rank['colour'];?>;">
+                                                <b><?= $old_rank['name'];?></b>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span style="color: <?= $new_rank['colour'];?>;">
+                                                <b><?= $new_rank['name'];?></b>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php
+                }
+                else {
+                    echo 'User has no position history!';
+                }
+            ?>
         </div>
     </div>
 <?php } ?>

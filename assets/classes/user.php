@@ -239,6 +239,18 @@ class User {
         return (isset($this->permissions[$permission]) && $this->permissions[$permission] == 1) ? true : false;
     }
 
+    function addPositionHistory($main_secondary, $old_rank, $new_rank) {
+        if($this->id == null) {
+            return null;
+        }
+
+        $time = gmdate('U');
+        $prepare = Functions::$mysqli->prepare("INSERT INTO web_users_position_history (user_id,main_secondary,old_rank,new_rank,timestamp) VALUES (?,?,?,?,?)");
+        $prepare->bind_param('iissi', $this->id, $main_secondary, $old_rank, $new_rank, $time);
+        $prepare->execute();
+        return $this;
+    }
+
     function update() {
         if($this->id == null) {
             return null;

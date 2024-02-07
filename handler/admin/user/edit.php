@@ -128,6 +128,11 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                         $log->setTime(gmdate('U'));
                         $log->create();
 
+                        $old_rank = json_encode(array('colour' => $main_rank->getColour(), 'name' => $main_rank->getName()));
+                        $new_rank = json_encode(array('colour' => $new_main_rank->getColour(), 'name' => $new_main_rank->getName()));
+
+                        $user_data->addPositionHistory(1, $old_rank, $new_rank);
+
                         $user_data->setMainRank($new_main_rank->getID());
                         
                         $changed ++;
@@ -140,6 +145,11 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                         $log->setChangedWhat('Secondary-Rank')->setChangedOld($secondary_rank->getName().' ('.$secondary_rank->getID().')')->setChangedNew($new_secondary_rank->getName().' ('.$new_secondary_rank->getID().')');
                         $log->setTime(gmdate('U'));
                         $log->create();
+
+                        $old_rank = json_encode(array('colour' => $secondary_rank->getColour(), 'name' => $secondary_rank->getName()));
+                        $new_rank = json_encode(array('colour' => $new_secondary_rank->getColour(), 'name' => $new_secondary_rank->getName()));
+
+                        $user_data->addPositionHistory(2, $old_rank, $new_rank);
 
                         $user_data->setSecondaryRank($new_secondary_rank->getID());
                         
