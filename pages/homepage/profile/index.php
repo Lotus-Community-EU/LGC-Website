@@ -1,6 +1,6 @@
 <?php
 if(!isset($GET[1])) {
-    header("Location: /user/".$user->getID());
+    header("Location: /profile/".$user->getID());
     exit;
 }
 if(strtolower($GET[1]) == 'settings') {
@@ -53,7 +53,7 @@ else {
                                     <i class="fa-solid fa-gear"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="/user/settings"><?= Functions::Translation('text.account_settings');?></a></li>
+                                    <li><a class="dropdown-item" href="/profile/settings"><?= Functions::Translation('text.account_settings');?></a></li>
                                 </ul>
                             </div>
                         <?php } ?>

@@ -6,7 +6,7 @@ else {
 
     $all_languages = Functions::GetAllLanguages();
 
-    $csrf_token = Functions::CreateCSRFToken('user_settings');
+    $csrf_token = Functions::CreateCSRFToken('profile_settings');
 
     //$test = file_get_contents('https://mc-heads.net/avatar/d672499f-6506-4b57-85ee-a6fe435ca4f8/nohelm');
     //file_put_contents('assets/images/test.png', $test);
@@ -19,12 +19,12 @@ else {
                 <p><?= Functions::Translation('text.edit_profile');?></p>
             </div>
             <div>
-                <a href="/user/settings/password" class="btn btn-sm btn-success mb-2 mb-md-0"><?= Functions::Translation('text.change_password');?></a>
+                <a href="/profile/settings/password" class="btn btn-sm btn-success mb-2 mb-md-0"><?= Functions::Translation('text.change_password');?></a>
                 <!--<a href="" class="btn btn-sm btn-warning">Reset Profile Picture</a>-->
             </div>
         </div>
         <?php if($user->getCanChangeAvatar() == 1) {?>
-        <form action="/user/avatar" method="post" class="mt-5 mb-5" enctype="multipart/form-data">
+        <form action="/profile/avatar" method="post" class="mt-5 mb-5" enctype="multipart/form-data">
             <?php if($user->getAVatar() != 'none.png') {?>
             <div class="form-group d-flex justify-content-end mb-2">
                 <input type="submit" name="remove_avatar" value="Remove Avatar" class="btn btn-danger btn-sm">
@@ -44,10 +44,10 @@ else {
                 </div>
                 <?php } ?>
             </div>
-            <?php Functions::AddCSRFCheck('user_settings', $csrf_token);?>
+            <?php Functions::AddCSRFCheck('profile_settings', $csrf_token);?>
         </form>
         <?php } ?>
-        <form action="/user/settings" method="POST" class="">
+        <form action="/profile/settings" method="POST" class="">
             <div class="form-group mb-2">
                 <label for="username"><?= Functions::Translation('global.username');?></label>
                 <input type="text" name="username" id="username" class="form-control" value="<?= $user->getUsername();?>" <?= $user->canChangeUsername() == false ? 'disabled' : '';?>>
@@ -107,7 +107,7 @@ else {
                 </script>
             </div>
 
-            <?php Functions::AddCSRFCheck('user_settings', $csrf_token); $_SESSION['user_id'] = $user->getID();?>
+            <?php Functions::AddCSRFCheck('profile_settings', $csrf_token); $_SESSION['user_id'] = $user->getID();?>
             <input type="hidden" name="user_id" value="<?= $user->getID();?>">
             <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.edit');?>">
         </form>

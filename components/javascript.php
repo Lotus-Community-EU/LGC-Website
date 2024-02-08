@@ -45,7 +45,15 @@
         <?php
     }
     else {
-        ?>$("#<?= $page;?>").addClass("active");<?php
+        if($GET[0] == 'profile') {
+            ?>
+            $("#<?= $GET[0];?>").addClass("active");
+            $("#<?= $GET[1];?>").addClass("active");
+            <?php
+        }
+        else {
+            ?>$("#<?= $page;?>").addClass("active");<?php
+        }
     }
     ?>
 </script>

@@ -2,7 +2,7 @@
 $ref = $_SERVER['HTTP_REFERER'];
 $user_id = $_POST['user_id']; $s_id = $_SESSION['user_id']; unset($_SESSION['s_id']);
 if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
-    if(Functions::CheckCSRF('user_settings', $_POST['token'])) {
+    if(Functions::CheckCSRF('profile_settings', $_POST['token'])) {
         if($user_id == $s_id) {
             $current_password = $_POST['current_password'];
             $new_password = $_POST['new_password'];
@@ -30,7 +30,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             if($error == 1) {
                 $_SESSION['error_title'] = 'Change Password';
                 $_SESSION['error_message'] = $error_msg;
-                header("Location: /user/password");
+                header("Location: /profile/password");
                 exit;
             }
 
@@ -39,26 +39,26 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             $prepare->bind_param("si", $hashed_password, Functions::$user['id']);
             $prepare->execute();
             $_SESSION['success_message'] = 'Password changed successfully!';
-            header("Location: /user/password");
+            header("Location: /profile/password");
             exit;
         }
         else {
             $_SESSION['error_title'] = 'Change Password';
             $_SESSION['error_message'] = 'An error occured while changing your password. Please try again! (3)';
-            header("Location: /user/password");
+            header("Location: /profile/password");
             exit;
         }
     }
     else {
         $_SESSION['error_title'] = 'Change Password';
         $_SESSION['error_message'] = 'An error occured while changing your password. Please try again! (2)';
-        header("Location: /user/password");
+        header("Location: /profile/password");
         exit;
     }
 }
 else {
     $_SESSION['error_title'] = 'Change Password';
     $_SESSION['error_message'] = 'An error occured while changing your password. Please try again! (1)';
-    header("Location: /user/password");
+    header("Location: /profile/password");
     exit;
 }

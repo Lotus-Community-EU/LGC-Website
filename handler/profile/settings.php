@@ -3,13 +3,13 @@
 $ref = $_SERVER['HTTP_REFERER'];
 $user_id = $_POST['user_id']; $s_id = $_SESSION['user_id']; unset($_SESSION['user_id']);
 if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
-    if(Functions::CheckCSRF('user_settings', $_POST['token'])) {
+    if(Functions::CheckCSRF('profile_settings', $_POST['token'])) {
         if($user_id == $s_id) {
             if(isset($_POST['link_mc'])) {
                 $key = Functions::GenerateLinkKey($user->getID());
                 $user->setMCVerifyCode($key);
                 $user->update();
-                header("Location: /user/settings");
+                header("Location: /profile/settings");
                 exit;
             }
 
@@ -25,7 +25,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 $user->setMCUUID('');
                 $user->update();
                 $_SESSION['success_message'] = Functions::Translation('text.success.minecraft_unlink');
-                header("Location: /user/settings");
+                header("Location: /profile/settings");
                 exit;
             }
 
@@ -143,26 +143,26 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             if($changed > 0) {
                 $_SESSION['success_message'] = 'Profile edited successfully';
             }
-            header("Location: /user/settings");
+            header("Location: /profile/settings");
             exit;
         }
         else {
-            $_SESSION['error_title'] = 'Edit User';
+            $_SESSION['error_title'] = 'Edit Profile';
             $_SESSION['error_message'] = 'An error occured while editing your account. Please try again! (3)';
-            header("Location: /user/settings");
+            header("Location: /profile/settings");
             exit;
         }
     }
     else {
-        $_SESSION['error_title'] = 'Edit User';
+        $_SESSION['error_title'] = 'Edit Profile';
         $_SESSION['error_message'] = 'An error occured while editing your account. Please try again! (2)';
-        header("Location: /user/settings");
+        header("Location: /profile/settings");
         exit;
     }
 }
 else {
-    $_SESSION['error_title'] = 'Edit User';
+    $_SESSION['error_title'] = 'Edit Profile';
     $_SESSION['error_message'] = 'An error occured while editing your account. Please try again! (1)';
-    header("Location: /user/settings");
+    header("Location: /profile/settings");
     exit;
 }

@@ -38,12 +38,12 @@
                     </li>
                 <?php } else { // User loggedin ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle nav-check" id="profile" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <?= $user->getUsername();?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
-                            <a class="dropdown-item" href="/user/<?= $user->getID();?>"><?= Functions::Translation('text.profile');?></a>
-                            <a class="dropdown-item" href="/user/settings"><?= Functions::Translation('text.account_settings');?></a>
+                            <a class="dropdown-item nav-check" id="<?= $user->getID();?>" href="/profile/<?= $user->getID();?>"><?= Functions::Translation('text.profile');?></a>
+                            <a class="dropdown-item nav-check" id="settings" href="/profile/settings"><?= Functions::Translation('text.account_settings');?></a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/logout"><?= Functions::Translation('text.logout');?></a>
                         </ul>

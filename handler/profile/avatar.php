@@ -2,7 +2,7 @@
 
 $ref = $_SERVER['HTTP_REFERER'];
 if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
-    if(Functions::CheckCSRF('user_settings', $_POST['token'])) {
+    if(Functions::CheckCSRF('profile_settings', $_POST['token'])) {
         if($user->getCanChangeAVatar() == 1) {
             if(isset($_POST['use_mc_avatar'])) {
                 if(strlen($user->getMCUUID()) > 1) {
@@ -76,21 +76,21 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                             exit;
                         }
                         else {
-                            $_SESSION['error_title'] = 'Edit Profile Picture';
+                            $_SESSION['error_title'] = 'Edit Avatar';
                             $_SESSION['error_message'] = 'Avatars can only be .png, .jpeg or .gif files!';
                             header("Location: /user/settings");
                             exit;
                         }
                     }
                     else {
-                        $_SESSION['error_title'] = 'Edit Profile Picture';
+                        $_SESSION['error_title'] = 'Edit Avatar';
                         $_SESSION['error_message'] = 'Avatar can not be bigger than '.$settings->getMaxAvatarSize().' MB!';
                         header("Location: /user/settings");
                         exit;
                     }
                 }
                 else {
-                    $_SESSION['error_title'] = 'Edit Profile Picture';
+                    $_SESSION['error_title'] = 'Edit Avatar';
                     $_SESSION['error_message'] = 'Please select an Avatar you want to upload!';
                     header("Location: /user/settings");
                     exit;
@@ -98,22 +98,22 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             }
         }
         else {
-            $_SESSION['error_title'] = 'Edit Profile Picture';
-            $_SESSION['error_message'] = 'Your permissions to change your Profile Picture have been rejected. Contact Staff, if you think that this is an error!';
-            header("Location: /user/settings");
+            $_SESSION['error_title'] = 'Edit Avatar';
+            $_SESSION['error_message'] = 'Your permissions to change your Avatar have been rejected. Contact Staff, if you think that this is an error!';
+            header("Location: /profile/settings");
             exit;
         }
     }
     else {
-        $_SESSION['error_title'] = 'Edit Profile Picture';
-        $_SESSION['error_message'] = 'An error occured while editing your profile picture. Please try again! (2)';
-        header("Location: /user/settings");
+        $_SESSION['error_title'] = 'Edit Avatar';
+        $_SESSION['error_message'] = 'An error occured while editing your Avatar. Please try again! (2)';
+        header("Location: /profile/settings");
         exit;
     }
 }
 else {
-    $_SESSION['error_title'] = 'Edit Profile Picture';
-    $_SESSION['error_message'] = 'An error occured while editing your profile picture. Please try again! (1)';
-    header("Location: /user/settings");
+    $_SESSION['error_title'] = 'Edit Avatar';
+    $_SESSION['error_message'] = 'An error occured while editing your Avatar. Please try again! (1)';
+    header("Location: /profile/settings");
     exit;
 }
