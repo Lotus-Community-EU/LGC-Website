@@ -36,4 +36,16 @@
             return false;
         });
     });
+
+    $(".nav-check").removeClass("active");
+    <?php if($GET[0] == 'admin') {
+        ?>
+            $("#<?= $GET[0];?>").addClass("active");
+            $("#<?= $page;?>").addClass("active");
+        <?php
+    }
+    else {
+        ?>$("#<?= $page;?>").addClass("active");<?php
+    }
+    ?>
 </script>

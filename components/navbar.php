@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link nav-check" id="index" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
@@ -18,23 +18,23 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <?php if($user->hasPermission('admin_admin_tab')) { ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle nav-check" id="admin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Administration
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
                             <?php
                                 // Functions::AddAdminTabLink($link, $icon, $permission, $text)
-                                Functions::AddAdminTabLink('/admin/user/list','fa-solid fa-users','admin_user_list', Functions::Translation('nav.admin.user_list'));
-                                Functions::AddAdminTabLink('/admin/ranks/list','fa-solid fa-user-gear','admin_rank_management', Functions::Translation('nav.admin.rank_management'));
-                                Functions::AddAdminTabLink('/admin/translation/list','fa-solid fa-language','admin_translation_list', Functions::Translation('nav.admin.translation_management'));
-                                Functions::AddAdminTabLink('/admin/website_settings','fa-solid fa-wrench','admin_website_settings', Functions::Translation('nav.admin.website_settings'));
+                                Functions::AddAdminTabLink('user','/admin/user/list','fa-solid fa-users','admin_user_list', Functions::Translation('nav.admin.user_list'));
+                                Functions::AddAdminTabLink('ranks','/admin/ranks/list','fa-solid fa-user-gear','admin_rank_management', Functions::Translation('nav.admin.rank_management'));
+                                Functions::AddAdminTabLink('translation','/admin/translation/list','fa-solid fa-language','admin_translation_list', Functions::Translation('nav.admin.translation_management'));
+                                Functions::AddAdminTabLink('website_settings','/admin/website_settings','fa-solid fa-wrench','admin_website_settings', Functions::Translation('nav.admin.website_settings'));
                             ?>
                         </ul>
                     </li>
                 <?php } ?>
                 <?php if($user->getID() == 0) { // User not loggedin ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login"><?= Functions::Translation('text.login');?></a>
+                        <a class="nav-link nav-check" id="login" href="/login"><?= Functions::Translation('text.login');?></a>
                     </li>
                 <?php } else { // User loggedin ?>
                     <li class="nav-item dropdown">

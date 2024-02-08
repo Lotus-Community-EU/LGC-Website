@@ -55,3 +55,7 @@ label {
     text-decoration: underline;
     margin-bottom: .5rem;
 }
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: var(--lotus_pink1);
+}

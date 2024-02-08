@@ -264,14 +264,14 @@ class Functions {
         header("Location: /");
     }
 
-    static function AddAdminTabLink($link, $icon, $permission, $text) {
+    static function AddAdminTabLink($id, $link, $icon, $permission, $text) {
         global $user;
         if($user->hasPermission($permission) == 1) {
             if(strlen($icon) > 0) {
-                echo '<a class="dropdown-item" href="'.$link.'"><i class="'.$icon.'"></i> '.$text.'</a>';
+                echo '<a class="dropdown-item" id="'.$id.'" href="'.$link.'"><i class="'.$icon.'"></i> '.$text.'</a>';
             }
             else {
-                echo '<a class="dropdown-item" href="'.$link.'">'.$text.'</a>';
+                echo '<a class="dropdown-item" id="'.$id.'" href="'.$link.'">'.$text.'</a>';
             }
         }
     }
