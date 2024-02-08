@@ -5,6 +5,7 @@ Functions::ConnectDB();
 include('assets/classes/log.php');
 include('assets/classes/user.php');
 include('assets/classes/rank.php');
+include('assets/classes/todo.php');
 include('assets/classes/settings.php');
 $settings = new Settings();
 
@@ -35,6 +36,9 @@ switch($page) {
                     break;
                 case 'website_settings':
                     LoadAdminView($GET['1'],'admin_website_settings');
+                    break;
+                case 'todo':
+                    LoadAdminView($GET['1'],'admin_todo_access');
                     break;
 				default:
 					LoadAdminView($GET[1]);

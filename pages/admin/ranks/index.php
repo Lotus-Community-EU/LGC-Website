@@ -29,7 +29,7 @@ else { ?>
                     ?>
                     <tr>
                         <td><?= $rank['id'];?></td>
-                        <td><span style="color: <?= $rank['colour'];?>;"><?= $rank['name'].(strlen($rank['short']) > 0 ? ' ('.$rank['short'].')' : '');?></style></td>
+                        <td><span style="color: <?= $rank['colour'];?>;"><?= $rank['name'].(strlen($rank['short']) > 0 ? ' ('.$rank['short'].')' : '');?></span></td>
                         <td><a href="/admin/ranks/edit/<?= $rank['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::Translation('text.rank.edit.button');?></a></td>
                     </tr>
                     <?php

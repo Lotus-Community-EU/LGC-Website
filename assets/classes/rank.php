@@ -11,6 +11,7 @@ class Rank {
         2 => 'Admin - User Management',
         3 => 'Admin - Rank Management',
         4 => 'Admin - Translation-System',
+        5 => 'Admin - To-Do System'
     );
 
     public $lengths = array(
