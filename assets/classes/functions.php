@@ -178,9 +178,9 @@ class Functions {
 
     static function ConnectDB() {
         $data = array(
-            'host'      => '45.81.233.154',
+            'host'      => '46.4.66.239',
             'user'      => 'root',
-            'password'  => 'ChrisSucks2400',
+            'password'  => 'ChristopherWilhelm2856',
             'database'  => 'LotusGaming'
         );
 
