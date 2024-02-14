@@ -56,7 +56,7 @@ switch($page) {
 		else {
 			switch($page) {
                 case 'logout':
-                    LoadHandler('logout');
+                    User::logout();
                     break;
 				default:
                     $user = new User(isset($_SESSION['user_token']) ? $_SESSION['user_token'] : (isset($_COOKIE['remember']) ? $_COOKIE['remember'] : 'guest'));

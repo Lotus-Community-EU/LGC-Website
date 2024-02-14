@@ -11,15 +11,13 @@
                 <li class="nav-item">
                     <a class="nav-link nav-check" id="index" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <?php if($user->hasPermission('admin_admin_tab')) { ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle nav-check" id="admin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle nav-check position relative" id="admin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Administration
+                            <span class="position-absolute translate-middle p-1 bg-danger rounded-circle d-none d-lg-block" style="left: 83%; top: 30%;"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
                             <?php
@@ -27,8 +25,8 @@
                                 Functions::AddAdminTabLink('user','/admin/user/list','fa-solid fa-users','admin_user_list', Functions::Translation('nav.admin.user_list'));
                                 Functions::AddAdminTabLink('ranks','/admin/ranks/list','fa-solid fa-user-gear','admin_rank_management', Functions::Translation('nav.admin.rank_management'));
                                 Functions::AddAdminTabLink('translation','/admin/translation/list','fa-solid fa-language','admin_translation_list', Functions::Translation('nav.admin.translation_management'));
-                                Functions::AddAdminTabLink('website_settings','/admin/website_settings','fa-solid fa-wrench','admin_website_settings', Functions::Translation('nav.admin.website_settings'));
-                                Functions::AddAdminTabLink('todo','/admin/todo/view','fa-solid fa-file-pen','admin_todo_access','To-Do System');
+                                Functions::AddAdminTabLink('website_settings','/admin/website_settings','fa-solid fa-wrench','admin_website_settings', Functions::Translation('nav.admin.website_settings'),'NEW');
+                                Functions::AddAdminTabLink('todo','/admin/todo/view','fa-solid fa-file-pen','admin_todo_access','To-Do System','TBA', [Functions::$webdev_role, Functions::$pl_role, Functions::$vpl_role]);
                             ?>
                         </ul>
                     </li>

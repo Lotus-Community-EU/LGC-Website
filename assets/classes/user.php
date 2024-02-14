@@ -284,10 +284,7 @@ class User {
         $prepare->execute();
     }
 
-    function logout() {
-        if($this->id == null) {
-            return null;
-        }
+    static function logout() {
         unset($_SESSION['login_token']);
         ?><script>setcookie('remember','', 1,'/');</script><?php
         session_destroy();

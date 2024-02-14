@@ -17,6 +17,10 @@ class Functions {
     public static $settings;
 
     public static $user_permissions;
+    
+    public static $webdev_role = 3;
+    public static $pl_role = 12;
+    public static $vpl_role = 14;
 
     static function GetWebsiteURL() {
         global $config;
@@ -264,31 +268,43 @@ class Functions {
         header("Location: /");
     }
 
-    static function AddAdminTabLink($id, $link, $icon, $permission, $text) {
+    // can_see_tba
+    static function AddAdminTabLink($id, $link, $icon, $permission, $text, $tba_new = '', $tba_see = []) {
         global $user;
-        if($user->hasPermission($permission) == 1) {
-            if(strlen($icon) > 0) {
-                echo '<a class="dropdown-item" id="'.$id.'" href="'.$link.'"><i class="'.$icon.'"></i> '.$text.'</a>';
+        if($tba_new == 'TBA') {
+            if(in_array($user->getMainRank(), $tba_see) || in_array($user->getSecondaryRank(), $tba_see)) {
+                if(strlen($icon) > 0) {
+                    echo '<a class="dropdown-item" id="'.$id.'" href="'.$link.'"><i class="'.$icon.'"></i> '.$text.' <span class="badge bg-danger">TBA</span></a>';
+                }
+                else {
+                    echo '<a class="dropdown-item" id="'.$id.'" href="'.$link.'">'.$text.' <span class="badge bg-danger">TBA</span></a>';
+                }
             }
             else {
-                echo '<a class="dropdown-item" id="'.$id.'" href="'.$link.'">'.$text.'</a>';
+                if(strlen($icon) > 0) {
+                    echo '<a class="dropdown-item disabled" id="'.$id.'" href=""><i class="'.$icon.'"></i> '.$text.' <span class="badge badge-sm bg-danger">TBA</span></a>';
+                }
+                else {
+                    echo '<a class="dropdown-item disabled" id="'.$id.'" href="">'.$text.' <span class="badge bg-danger">TBA</span></a>';
+                }
+            }
+        }
+        else {
+            if($user->hasPermission($permission) == 1) {
+                if($tba_new == 'NEW') {
+                    $text = $text.' <span class="badge bg-danger">NEW</span>';
+                }
+                if(strlen($icon) > 0) {
+                    echo '<a class="dropdown-item" id="'.$id.'" href="'.$link.'"><i class="'.$icon.'"></i> '.$text.'</a>';
+                }
+                else {
+                    echo '<a class="dropdown-item" id="'.$id.'" href="'.$link.'">'.$text.'</a>';
+                }
             }
         }
     }
 
     static function GetAllPermissions() {
-        /*$query = self::$mysqli->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'web_ranks_permissions' AND COLUMN_NAME NOT IN ('id','rank_id')");
-
-		$columns = array();
-		$values = array();
-
-		if($query->num_rows > 0) {
-			while($row = $query->fetch_assoc()) {
-				$columns[] = $row["COLUMN_NAME"];
-			}
-		}
-
-        return $columns;*/
 
         $return = array();
 
