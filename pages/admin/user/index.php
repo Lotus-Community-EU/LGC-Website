@@ -24,7 +24,7 @@ else { ?>
                     ?>
                     <tr>
                         <td><?= $user['id'];?></td>
-                        <td><a href="/user/<?= $user['id'];?>" class="text-white" target="_blank"><?= $user['username'];?></a></td>
+                        <td><a href="/profile/<?= $user['id'];?>" class="text-white" target="_blank"><?= $user['username'];?></a></td>
                         <td><?= date('d.m.Y', $last_login);?></td>
                         <td><a href="/admin/user/edit/<?= $user['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::Translation('text.edit_user');?></a></td>
                     </tr>
