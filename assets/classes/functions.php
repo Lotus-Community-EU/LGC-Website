@@ -21,6 +21,7 @@ class Functions {
     public static $webdev_role = 3;
     public static $pl_role = 12;
     public static $vpl_role = 14;
+    public static $bt_role = 33;
 
     static function GetWebsiteURL() {
         global $config;
