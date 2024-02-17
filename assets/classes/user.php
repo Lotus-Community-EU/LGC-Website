@@ -286,7 +286,7 @@ class User {
 
     static function logout() {
         unset($_SESSION['login_token']);
-        ?><script>setcookie('remember','', 1,'/');</script><?php
+        unset($_COOKIE['remember']);
         session_destroy();
         header("Location: /");
     }
