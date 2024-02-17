@@ -84,7 +84,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
         </div>
 
         <?php
-            $all_permissions = $rank->getAllPermissions();
+            $all_permissions = Rank::getAllPermissions();
             foreach(Rank::$permission_categories as $cat_key => $category) {
                 ?>
                 <div class="row mt-5">

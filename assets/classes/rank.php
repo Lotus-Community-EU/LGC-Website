@@ -151,7 +151,7 @@ class Rank {
 
     function getPermissions() { return $this->permissions; }
 
-    function getAllPermissions() {
+    static function getAllPermissions() {
         $query = Functions::$mysqli->query("SELECT * FROM web_permissions WHERE id > 0");
         if($query->num_rows > 0) {
             return $query->fetch_all(MYSQLI_ASSOC);
