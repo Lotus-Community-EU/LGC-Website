@@ -28,35 +28,35 @@ else {
     ?>
 
     <?php if($user->hasPermission('admin_user_view_admintab') || $user_id == $user->getID()) { ?>
-                <div class="row">
-                    <div class="col-12 offset-md-4 col-md-6 p-0 d-flex justify-content-end">
-                        <?php if($user->hasPermission('admin_user_view_admintab')) {?>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Admin-Menu">
-                                    Admin
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                    <?php if($user->hasPermission('admin_user_management')) {?>
-                                    <li><a class="dropdown-item" href="/admin/user/edit/<?= $user_data->getID();?>"><?= Functions::Translation('text.edit_user');?></a></li>
-                                    <?php } ?>
-                                    <?php if($user->hasPermission('admin_user_management_log_view')) {?>
-                                    <li><a class="dropdown-item" href="/admin/user/logs/<?= $user_data->getID();?>"><?= Functions::Translation('text.view_logs');?></a></li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
-                        <?php } ?>
-                        <?php if($user_id == $user->getID()) {?>
-                            <div class="dropdown ms-2">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="User-Menu">
-                                    <i class="fa-solid fa-gear"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="/profile/settings"><?= Functions::Translation('text.account_settings');?></a></li>
-                                </ul>
-                            </div>
-                        <?php } ?>
+        <div class="row">
+            <div class="col-12 offset-md-4 col-md-6 p-0 d-flex justify-content-end">
+                <?php if($user->hasPermission('admin_user_view_admintab')) {?>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Admin-Menu">
+                            Admin
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                            <?php if($user->hasPermission('admin_user_management')) {?>
+                            <li><a class="dropdown-item" href="/admin/user/edit/<?= $user_data->getID();?>"><?= Functions::Translation('text.edit_user');?></a></li>
+                            <?php } ?>
+                            <?php if($user->hasPermission('admin_user_management_log_view')) {?>
+                            <li><a class="dropdown-item" href="/admin/user/logs/<?= $user_data->getID();?>"><?= Functions::Translation('text.view_logs');?></a></li>
+                            <?php } ?>
+                        </ul>
                     </div>
-                </div>
+                <?php } ?>
+                <?php if($user_id == $user->getID()) {?>
+                    <div class="dropdown ms-2">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="User-Menu">
+                            <i class="fa-solid fa-gear"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/profile/settings"><?= Functions::Translation('text.account_settings');?></a></li>
+                        </ul>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
     <?php } ?>
 
     <div class="row mt-2">

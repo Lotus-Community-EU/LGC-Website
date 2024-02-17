@@ -25,7 +25,7 @@ else {
         </div>
         <?php if($user->getCanChangeAvatar() == 1) {?>
         <form action="/profile/avatar" method="post" class="mt-5 mb-5" enctype="multipart/form-data">
-            <?php if($user->getAVatar() != 'none.png') {?>
+            <?php if($user->getAvatar() != 'none.png') {?>
             <div class="form-group d-flex justify-content-end mb-2">
                 <input type="submit" name="remove_avatar" value="Remove Avatar" class="btn btn-danger btn-sm">
             </div>
