@@ -126,7 +126,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                                             <form action="/admin/translation/edit" id="Form<?= $res['id'];?>" method="POST">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Translation: <?= $res['path'];?></h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div id="ergebnis_<?= $res['id'];?>" class="alert text-dark mb-3" style="display: none;"></div>
