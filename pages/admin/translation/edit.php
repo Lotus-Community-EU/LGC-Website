@@ -14,6 +14,9 @@ if(!Functions::LanguageExists($GET[3])) {
 
 $language = $GET[3];
 $language_name = Functions::GetLanguageName($language);
+if($language != 'English') {
+    $english_translations = Functions::GetLanguageTranslations('English');
+}
 $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
 ?>
 
@@ -77,7 +80,6 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         </div>
     </div>
 </div>
-<div id="ergebnis" class="alert text-dark" style="display: none;"></div>
 <div class="table-responsive">
     <table id="table" class="table table-dark table-borderless">
         <thead>
@@ -86,7 +88,6 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                 <th>isBot</th>
                 <th>isGame</th>
                 <th>isWeb</th>
-                <th>Text</th>
                 <th>Save</th>
             </tr>
         </thead>
@@ -98,35 +99,83 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                 $result = $result->fetch_all(MYSQLI_ASSOC);
                 foreach($result as $res) {
                     ?>
-                    <form action="/admin/translation/edit" id="<?= $res['id'];?>" method="POST">
                         <tr>
                             <td <?= ($res[$language] == 'none' || strlen($res[$language]) < 1) ? 'style="color: red;"' : '';?>>
-                                <?= $res['path'];?>
+                                <?= $res['path']. (($res[$language] == 'none' || strlen($res[$language]) < 1) ? ' (NONE!)' : '');?>
                             </td>
                             <td>
-                                <input type="checkbox" name="isBot" class="form-check-input" <?= $res['isBot'] == 1 ? 'checked' : '';?>>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="isGame" class="form-check-input" <?= $res['isGame'] == 1 ? 'checked' : '';?>>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="isWeb" class="form-check-input" <?= $res['isWeb'] == 1 ? 'checked' : '';?>>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <textarea name="new_language" rows="1" class="form-control"><?= $res[$language];?></textarea>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" disabled <?= $res['isBot'] == 1 ? 'checked' : '';?>>
                                 </div>
                             </td>
                             <td>
-                                <div class="form-group">
-                                    <?php Functions::AddCSRFCheck('admin_translation_edit', $csrf_token); $_SESSION['language_name'] = $language;?>
-                                    <input type="hidden" name="path" value="<?= $res['path'];?>">
-                                    <input type="hidden" name="language_name" value="<?= $language;?>">
-                                    <button type="button" id="submit_language_<?= $res['id'];?>" onclick="SubmitForm(<?= $res['id'];?>)" key="<?= $res['id'];?>" class="btn btn-success"><?= Functions::Translation('global.edit');?></button>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" disabled <?= $res['isGame'] == 1 ? 'checked' : '';?>>
                                 </div>
+                            </td>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" disabled <?= $res['isWeb'] == 1 ? 'checked' : '';?>>
+                                </div>
+                            </td>
+                            <td>
+                                
+                                <div class="modal" id="edit_<?= $res['id'];?>" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <form action="/admin/translation/edit" id="Form<?= $res['id'];?>" method="POST">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Translation: <?= $res['path'];?></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="ergebnis_<?= $res['id'];?>" class="alert text-dark mb-3" style="display: none;"></div>
+                                                    <?php
+                                                    if($language != 'English') {
+                                                        ?>
+                                                        <div class="form-group">
+                                                            <label>Original English</label>
+                                                            <textarea class="form-control" cols="30" rows="2" disabled><?= $english_translations[$res['path']];?></textarea>
+                                                        </div>
+                                                        <hr>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                    <div class="form-group">
+                                                        <label for="new_language_<?= $res['id'];?>">Translation - <?= $language;?></label>
+                                                        <textarea name="new_language" id="new_language_<?= $res['id'];?>" cols="30" rows="3" class="form-control"><?= $res[$language];?></textarea>
+                                                    </div>
+                                                    <hr>
+                                                    <label>Availability</label>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="isBot_<?= $res['id'];?>" name="isBot" <?= $res['isBot'] == 1 ? 'checked' : '';?>>
+                                                        <label for="isBot_<?= $res['id'];?>" class="form-check-label">isBot</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="isGame_<?= $res['id'];?>" name="isGame" <?= $res['isGame'] == 1 ? 'checked' : '';?>>
+                                                        <label for="isGame_<?= $res['id'];?>" class="form-check-label">isGame</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="isWeb_<?= $res['id'];?>" name="isWeb" <?= $res['isWeb'] == 1 ? 'checked' : '';?>>
+                                                        <label for="isWeb_<?= $res['id'];?>" class="form-check-label">isBot</label>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <?php Functions::AddCSRFCheck('admin_translation_edit', $csrf_token); $_SESSION['language_name'] = $language;?>
+                                                    <input type="hidden" name="path" value="<?= $res['path'];?>">
+                                                    <input type="hidden" name="language_name" value="<?= $language;?>">
+                                                    <input type="hidden" name="id" value="<?= $res['id'];?>">
+                                                    <button type="button" id="submit_language_<?= $res['id'];?>" onclick="SubmitForm(<?= $res['id'];?>)" key="<?= $res['id'];?>" class="btn btn-success"><?= Functions::Translation('global.edit');?></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#edit_<?= $res['id'];?>"><?= Functions::Translation('global.edit');?></button>
                             </td>
                         </tr>
-                    </form>
                     <?php
                 }
             ?>
@@ -159,7 +208,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
 
 <script>
     function SubmitForm(id) {
-        var FormularData = new FormData(document.getElementById(id));
+        var FormularData = new FormData(document.getElementById("Form"+id));
 
         $.ajax({
             type: 'POST',
@@ -169,17 +218,18 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
             contentType: false,
             success: function(response) {
                 if(response.status == 'success') {
-                    $("#ergebnis").css("display","block");
-                    $("#ergebnis").removeClass("alert-danger");
-                    $("#ergebnis").addClass("alert-success");
-                    $("#ergebnis").html(response.message);
+                    $("#ergebnis_"+response.id).css("display","block");
+                    $("#ergebnis_"+response.id).removeClass("alert-danger");
+                    $("#ergebnis_"+response.id).addClass("alert-success");
+                    $("#ergebnis_"+response.id).html(response.message);
                 }
                 else {
-                    $("#ergebnis").css("display","block");
-                    $("#ergebnis").removeClass("alert-success");
-                    $("#ergebnis").addClass("alert-danger");
-                    $("#ergebnis").html(response);
+                    $("#ergebnis_"+response.id).css("display","block");
+                    $("#ergebnis_"+response.id).removeClass("alert-success");
+                    $("#ergebnis_"+response.id).addClass("alert-danger");
+                    $("#ergebnis_"+response.id).html(response);
                 }
+                console.log(response);
             }
         });
     }
@@ -190,6 +240,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         bot = document.getElementById("filter_bot");
         game = document.getElementById("filter_game");
         web = document.getElementById("filter_web");
+        none = document.getElementById("filter_none")
         input = document.getElementById("filter");
         filter = input.value.toUpperCase();
         table = document.getElementById("table");
@@ -214,6 +265,14 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                         if(!(tr[i].getElementsByTagName("td")[3].getElementsByTagName("input")[0].checked)) {
                             tr[i].style.display = "none";
                         } 
+                    }
+                    if(none.checked) {
+                        txtValue = tr[i].getElementsByTagName("td")[0];
+                        txtValue = txtValue.textContent || txtValue.innerText;
+                        var text = td.getElementsByTagName('td')[0];
+                        if(!(txtValue.toUpperCase().indexOf('NONE!') > -1)) {
+                            tr[i].style.display = "none";
+                        }
                     }
                 }
                 else {
@@ -316,12 +375,12 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         table = document.getElementById("table");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[4];
+            td = tr[i].getElementsByTagName("td")[0];
             if (td) {
                 txtValue = tr[i].getElementsByTagName("td")[0];
                 txtValue = txtValue.textContent || txtValue.innerText;
-                var text = td.getElementsByTagName('textarea')[0];
-                if(text.value == 'none' || text.value.length < 1) {
+                var text = td.getElementsByTagName('td')[0];
+                if(txtValue.toUpperCase().indexOf('NONE!') > -1) {
                     tr[i].style.display = "";
                 }
                 else {

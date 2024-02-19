@@ -41,7 +41,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                             $prepare->execute();
                             $response = array(
                                 'status' => 'success',
-                                'message' => Functions::Translation('text.translation.language.name_edited')
+                                'message' => Functions::Translation('text.translation.language.name_edited'),
+                                'id' => $_POST['id']
                             );
                         }
                     }
@@ -89,7 +90,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 if($error == 1) {
                     $response = array(
                         'status' => 'error',
-                        'message' => $error_msg
+                        'message' => $error_msg,
+                        'id' => $_POST['id']
                     );
                 }
                 else {
@@ -142,7 +144,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                     $prepare->execute();
                     $response = array(
                         'status' => 'success',
-                        'message' => Functions::Translation('text.translation.language.language_edited', ['path','old_translation','new_translation'], [$path, $current_translations[$path], $new_language])
+                        'message' => Functions::Translation('text.translation.language.language_edited', ['path','old_translation','new_translation'], [$path, $current_translations[$path], $new_language]),
+                        'id' => $_POST['id']
                     );
 
                 }
@@ -153,7 +156,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
         else {
             $response = array(
                 'status' => 'error',
-                'message' => 'An error occured while editing the Translation. Please try again! (3)'
+                'message' => 'An error occured while editing the Translation. Please try again! (3)',
+                'id' => $_POST['id']
             );
             header('Content-Type: application/json');
             echo json_encode($response);
@@ -162,7 +166,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
     else {
         $response = array(
             'status' => 'error',
-            'message' => 'An error occured while editing the Translation. Please try again! (2)'
+            'message' => 'An error occured while editing the Translation. Please try again! (2)',
+            'id' => $_POST['id']
         );
         header('Content-Type: application/json');
         echo json_encode($response);
@@ -171,7 +176,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
 else {
     $response = array(
         'status' => 'error',
-        'message' => 'An error occured while editing the Translation. Please try again! (1)'
+        'message' => 'An error occured while editing the Translation. Please try again! (1)',
+        'id' => $_POST['id']
     );
     header('Content-Type: application/json');
     echo json_encode($response);

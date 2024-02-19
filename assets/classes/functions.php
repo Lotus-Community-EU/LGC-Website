@@ -100,6 +100,10 @@ class Functions {
     static function CreateCSRFToken($token_for) {
         $token = uniqid();
         self::$csrf_token = $token;
+        if(!is_array($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = array();
+        }
+        //array_push($_SESSION['csrf_token'], $token_for);
         $_SESSION['csrf_token'][$token_for]['token'] = self::$csrf[0].$token.self::$csrf[1];
         $_SESSION['csrf_token'][$token_for]['expire'] = time()+1800; // 30 Minutes = 1800 Seconds
         return $token;
@@ -354,6 +358,26 @@ class Functions {
                 self::$translations[$result[$i]['path']] = $result[$i][$language];
             }
             //self::$translations = $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
+    static function GetLanguageTranslations($language) {
+        if(self::LanguageExists($language) == false) {
+            return null;
+        }
+        $prepare = self::$mysqli->prepare("SELECT * FROM core_translations WHERE LENGTH(?) > 0");
+        $prepare->bind_param('s', $language);
+        $prepare->execute();
+
+        $result = $prepare->get_result();
+
+        $temp = array();
+        if($result->num_rows > 0) {
+            $result = $result->fetch_all(MYSQLI_ASSOC);
+            for($i = 0; $i < sizeof($result); $i++) {
+                $temp[$result[$i]['path']] = $result[$i][$language];
+            }
+            return $temp;
         }
     }
 
