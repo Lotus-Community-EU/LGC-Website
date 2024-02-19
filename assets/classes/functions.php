@@ -100,7 +100,7 @@ class Functions {
     static function CreateCSRFToken($token_for) {
         $token = uniqid();
         self::$csrf_token = $token;
-        if(!is_array($_SESSION['csrf_token'])) {
+        if(!isset($_SESSION['csrf_token']) || !is_array($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = array();
         }
         //array_push($_SESSION['csrf_token'], $token_for);
