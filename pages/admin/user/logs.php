@@ -62,9 +62,9 @@ $csrf_token = Functions::CreateCSRFToken('admin_user_management_logs');
                             </span>
                         </td>
                         <td>
-                            <a href="/user/<?= $row['user'];?>" <?= ($user->hasPermission('admin_user_management_log_delete') && $row['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Hyperlink (<?= $row['user'];?>)</a>
+                            <a href="/profile/<?= $row['user'];?>" <?= ($user->hasPermission('admin_user_management_log_delete') && $row['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Hyperlink (<?= $row['user'];?>)</a>
                             <?php if($row['deleted'] == 1) {?>
-                                | <a href="/user/<?= $row['deleted_by'];?>" <?= ($user->hasPermission('admin_user_management_log_delete') && $row['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Deleted by (<?= $row['deleted_by'];?>)</a>
+                                | <a href="/profile/<?= $row['deleted_by'];?>" <?= ($user->hasPermission('admin_user_management_log_delete') && $row['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Deleted by (<?= $row['deleted_by'];?>)</a>
                             <?php }?>
 
                         </td>
