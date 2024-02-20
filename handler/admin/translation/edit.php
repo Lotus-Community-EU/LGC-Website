@@ -21,7 +21,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                     if($error == 1) {
                         $response = array(
                             'status' => 'error',
-                            'message' => $error_msg
+                            'message' => $error_msg,
+                            'id' => 'name'
                         );
                         header("Location: /admin/translation/edit/".$language_name);
                     }
@@ -43,7 +44,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                             $response = array(
                                 'status' => 'success',
                                 'message' => Functions::Translation('text.translation.language.name_edited'),
-                                'id' => $_POST['id']
+                                'id' => 'name'
                             );
                         }
                     }

@@ -35,9 +35,10 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                             <div class="col-12">
                                 <?php Functions::AddCSRFCheck('admin_translation_edit', $csrf_token); $_SESSION['language_name'] = $language;?>
                                 <input type="hidden" name="language_name" value="<?= $language;?>">
-                                <button type="button" id="submit_language" onclick="SubmitForm(0)" key="<?= $res['id'];?>" class="btn btn-success w-100"><?= Functions::Translation('text.translation.language.language_name.button');?></button>
+                                <button type="button" id="submit_language" onclick="SubmitForm(0)" name="new_language_name" class="btn btn-success w-100"><?= Functions::Translation('text.translation.language.language_name.button');?></button>
                             </div>
                         </form>
+                        <div id="ergebnis_name" class="alert text-dark mb-3 mt-2" style="display: none;"></div>
                     <?php
                 }
                 else {
@@ -208,7 +209,12 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
 
 <script>
     function SubmitForm(id) {
-        var FormularData = new FormData(document.getElementById("Form"+id));
+        if(id == 0) {
+            var FormularData = new FormData(document.getElementById(id));
+        }
+        else {
+            var FormularData = new FormData(document.getElementById("Form"+id));
+        }
 
         $.ajax({
             type: 'POST',
