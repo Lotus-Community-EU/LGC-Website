@@ -1,6 +1,6 @@
 <?php
 $ref = $_SERVER['HTTP_REFERER'];
-$language_name = $_POST['language_name']; $s_language_name = $_SESSION['language_name']; unset($_SESSION['language_name']);
+$language_name = $_POST['language_name']; $s_language_name = $_SESSION['language_name']; //unset($_SESSION['language_name']);
 if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
     if(Functions::CheckCSRF('admin_translation_edit', $_POST['token'])) {
         if($language_name == $s_language_name) {
@@ -14,7 +14,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                         $error_msg = '- The input language name is invalid (must be 1-32 characters)!';
                     }
 
-                    $_SESSION['csrf_token'] = Functions::$csrf[0].$_POST['token'].Functions::$csrf[1];
+                    $_SESSION['csrf_token']['admin_translation_edit']['token'] = Functions::$csrf[0].$_POST['token'].Functions::$csrf[1];
+                    $_SESSION['csrf_token']['admin_translation_edit']['expire'] = time()+1800; // 30 Minutes = 1800 Seconds
                     $_SESSION['language_name'] = $language_name;
 
                     if($error == 1) {
@@ -72,7 +73,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                     }
                 }
 
-                $_SESSION['csrf_token'] = Functions::$csrf[0].$_POST['token'].Functions::$csrf[1];
+                $_SESSION['csrf_token']['admin_translation_edit']['token'] = Functions::$csrf[0].$_POST['token'].Functions::$csrf[1];
+                $_SESSION['csrf_token']['admin_translation_edit']['expire'] = time()+1800; // 30 Minutes = 1800 Seconds
                 $_SESSION['language_name'] = $language_name;
 
                 $path = $_POST['path'];

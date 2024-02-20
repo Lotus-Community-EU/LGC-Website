@@ -114,7 +114,7 @@ class Functions {
         return true;
     }
 
-    static function CheckCSRF($token_for, $input) {
+    static function CheckCSRF($token_for, $input, $delete = true) {
         if(self::$csrf[0].$input.self::$csrf[1] == $_SESSION['csrf_token'][$token_for]['token']) {
             if(time() <= $_SESSION['csrf_token'][$token_for]['expire']) {
                 unset($_SESSION['csrf_token'][$token_for]);

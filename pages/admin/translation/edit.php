@@ -158,7 +158,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
 
                                                     <div class="form-check">
                                                         <input type="checkbox" class="form-check-input" id="isWeb_<?= $res['id'];?>" name="isWeb" <?= $res['isWeb'] == 1 ? 'checked' : '';?>>
-                                                        <label for="isWeb_<?= $res['id'];?>" class="form-check-label">isBot</label>
+                                                        <label for="isWeb_<?= $res['id'];?>" class="form-check-label">isWeb</label>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
