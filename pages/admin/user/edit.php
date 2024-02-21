@@ -75,7 +75,6 @@ $csrf_token = Functions::CreateCSRFToken('admin_edit_user');
                     <label for="can_change_avatar"><?= Functions::Translation('text.can_change_avatar');?></label>
                 </div>
                 <div class="col-6 col-lg-6 mt-2 text-end">
-                    <!--<input type="submit" name="remove_avatar" value="Remove Avatar" class="btn btn-danger btn-sm">-->
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="remove_avatar" name="remove_avatar" value="1">
                         <label class="form-check-label" for="remove_avatar">Remove Avatar</label>
