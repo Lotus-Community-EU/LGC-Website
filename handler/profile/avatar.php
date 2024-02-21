@@ -8,7 +8,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 if(strlen($user->getMCUUID()) > 1) {
                     $user->deleteAvatarFile();
                     $avatar = file_get_contents('https://mc-heads.net/avatar/'.$user->getMCUUID().'/nohelm');
-                    $avatar_name = $user->getID().'.'.time().'.png';
+                    $avatar_name = 'mc.'.$user->getID().'.'.time().'.png';
 
                     $log = new Log();
                     $log->setCategory('Profile_Edit');

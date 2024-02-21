@@ -31,7 +31,7 @@ $translation_rows = Functions::GetTranslationRows();
         <thead>
             <tr>
                 <th><?= Functions::Translation('global.language');?></th>
-                <th>"None" (<?= $translation_rows;?>)</th>
+                <th>"None"</th>
                 <th><?= Functions::Translation('global.edit');?></th>
             </tr>
         </thead>

@@ -30,6 +30,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             }
 
             $new_username = $_POST['username'];
+            $new_pronouns = $_POST['pronouns'];
             $new_language = $_POST['language'];
             $new_show_mc_name = $_POST['show_mc_name'];
             $new_bio = $_POST['bio'];
@@ -72,6 +73,30 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                             }
                         }
                     }
+                }
+            }
+
+            if(strlen($pronouns) > 64) {
+                $error = 1;
+                if(strlen($error_msg) > 0) { $error_msg .='<br>';}
+                $error_msg = '- Pronouns can not be longer than 64 characters!';
+            }
+            else {
+                if(strcmp($new_pronouns, $user->getPronouns())) {
+                    $new_pronouns = Functions::RemoveScriptFromString($new_pronouns);
+                    $new_pronouns = Functions::RemoveIFrameFromString($new_pronouns);
+                    $new_pronouns = htmlspecialchars($new_pronouns);
+
+                    $log = new Log();
+                    $log->setCategory('Profile_Edit');
+                    $log->setUser($user->getID())->setTarget($user->getID());
+                    $log->setChangedWhat('Pronouns');
+                    $log->setChangedOld($user->getPronouns())->setChangedNew($new_pronouns);
+                    $log->setTime(gmdate('U'));
+                    $log->create();
+
+                    $user->setPronouns($new_pronouns);
+                    $changed ++;
                 }
             }
 

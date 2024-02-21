@@ -68,7 +68,7 @@ else {
         <div class="col-12 col-md-6 mt-3 p-2" style="background-color: #494B4D; border-radius: 10px;">
             <h5 class="text-decoration-underline text-center mb-2">User Info</h5>
 
-            <b><?= Functions::Translation('global.username');?>:</b> <?= $user_data->getUsername();?><br>
+            <b><?= Functions::Translation('global.username');?>:</b> <?= $user_data->getUsername();?> <?= strlen($user_data->getPronouns()) > 0 ? '<small>('.$user_data->getPronouns().')</small>' : '';?><br>
 
             <b>Main Rank:</b> <?= '<font color="'.$main_rank->getColour().'">'.$main_rank->getName().'</font>';?><br>
 

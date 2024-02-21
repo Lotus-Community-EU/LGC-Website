@@ -7,6 +7,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
     if(Functions::CheckCSRF('admin_edit_user', $_POST['token'])) {
         if($id == $s_id) {
             $new_username = $_POST['username'];
+            $new_pronouns = $_POST['pronouns'];
             $new_language = $_POST['language'];
             $new_bio = $_POST['bio'];
             $new_can_change_avatar = is_numeric($_POST['can_change_avatar']) ? $_POST['can_change_avatar'] : 0;
@@ -45,6 +46,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                         $new_username = Functions::RemoveScriptFromString($new_username);
                         $new_username = Functions::RemoveIFrameFromString($new_username);
                         $new_username = htmlspecialchars($new_username);
+
                         $log = new Log();
                         $log->setCategory('Profile_Edit');
                         $log->setUser($user->getID())->setTarget($user_data->getID());
@@ -56,6 +58,25 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                         
                         $changed ++;
                     }
+                }
+            }
+
+            if(strlen($new_pronouns) > 64) {
+                if(strcmp($new_pronouns, $user_data->getPronouns())) {
+                    $new_pronouns = Functions::RemoveScriptFromString($new_pronouns);
+                    $new_pronouns = Functions::RemoveIFrameFromString($new_pronouns);
+                    $new_pronouns = htmlspecialchars($new_pronouns);
+
+                    $log = new Log();
+                    $log->setCategory('Profile_Edit');
+                    $log->setUser($user->getID())->setTarget($user_data->getID());
+                    $log->setChangedWhat('Pronouns')->setChangedOld($user_data->getPronouns())->setChangedNew($new_pronouns);
+                    $log->setTime(gmdate('U'));
+                    $log->create();
+
+                    $user_data->setPronouns($new_pronouns);
+                        
+                    $changed ++;
                 }
             }
 

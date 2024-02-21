@@ -162,6 +162,12 @@ class User {
         return $this;
     }
 
+    function getPronouns() { return $this->data['pronouns']; }
+    function setPronouns($pronouns) {
+        $this->data['pronouns'] = $pronouns;
+        return $this;
+    }
+
     function getLastUsernameChange() { return $this->data['last_username_change']; }
     function setLastUsernameChange($last_username_change) {
         $this->data['last_username_change'] = $last_username_change;

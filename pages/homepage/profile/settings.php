@@ -55,6 +55,11 @@ else {
             <span><?= Functions::Translation('text.username_lastchange');?>: <?= date('d.m.Y - H:i:s', $user->getLastUsernameChange());?></span>
 
             <div class="form-group mt-3">
+                <label for="pronouns"><?= Functions::Translation('text.pronouns');?></label>
+                <input type="text" name="pronouns" id="pronouns" class="form-control" value="<?= $user->getPronouns();?>">
+            </div>
+
+            <div class="form-group mt-3">
                 <label for="language"><?= Functions::Translation('global.language');?></label>
                 <select class="form-control" id="language" name="language">
                     <?php foreach($all_languages as $language) { ?>

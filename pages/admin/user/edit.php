@@ -56,6 +56,11 @@ $csrf_token = Functions::CreateCSRFToken('admin_edit_user');
         </div>
 
         <div class="form-group mt-3">
+            <label for="pronouns"><?= Functions::Translation('text.pronouns');?></label>
+            <input type="text" name="pronouns" id="pronouns" class="form-control" value="<?= $user_data->getPronouns();?>">
+        </div>
+
+        <div class="form-group mt-3">
             <label for="language"><?= Functions::Translation('global.language');?></label>
             <select class="form-control" id="language" name="language">
                 <?php foreach($all_languages as $language) { ?>
@@ -74,6 +79,18 @@ $csrf_token = Functions::CreateCSRFToken('admin_edit_user');
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="remove_avatar" name="remove_avatar" value="1">
                         <label class="form-check-label" for="remove_avatar">Remove Avatar</label>
+
+                        <?php
+                        if(strpos($user_data->getAvatar(),'mc.') === false && $user_data->getAvatar() != 'none.png') {
+                            if(filesize('assets/images/avatar/'.$user_data->getAvatar()) > ($settings->getMaxAvatarSize()*1024)*1000000) { // 1024KB = 1 MB | 1.000.000 Byte = 1MB
+                                ?>
+                                <a href="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="<?= Functions::Translation('text.edit_user.exceed_max_avatar', ['max_avatar_size'], [$settings->getMaxAvatarSize()]);?>">
+                                    <i class="fa-solid fa-triangle-exclamation text-danger"></i>
+                                </a>
+                                <?php
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -144,3 +161,8 @@ $csrf_token = Functions::CreateCSRFToken('admin_edit_user');
         </div>
     </div>
 </div>
+
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
