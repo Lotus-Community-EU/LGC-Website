@@ -394,7 +394,7 @@ class Functions {
     }
 
     static function GetAllLanguages() {
-        $query = self::$mysqli->query("SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'core_translations' AND COLUMN_NAME NOT IN('id','path','isBot','isGame','isWeb')");
+        $query = self::$mysqli->query("SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'core_translations' AND COLUMN_NAME NOT IN('id','path','isBot','isGame','isWeb','variables','find_where')");
         
         $all = $query->fetch_all(MYSQLI_ASSOC);
 

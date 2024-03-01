@@ -20,6 +20,15 @@ if($language != 'English') {
 $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
 ?>
 
+<style>
+.translation_none {
+    color: red !important;
+}
+.translation_none:after {
+    content: ' (NONE)';
+}
+</style>
+
 <div class="row justify-content-end mb-3">
     <div class="col-12">
         <div class="row">
@@ -94,15 +103,15 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         </thead>
         <tbody>
             <?php
-                $prepare = Functions::$mysqli->prepare("SELECT id,path,isBot,isGame,isWeb,".$language." FROM core_translations WHERE path != 'dev.control' AND path != 'mcinternal.language'");
+                $prepare = Functions::$mysqli->prepare("SELECT id,path,isBot,isGame,isWeb,variables,find_where,".$language." FROM core_translations WHERE path != 'dev.control' AND path != 'mcinternal.language'");
                 $prepare->execute();
                 $result = $prepare->get_result();
                 $result = $result->fetch_all(MYSQLI_ASSOC);
                 foreach($result as $res) {
                     ?>
-                        <tr>
-                            <td <?= ($res[$language] == 'none' || strlen($res[$language]) < 1) ? 'style="color: red;"' : '';?>>
-                                <?= $res['path']. (($res[$language] == 'none' || strlen($res[$language]) < 1) ? ' (NONE!)' : '');?>
+                        <tr id="<?= $res['id'];?>">
+                            <td <?= ($res[$language] == 'none' || strlen($res[$language]) < 1) ? 'class="translation_none"' : '';?>>
+                                <?= $res['path'];?>
                             </td>
                             <td>
                                 <div class="form-check">
@@ -142,6 +151,14 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                                                         <?php
                                                     }
                                                     ?>
+                                                    <div class="form-group">
+                                                        <label>Variables</label><br>
+                                                        <?= strlen($res['variables']) ? $res['variables'].' <hr>' : '- No variables available <hr>';?>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Find where</label><br>
+                                                        <?= strlen($res['find_where']) ? '<div class="find_where border border-secondary p-2 w-100">'.$res['find_where'].'</div><hr>' : '- Please contact the Web-Developer for informations! <hr>';?>
+                                                    </div>
                                                     <div class="form-group">
                                                         <label for="new_language_<?= $res['id'];?>">Translation - <?= $language;?></label>
                                                         <textarea name="new_language" id="new_language_<?= $res['id'];?>" cols="30" rows="3" class="form-control"><?= $res[$language];?></textarea>
@@ -228,6 +245,19 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                     $("#ergebnis_"+response.id).removeClass("alert-danger");
                     $("#ergebnis_"+response.id).addClass("alert-success");
                     $("#ergebnis_"+response.id).html(response.message);
+
+                    var none = response.none;
+                    var id = response.id;
+                    if(response.none.length == 0 || response.none.toLowerCase() == 'none') {
+                        if(!$("#"+id+" td:first-child").hasClass("translation_none")) {
+                            $("#"+id+" td:first-child").addClass("translation_none");
+                        }
+                    }
+                    else {
+                        if($("#"+id+" td:first-child").hasClass("translation_none")) {
+                            $("#"+id+" td:first-child").removeClass("translation_none");
+                        }
+                    }
                 }
                 else {
                     $("#ergebnis_"+response.id).css("display","block");
@@ -235,7 +265,6 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                     $("#ergebnis_"+response.id).addClass("alert-danger");
                     $("#ergebnis_"+response.id).html(response);
                 }
-                console.log(response);
             }
         });
     }
@@ -396,3 +425,11 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         }
     });
 </script>
+
+<style>
+.find_where {
+    img {
+        max-width: 100%;
+    }
+}
+</style>

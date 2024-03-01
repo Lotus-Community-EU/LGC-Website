@@ -148,7 +148,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                     $response = array(
                         'status' => 'success',
                         'message' => Functions::Translation('text.translation.language.language_edited', ['path','old_translation','new_translation'], [$path, $current_translations[$path], $new_language]),
-                        'id' => $_POST['id']
+                        'id' => $_POST['id'],
+                        'none' => $new_language
                     );
 
                 }
