@@ -25,7 +25,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
     color: red !important;
 }
 .translation_none:after {
-    content: ' (NONE)';
+    content: ' (NONE!)';
 }
 </style>
 
