@@ -1,3 +1,27 @@
+<?php
+
+/*$webhook = new DiscordWebhook('https://discord.com/api/webhooks/1213575243751231508/pegYyGIM109eBisqKvTFENfZ2z9tfIoicwLIkZ0PfVE7elFXu9lOj7TLa702pUcVo1K8?wait=true');
+
+$webhook->setUsername('Bla');
+$webhook->setMessage('Acer = Nub');
+
+$webhook->addEmbed([
+    'title' => 'bla',
+    'description' => 'Description'
+]);
+
+$webhook->create();*/
+
+$webhook = new DiscordWebhook('https://discord.com/api/webhooks/1213603756151930970/4PZXn8KDmD_rQjcjDat0UtCm3xj6nwzvHPrRXCxAKfBMPOlkjpxURc5U4lAiqN0yXhIv');
+/*$webhook->setUsername('Bla');
+$webhook->setMessage('Chris = Big Nub - '.gmdate('U'));
+$webhook->create();*/
+
+
+$webhook->delete('1213608751144112218');
+
+?>
+
 <div class="container mt-5">
     <div class="row">
         <div class="col-12 col-md-8">

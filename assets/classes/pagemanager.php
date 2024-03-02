@@ -7,6 +7,7 @@ include('assets/classes/user.php');
 include('assets/classes/rank.php');
 include('assets/classes/todo.php');
 include('assets/classes/settings.php');
+include('assets/classes/discordwebhook.php');
 $settings = new Settings();
 
 $page = isset($_GET['url']) ? $_GET['url'] : 'index';
