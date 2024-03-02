@@ -124,6 +124,16 @@ class ToDo {
         return $this->content[$comment];
     }
 
+    function canAccess($role, $role2 = null) {
+        if($this->id == null) {
+            return null;
+        }
+        $array = (array) json_decode($this->data['todo_access']);
+        if(isset($array[$role]) && $array[$role] == 1) return true;
+        elseif(isset($array[$role2]) && ($role2 != null && $array[$role2] == 1)) return true;
+        return false;
+    }
+
     function create() {
         if($this->id != null) {
             return null;
