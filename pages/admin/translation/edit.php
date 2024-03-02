@@ -270,8 +270,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
     }
 
     function FilterTable() {
-        var input, filter, table, tr, td, i, txtValue, bot, game, web;
-        var test, test2;
+        var input, filter, table, tr, td, i, txtValue, bot, game, web, txtElement, none_content;
         bot = document.getElementById("filter_bot");
         game = document.getElementById("filter_game");
         web = document.getElementById("filter_web");
@@ -280,9 +279,9 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         filter = input.value.toUpperCase();
         table = document.getElementById("table");
         tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
+        for(i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
+            if(td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
@@ -302,10 +301,8 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                         } 
                     }
                     if(none.checked) {
-                        txtValue = tr[i].getElementsByTagName("td")[0];
-                        txtValue = txtValue.textContent || txtValue.innerText;
-                        var text = td.getElementsByTagName('td')[0];
-                        if(!(txtValue.toUpperCase().indexOf('NONE!') > -1)) {
+                        none_content = window.getComputedStyle(td,':after').getPropertyValue('content');
+                        if(!(none_content.toUpperCase().indexOf('NONE!') > -1)) {
                             tr[i].style.display = "none";
                         }
                     }
@@ -323,9 +320,9 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         filter = input.value.toUpperCase();
         table = document.getElementById("table");
         tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
+        for(i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[1];
-            if (td) {
+            if(td) {
                 txtValue = tr[i].getElementsByTagName("td")[0];
                 txtValue = txtValue.textContent || txtValue.innerText;
                 var check = td.getElementsByTagName('input')[0];
@@ -345,9 +342,9 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         filter = input.value.toUpperCase();
         table = document.getElementById("table");
         tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
+        for(i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[2];
-            if (td) {
+            if(td) {
                 txtValue = tr[i].getElementsByTagName("td")[0];
                 txtValue = txtValue.textContent || txtValue.innerText;
                 var check = td.getElementsByTagName('input')[0];
@@ -367,9 +364,9 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         filter = input.value.toUpperCase();
         table = document.getElementById("table");
         tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
+        for(i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[3];
-            if (td) {
+            if(td) {
                 txtValue = tr[i].getElementsByTagName("td")[0];
                 txtValue = txtValue.textContent || txtValue.innerText;
                 var check = td.getElementsByTagName('input')[0];
@@ -389,9 +386,9 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
         filter = input.value.toUpperCase();
         table = document.getElementById("table");
         tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
+        for(i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
+            if(td) {
                 txtValue = td.textContent || td.innerText;
                 if(txtValue.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
@@ -404,18 +401,17 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
     });
 
     $("#filter_none").on('click', function() {
-        var input, filter, table, tr, td, i, txtValue;
+        var input, filter, table, tr, td, i, txtElement, none_content;
         input = document.getElementById("filter");
         filter = input.value = '';
         table = document.getElementById("table");
         tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
+        for(i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                txtValue = tr[i].getElementsByTagName("td")[0];
-                txtValue = txtValue.textContent || txtValue.innerText;
-                var text = td.getElementsByTagName('td')[0];
-                if(txtValue.toUpperCase().indexOf('NONE!') > -1) {
+            if(td) {
+                txtElement = tr[i].getElementsByTagName("td")[0];
+                none_content = window.getComputedStyle(txtElement,':after').getPropertyValue('content');
+                if(none_content.toUpperCase().indexOf('NONE!') > -1) {
                     tr[i].style.display = "";
                 }
                 else {
