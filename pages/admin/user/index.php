@@ -19,14 +19,14 @@ else { ?>
         <tbody>
             <?php
                 $users = Functions::$mysqli->query("SELECT id,username FROM web_users WHERE id > 0");
-                while($user = $users->fetch_array()) {
-                    $last_login = Functions::GetLastLogin($user['id']);
+                while($luser = $users->fetch_array()) {
+                    $last_login = Functions::GetLastLogin($luser['id']);
                     ?>
                     <tr>
-                        <td><?= $user['id'];?></td>
-                        <td><a href="/profile/<?= $user['id'];?>" class="text-white" target="_blank"><?= $user['username'];?></a></td>
-                        <td><?= date('d.m.Y', $last_login);?></td>
-                        <td><a href="/admin/user/edit/<?= $user['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::Translation('text.edit_user');?></a></td>
+                        <td><?= $luser['id'];?></td>
+                        <td><a href="/profile/<?= $luser['id'];?>" class="text-white" target="_blank"><?= $luser['username'];?></a></td>
+                        <td><?= $last_login == 0 ? 'Never' : date('d.m.Y', $last_login);?></td>
+                        <td><a href="/admin/user/edit/<?= $luser['id'];?>" class="btn btn-primary btn-sm w-100"><?= Functions::Translation('text.edit_user');?></a></td>
                     </tr>
                     <?php
                 }

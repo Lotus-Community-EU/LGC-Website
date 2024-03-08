@@ -45,7 +45,7 @@
         <h5><?= Functions::Translation('text.rank.header.permission');?></h5>
         <hr>
 
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-12 col-md-6">
                 <div class="form-check mt-3">
                     <?php $is_staff = Functions::Translation('text.rank.is_staff');?>
@@ -63,22 +63,33 @@
         </div>
 
         <?php
-            $rank = new Rank();
-
-            $all_permissions = $rank->getAllPermissions();
-
+            $all_permissions = Rank::getAllPermissions();
             foreach(Rank::$permission_categories as $cat_key => $category) {
-                ?><h4 class="mt-5 text-decoration-underline"><?= $category;?></h4><?php
-                foreach($all_permissions as $permission) {
-                    if($permission['permission_category'] == $cat_key) {
-                        ?>
-                        <div class="form-check mt-3">
-                            <input type="checkbox" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="1">
-                            <label class="form-check-label text-decoration-none" for="<?= $permission['permission_code'];?>"><?= $permission['permission_code'].' (<b>'.$permission['permission_description'].'</b>)';?></label>
+                ?>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <button class="btn btn-primary w-100 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#Perm_<?= $cat_key;?>" aria-expanded="false" aria-controls="collapseExample">
+                            <?= $category;?>
+                        </button>
+                        <div class="collapse" id="Perm_<?= $cat_key;?>">
+                            <div class="card card-body border-white bg-transparent">
+                                <?php
+                                foreach($all_permissions as $permission) {
+                                    if($permission['permission_category'] == $cat_key) {
+                                        ?>
+                                        <div class="form-check mt-3">
+                                            <input type="checkbox" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="1">
+                                            <label class="form-check-label text-decoration-none" for="<?= $permission['permission_code'];?>"><?= $permission['permission_code'].' (<b>'.$permission['permission_description'].'</b>)';?></label>
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </div>
                         </div>
-                        <?php
-                    }
-                }
+                    </div>
+                </div>
+                <?php
             }
         ?>
 

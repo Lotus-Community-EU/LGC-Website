@@ -85,7 +85,7 @@ class Functions {
             return $result->fetch_array()['login_time'];
         }
         else {
-            return '0';
+            return 0;
         }
     }
 

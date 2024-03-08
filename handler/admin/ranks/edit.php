@@ -18,6 +18,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             $colour = $_POST['colour'];
             $colour_ingame = $_POST['colour_ingame'];
             $ingame_id = $_POST['ingame_id'];
+            $discord_role_id = $_POST['discord_role_id'];
             $priority = $_POST['priority'];
             $is_staff = isset($_POST['is_staff']) ? 1 : 0;
             $is_upperstaff = isset($_POST['is_upper_staff']) ? 1 : 0;
@@ -83,6 +84,12 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 $error_msg .= 'The priority must be numeric!';
             }
 
+            if(!is_numeric($discord_role_id)) {
+                $error = 1;
+                if(strlen($error_msg) > 0) { $error_msg .= '<br>'; }
+                $error_msg .= 'The Discord Role ID has to be numeric!';
+            }
+
             if($error == 1) {
                 $_SESSION['error_title'] = 'Edit Rank';
                 $_SESSION['error_message'] = $error_msg;
@@ -96,6 +103,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             $rank->setColour($colour);
             $rank->setColourIngame($colour_ingame);
             $rank->setPriority($priority);
+            $rank->setDiscordRoleID($discord_role_id);
             $rank->setIsStaff($is_staff);
             $rank->setIsUpperStaff($is_upperstaff);
             $rank->update();

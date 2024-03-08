@@ -54,6 +54,10 @@ $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
             <input type="text" name="ingame_id" class="form-control" id="ingame_id" placeholder="<?= $rank_ingame_id;?>" value="<?= $rank->getIngameID();?>" maxlength="64">
         </div>
         <div class="form-group mt-3">
+            <label for="discord_role_id">Discord Role ID</label>
+            <input type="text" name="discord_role_id" class="form-control" id="discord_role_id" placeholder="Discord Role ID" value="<?= $rank->getDiscordRoleID();?>" maxlength="64">
+        </div>
+        <div class="form-group mt-3">
             <?php $rank_priority = Functions::Translation('text.rank.rank_priority');?>
             <label for="priority"><?= $rank_priority;?></label>
             <input type="text" pattern="[0-9]+" name="priority" class="form-control" id="priority" placeholder="<?= $rank_priority;?>" value="<?= $rank->getPriority();?>">
@@ -74,7 +78,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
                 </div>
                 <div class="col-12 col-md-6">
 
-                <div class="form-check mt-3">
+                <div class="form-check mt-3 mb-3">
                     <?php $rank_is_upper_staff = Functions::Translation('text.rank.is_upperstaff');?>
                     <input type="checkbox" name="is_upper_staff" class="form-check-input" id="is_upper_staff" value="is_upper_staff" <?= $rank->getIsUpperStaff() == 1 ? 'checked' : '';?>>
                     <label class="form-check-label" for="is_upper_staff"><?= $rank_is_upper_staff;?></label>
@@ -87,31 +91,39 @@ $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
             $all_permissions = Rank::getAllPermissions();
             foreach(Rank::$permission_categories as $cat_key => $category) {
                 ?>
-                <div class="row mt-5">
-                    <h5 class="text-decoration-underline"><?= $category;?></h5>
-                <?php
-                foreach($all_permissions as $key => $permission) {
-                    if($permission['permission_category'] == $cat_key) {
-                        ?>
-                        <div class="row">
-                            <div class="col-8">
-                                <label class="form-check-label" for="<?= $permission['permission_code'];?>"><?= $permission['permission_code'].'<br>(<b>'.$permission['permission_description'].'</b>)';?></label>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-check form-check-inline mt-3">
-                                    <input type="radio" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="0" <?= !$rank->hasPermission($permission['permission_code']) ? 'checked' : '';?>>
-                                    <label class="form-check-label" for="<?= $permission['permission_code'];?>">0</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="radio" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="1" <?= $rank->hasPermission($permission['permission_code']) ? 'checked' : '';?>>
-                                    <label class="form-check-label" for="<?= $permission['permission_code'];?>">1</label>
-                                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <button class="btn btn-primary w-100 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#Perm_<?= $cat_key;?>" aria-expanded="false" aria-controls="collapseExample">
+                            <?= $category;?>
+                        </button>
+                        <div class="collapse" id="Perm_<?= $cat_key;?>">
+                            <div class="card card-body border-white bg-transparent">
+                                <?php
+                                foreach($all_permissions as $key => $permission) {
+                                    if($permission['permission_category'] == $cat_key) {
+                                        ?>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label class="form-check-label" for="<?= $permission['permission_code'];?>"><?= $permission['permission_code'].'<br>(<b>'.$permission['permission_description'].'</b>)';?></label>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-check form-check-inline mt-3">
+                                                    <input type="radio" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="0" <?= !$rank->hasPermission($permission['permission_code']) ? 'checked' : '';?>>
+                                                    <label class="form-check-label" for="<?= $permission['permission_code'];?>">0</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="radio" name="<?= $permission['permission_code'];?>" class="form-check-input" id="<?= $permission['permission_code'];?>" value="1" <?= $rank->hasPermission($permission['permission_code']) ? 'checked' : '';?>>
+                                                    <label class="form-check-label" for="<?= $permission['permission_code'];?>">1</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                ?>
                             </div>
                         </div>
-                        <?php
-                    }
-                }
-                ?>
+                    </div>
                 </div>
                 <?php
             }

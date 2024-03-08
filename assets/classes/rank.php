@@ -11,7 +11,8 @@ class Rank {
         2 => 'Admin - User Management',
         3 => 'Admin - Rank Management',
         4 => 'Admin - Translation-System',
-        5 => 'Admin - To-Do System'
+        5 => 'Admin - To-Do System',
+        6 => 'Admin - Changelog System'
     );
 
     public $lengths = array(
@@ -97,6 +98,12 @@ class Rank {
     function getPriority() { return $this->data['priority']; }
     function setPriority($priority) {
         $this->data['priority'] = $priority;
+        return $this;
+    }
+
+    function getDiscordRoleID() { return $this->data['discord_role_id']; }
+    function setDiscordRoleID($id) {
+        $this->data['discord_role_id'] = $id;
         return $this;
     }
 
@@ -199,6 +206,7 @@ class Rank {
             'colour',
             'colour_ingame',
             'priority',
+            'discord_role_id',
             'is_staff',
             'is_upperstaff'
         );
@@ -214,13 +222,14 @@ class Rank {
         $questionmarks = implode(',', $questionmarks);
         
         $prepare = Functions::$mysqli->prepare("INSERT INTO core_ranks (".$vars.") VALUES (".$questionmarks.")");
-        $prepare->bind_param('sssssiii',
+        $prepare->bind_param('sssssiiii',
             $this->data['ingame_id'],
             $this->data['name'],
             $this->data['short'],
             $this->data['colour'],
             $this->data['colour_ingame'],
             $this->data['priority'],
+            $this->data['discord_role_id'],
             $this->data['is_staff'],
             $this->data['is_upperstaff']
         );
@@ -243,6 +252,7 @@ class Rank {
             'colour',
             'colour_ingame',
             'priority',
+            'discord_role_id',
             'is_staff',
             'is_upperstaff',
         );
@@ -254,13 +264,14 @@ class Rank {
         $vars = implode(',', $vars);
 
         $prepare = Functions::$mysqli->prepare("UPDATE core_ranks SET ".$vars." WHERE id = ? LIMIT 1");
-        $prepare->bind_param('sssssiiii',
+        $prepare->bind_param('sssssiiiii',
             $this->data['ingame_id'],
             $this->data['name'],
             $this->data['short'],
             $this->data['colour'],
             $this->data['colour_ingame'],
             $this->data['priority'],
+            $this->data['discord_role_id'],
             $this->data['is_staff'],
             $this->data['is_upperstaff'],
             $this->data['id']
