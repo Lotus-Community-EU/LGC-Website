@@ -1,10 +1,4 @@
-<?php if(!$user->hasPermission('admin_rank_management')) {
-    $_SESSION['error_title'] = 'Permissions - Edit Ranks';
-    $_SESSION['error_message'] = 'You don\'t have permissions to edit ranks!';
-    header("Location: /admin/ranks/list");
-    exit;
-}
-
+<?php
 $changelog_id = $GET['2'];
 $prepare = Functions::$mysqli->prepare("SELECT * FROM web_changelogs WHERE id = ?");
 $prepare->bind_param('i', $changelog_id);
@@ -24,7 +18,6 @@ if($changelog['posted_by'] != $user->getID() && !$user->hasPermission('admin_cha
     exit;
 }
 
-echo var_dump($changelog);
 ?>
 
 <div class="container col-12 col-lg-6 mb-5">
@@ -32,45 +25,21 @@ echo var_dump($changelog);
         <div class="form-group">
                 <div class="row">
                     <div class="col">
-                        <label for="">Old version</label>
-                        <input type="text" name="v_old" id="v_old" class="form-control" placeholder="v_old">
+                        <label for="v_old">Old version</label>
+                        <input type="text" name="v_old" id="v_old" class="form-control" placeholder="v_old" value="<?= $changelog['v_old'];?>">
                     </div>
                     <div class="col">
-                        <label for="">New Version</label>
-                        <input type="text" name="v_new" id="v_new" class="form-control" placeholder="v_new">
+                        <label for="v_new">New Version</label>
+                        <input type="text" name="v_new" id="v_new" class="form-control" placeholder="v_new" value="<?= $changelog['v_new'];?>">
                     </div>
                 </div>
-        </div>
-        
-        <hr class="mt-3 mb-3">
-
-        <div class="form-group">
-            <label for="c_for">Changelog for?</label>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="c_for" value="1" id="" <?= $changelog['c_for'] == 1 ? 'checked' : '';?>>
-                <label class="form-check-label" for="flexRadioDefault1">
-                    Game
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="c_for" value="2" id="" <?= $changelog['c_for'] == 2 ? 'checked' : '';?>>
-                <label class="form-check-label" for="flexRadioDefault2">
-                    Bot
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="c_for" value="3" id="" <?= $changelog['c_for'] == 3 ? 'checked' : '';?>>
-                <label class="form-check-label" for="flexRadioDefault2">
-                    Web
-                </label>
-            </div>
         </div>
 
         <hr class="mt-3 mb-3">
 
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" name="title" class="form-control" placeholder="title" value="<?= $changelog['title'];?>">
+            <input type="text" name="title" class="form-control" id="title" placeholder="title" value="<?= $changelog['title'];?>">
         </div>
 
         <hr class="mt-3 mb-3">
@@ -96,6 +65,77 @@ echo var_dump($changelog);
             ?>
         </div>
         <button type="button" class="btn btn-success w-100 mt-3" id="add_content">Add Content</button>
+
+        <hr class="mt-3 mb-3">
+
+        <div class="form-group">
+            <label for="c_for">Changelog for?</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="c_for_game" name="c_for" value="1" <?= $changelog['c_for'] == 1 ? 'checked' : '';?>>
+                <label class="form-check-label" for="c_for_game">
+                    Game
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="c_for_bot" name="c_for" value="2" <?= $changelog['c_for'] == 2 ? 'checked' : '';?>>
+                <label class="form-check-label" for="c_for_bot">
+                    Bot
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="c_for_web" name="c_for" value="3" <?= $changelog['c_for'] == 3 ? 'checked' : '';?>>
+                <label class="form-check-label" for="c_for_web">
+                    Web
+                </label>
+            </div>
+        </div>
+
+        <?php if($changelog['discord_message_id'] != 0) {?>
+        
+            <hr class="mt-3 mb-3">
+            
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" name="update_discord" id="update_discord">
+                <label class="form-check-label" for="update_discord">
+                    Update Discord Message
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="delete" name="delete_discord" id="delete_discord">
+                <label class="form-check-label" for="delete_discord">
+                    Delete Discord Message
+                </label>
+            </div>
+
+        <?php } else {?>
+
+            <hr class="mt-3 mb-3">
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="post" name="post_discord" id="post_discord">
+                <label class="form-check-label" for="post_discord">
+                    Post in Discord
+                </label>
+            </div>
+        <?php } ?>
+
+        <hr class="mt-3 mb-3">
+
+        <div class="form-group">
+            <label for="delete_changelog">Delete Changelog</label>
+            <select class="form-select" id="delete_changelog" name="delete_changelog">
+                <option value="0" selected><?= Functions::Translation('global.no');?></option>
+                <option value="1"><?= Functions::Translation('global.yes');?></option>
+            </select>
+        </div>
+
+        <hr class="mt-3 mb-3">
+
+        <?php Functions::AddCSRFCheck('admin_changelog_edit'); $_SESSION['changelog_id'] = $changelog['id'];?>
+        <input type="hidden" name="changelog_id" value="<?= $changelog['id'];?>">
+        <input type="submit" value="<?= Functions::Translation('global.edit');?>" name="submit" class="btn btn-success w-100">
+
     </form>
 </div>
 
@@ -106,9 +146,6 @@ echo var_dump($changelog);
             id ++;
             $('.contents').append("<div class=\"row mt-2\" id=\"row_"+id+"\"><div class=\"col-11\"><div class=\"form-group\"><input type=\"text\" name=\"content[]\" class=\"form-control\" value=\"\" placeholder=\"Content\"></div></div><div class=\"col-1\"><button type=\"button\" class=\"btn btn-danger btn-sm fw-bold text-center delete_row\" id=\""+id+"\">&times;</button></div></div>");
         });
-        /*$('.delete_row').delegate('click', function(e) {
-            $('#row_'+$(this).prop('id')).remove();
-        });*/
         $('.contents').delegate('.delete_row','click', function() {
             $(this).parent().parent().remove();
         });

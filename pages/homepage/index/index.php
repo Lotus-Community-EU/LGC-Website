@@ -1,18 +1,3 @@
-<?php
-
-/*$webhook = new DiscordWebhook('https://discord.com/api/webhooks/1213603756151930970/4PZXn8KDmD_rQjcjDat0UtCm3xj6nwzvHPrRXCxAKfBMPOlkjpxURc5U4lAiqN0yXhIv');
-$webhook->setUsername('Bla');
-$webhook->setMessage('Test - <@535598273432649740> - '.gmdate('U'));
-$webhook->create();
-
-$webhook->setUsername('Blub');
-$webhook->setMessage('Test2 - <@&1155573857130905650> - '.gmdate('U'));
-$webhook->create();*/
-
-//$webhook->delete('1213608751144112218');
-
-?>
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-12 col-md-8">

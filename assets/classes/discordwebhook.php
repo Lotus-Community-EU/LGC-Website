@@ -4,6 +4,8 @@ class DiscordWebhook {
 
     private $webhook = '';
 
+    private $creator = 0;
+
     private $username = null;
     private $avatar = 'https://lotuscommunity.eu/assets/images/discord_webhook_default.jpg';
 
@@ -30,6 +32,11 @@ class DiscordWebhook {
         return $this;
     }
 
+    function setCreator($id) {
+        $this->creator = $id;
+        return $this;
+    }
+
     function setMessage($message) {
         $this->message = $message;
         return $this;
@@ -48,6 +55,42 @@ class DiscordWebhook {
     static function replaceNewlines($string) {
         str_replace('\n', PHP_EOL, $string);
         return $string;
+    }
+
+    function update($id) {
+        $webhook_url = str_replace('?wait=true', '', $this->webhook).'/messages/'.$id;
+
+        $content = [
+            'username' => $this->username,
+            'avatar_url' => $this->avatar,
+
+            'content' => $this->message == null ? '' : $this->message
+        ];
+
+        $headers = array('Content-Type: application/json'); 
+
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, $webhook_url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST,'PATCH');
+        curl_setopt($ch,CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($content));
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $response = (array) json_decode($response);
+        var_dump($response);
+
+        $time = gmdate('U');
+        $message_id = $response['id'];
+        $message = $this->message;
+
+        $prepare = Functions::$mysqli->prepare("UPDATE core_webhook_messages SET message_content = ? WHERE message_id = ?");
+        $prepare->bind_param('si', $message, $message_id);
+        $prepare->execute();
+
+        return $response;
     }
 
     function create() {
@@ -80,7 +123,7 @@ class DiscordWebhook {
         $message_id = $response['id'];
         $webhook = $this->webhook;
         $message = $this->message;
-        $user_id = $user->getID();
+        $user_id = $this->creator;
 
         $prepare = Functions::$mysqli->prepare("INSERT INTO core_webhook_messages (message_id,message_content,webhook,timestamp,send_by) VALUES (?,?,?,?,?)");
         $prepare->bind_param('sssii', $message_id, $message, $webhook, $time, $user_id);
