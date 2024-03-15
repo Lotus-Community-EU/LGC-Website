@@ -41,6 +41,9 @@ switch($page) {
                 case 'todo':
                     LoadAdminView($GET['1'],'admin_todo_access');
                     break;
+                case 'changelog':
+                    LoadAdminView($GET['1'],'admin_changelog_access');
+                    break;
 				default:
 					LoadAdminView($GET[1]);
 					break;
