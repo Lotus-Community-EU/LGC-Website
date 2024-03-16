@@ -9,9 +9,9 @@ class DiscordWebhook {
     private $username = null;
     private $avatar = 'https://lotuscommunity.eu/assets/images/discord_webhook_default.jpg';
 
-    private $message = null;
+    private $message = '';
 
-    private $embeds = null;
+    private $embed = null;
 
     private $type = 'rich';
 
@@ -42,6 +42,11 @@ class DiscordWebhook {
         return $this;
     }
 
+    function setEmbed($embed) {
+        $this->embed = $embed;
+        return $this;
+    }
+
     function setUsername($username) {
         $this->username = $username;
         return $this;
@@ -64,7 +69,11 @@ class DiscordWebhook {
             'username' => $this->username,
             'avatar_url' => $this->avatar,
 
-            'content' => $this->message == null ? '' : $this->message
+            'content' => $this->message,
+
+            'embeds' => [
+                $this->embed == null ? null : $this->embed
+            ]
         ];
 
         $headers = array('Content-Type: application/json'); 
@@ -102,7 +111,11 @@ class DiscordWebhook {
             'username' => $this->username,
             'avatar_url' => $this->avatar,
 
-            'content' => $this->message == null ? '' : $this->message
+            'content' => $this->message,
+
+            'embeds' => [
+                $this->embed == null ? null : $this->embed
+            ]
         ];
 
         $headers = array('Content-Type: application/json'); 
@@ -126,7 +139,7 @@ class DiscordWebhook {
         $user_id = $this->creator;
 
         $prepare = Functions::$mysqli->prepare("INSERT INTO core_webhook_messages (message_id,message_content,webhook,timestamp,send_by) VALUES (?,?,?,?,?)");
-        $prepare->bind_param('sssii', $message_id, $message, $webhook, $time, $user_id);
+        $prepare->bind_param('issii', $message_id, $message, $webhook, $time, $user_id);
         $prepare->execute();
 
         return $response;

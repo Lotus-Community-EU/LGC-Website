@@ -1,7 +1,10 @@
 <?php
 $for = array(1 => 'Game', 2 => 'Bot', 3 => 'Web');
 
-if(isset($GET['2']) && is_numeric($GET['2'])) {
+if(isset($GET['2']) && $GET['2'] == 'add') {
+    include('add.php');
+}
+elseif(isset($GET['2']) && is_numeric($GET['2'])) {
     include('edit.php');
 }
 else {
