@@ -26,8 +26,8 @@
                                 Functions::AddAdminTabLink('ranks','/admin/ranks/list','fa-solid fa-user-gear','admin_rank_management', Functions::Translation('nav.admin.rank_management'));
                                 Functions::AddAdminTabLink('translation','/admin/translation/list','fa-solid fa-language','admin_translation_list', Functions::Translation('nav.admin.translation_management'));
                                 Functions::AddAdminTabLink('website_settings','/admin/website_settings','fa-solid fa-wrench','admin_website_settings', Functions::Translation('nav.admin.website_settings'));
-                                Functions::AddAdminTabLink('todo','/admin/todo/list','fa-solid fa-file-pen','admin_todo_access','To-Do System','TBA', [Functions::$webdev_role, Functions::$pl_role, Functions::$vpl_role, Functions::$bt_role]);
-                                Functions::AddAdminTabLink('changelog','/admin/changelog/list','fa-solid fa-file-pen','admin_changelog_access','Changelog System','TBA', [Functions::$webdev_role]);
+                                Functions::AddAdminTabLink('todo','/admin/todo/list','fa-solid fa-file-pen','admin_todo_access','To-Do System','TBA', [Functions::$webdev_role, Functions::$pl_role, Functions::$vpl_role]);
+                                Functions::AddAdminTabLink('changelog','/admin/changelog/list','fa-solid fa-file-pen','admin_changelog_access','Changelog System','TBA', [Functions::$webdev_role, Functions::$pl_role, Functions::$vpl_role, Functions::$bt_role]);
                             ?>
                         </ul>
                     </li>
