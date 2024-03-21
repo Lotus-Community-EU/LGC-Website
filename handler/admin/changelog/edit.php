@@ -298,8 +298,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 exit;
             }
 
-            $prepare = Functions::$mysqli->prepare("UPDATE web_changelogs SET v_old = ?,v_new = ?,c_for = ?,title = ?,content_added = ?,content_changed = ?,content_removed = ?,discord_message_id = ? WHERE id = ?");
-            $prepare->bind_param('ssissssii', $new_v_old, $new_v_new, $new_c_for, $new_title, $new_content_added, $new_content_changed, $new_content_removed, $new_discord_message_id, $changelog['id']);
+            $prepare = Functions::$mysqli->prepare("UPDATE web_changelogs SET v_old = ?,v_new = ?,c_for = ?,title = ?,content_added = ?,content_changed = ?,content_removed = ?,discord_message_id = ?,edit_time = ?,edit_by = ? WHERE id = ?");
+            $prepare->bind_param('ssissssiiii', $new_v_old, $new_v_new, $new_c_for, $new_title, $new_content_added, $new_content_changed, $new_content_removed, $new_discord_message_id, gmdate('U'), $user->getID(), $changelog['id']);
             $prepare->execute();
 
             if($error == 1) {
