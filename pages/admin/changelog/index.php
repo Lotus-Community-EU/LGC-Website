@@ -56,13 +56,3 @@ else {
         </tbody>
     </table>
 </div>
-
-<?php
-var_dump($user->hasPermission('admin_changelog_edit_other'));
-$array = array('Bot','Game','Web');
-$array = json_encode($array);
-echo $array;
-
-echo '<br>'.implode(', ', json_decode($array));
-}
-?>
