@@ -4,6 +4,9 @@
             <li class="nav-item">
                 <a href="/" class="nav-link text-white px-2"><?= Functions::Translation('nav.home');?></a>
             </li>
+            <li class="nav-item">
+                <a href="/changelog" class="nav-link text-white px-2">Changelogs</a>
+            </li>
             <!--<li class="nav-item">
                 <a href="/imprint" class="nav-link text-white px-2"><?= Functions::Translation('nav.imprint');?></a>
             </li>-->
