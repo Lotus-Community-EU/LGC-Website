@@ -162,14 +162,14 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
         exit;
     }
     else {
-        $_SESSION['error_title'] = 'Edit Changelog';
+        $_SESSION['error_title'] = 'Add Changelog';
         $_SESSION['error_message'] = 'An error occured while adding the Changelog. Please try again! (2)';
         header("Location: /admin/changelog/list");
         exit;
     }
 }
 else {
-    $_SESSION['error_title'] = 'Edit Changelog';
+    $_SESSION['error_title'] = 'Add Changelog';
     $_SESSION['error_message'] = 'An error occured while adding the Changelog. Please try again! (1)';
     header("Location: /admin/changelog/list");
     exit;
