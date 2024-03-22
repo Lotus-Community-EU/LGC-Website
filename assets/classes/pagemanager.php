@@ -1,6 +1,10 @@
 <?php
 
-Functions::ConnectDB();
+try {
+    Functions::ConnectDB();
+} catch(Exception $e) {
+    die('Website is currently under maintenance! We are working on getting it back online as soon as possible!<br>Sorry for the inconveniences!');
+}
 
 include('assets/classes/log.php');
 include('assets/classes/user.php');
