@@ -81,7 +81,6 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
 
         $discord_message_id = 0;
 
-        
         if(isset($_POST['post_discord'])) {
             $webhook = new DiscordWebhook($webhook_url);
             $webhook->setCreator($user->getID());
@@ -96,8 +95,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             }
 
             $changed = '';
-            if($_POST['content_changed'] != null) {
-                foreach($_POST['content_changed'] as $content) {
+            if($content_changed != null) {
+                foreach($content_changed as $content) {
                     $changed .= '- '.$content.PHP_EOL;
                 }
             }
@@ -144,20 +143,26 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             $discord_message_id = $message_id;
         }
 
+        if($content_added == null && $content_changed == null && $content_removed == null) {
+            $error = 1;
+            if(strlen($error_msg) > 0) { $error_msg .='<br>';}
+            $error_msg .= 'You can not post an empty changelog!';
+        }
+
+        if($error == 1) {
+            $_SESSION['error_title'] = 'Add Changelog';
+            $_SESSION['error_message'] = $error_msg;
+            header("Location: /admin/changelog/add");
+            exit;
+        }
+
         $prepare = Functions::$mysqli->prepare("INSERT INTO web_changelogs (v_old,v_new,c_for,title,content_added,content_changed,content_removed,discord_message_id,posted_by,posted_at) VALUES (?,?,?,?,?,?,?,?,?,?)");
         $prepare->bind_param('ssissssiii', $v_old, $v_new, $c_for, $title, $content_added, $content_changed, $content_removed, $discord_message_id, $user->getID(), gmdate('U'));
         $prepare->execute();
 
         $insert_id = $prepare->insert_id;
+        $_SESSION['success_message'] = 'Added the Changelog successfully!';
 
-        if($error == 1) {
-            $_SESSION['error_title'] = 'Add Changelog';
-            $_SESSION['error_message'] = $error_msg;
-        }
-
-        if($changed > 0) {
-            $_SESSION['success_message'] = 'Added the Changelog successfully!';
-        }
         header("Location: /admin/changelog/".$insert_id);
         exit;
     }
