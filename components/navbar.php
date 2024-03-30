@@ -11,6 +11,9 @@
                 <li class="nav-item">
                     <a class="nav-link nav-check" id="index" href="/">Home</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-check" id="team" href="/team">Team</a>
+                </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <?php if($user->hasPermission('admin_admin_tab')) { ?>
