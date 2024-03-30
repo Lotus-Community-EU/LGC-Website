@@ -11,7 +11,6 @@ foreach($all_ranks as $rank) {
         <?php
         $get_users = Rank::getAllUsersByRank($rank['id']);
         if($get_users == 0) {
-            //echo '<span class="text-center">Rank has no Members!</span>';
             continue;
         }
         else {
