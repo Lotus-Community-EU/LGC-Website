@@ -1,6 +1,6 @@
 <?php
 
-$webhook_url = 'https://discord.com/api/webhooks/1213603756151930970/4PZXn8KDmD_rQjcjDat0UtCm3xj6nwzvHPrRXCxAKfBMPOlkjpxURc5U4lAiqN0yXhIv';
+$webhook_url = Functions::$changelog_webhook_url;
 $for = array(1 => 'Game', 2 => 'Bot', 3 => 'Web');
 
 $ref = $_SERVER['HTTP_REFERER'];

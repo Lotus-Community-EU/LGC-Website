@@ -4,6 +4,8 @@ class Functions {
 
     public static $website_version = 'v0.0.6';
 
+    public static $changelog_webhook_url = 'https://discord.com/api/webhooks/1218696281178767521/Dvsh8RUART2XfU_UhghMr8m-FKI__jPTtAMVpbjUsnkPLNCsUY53u34oKYwhMwPlse02';
+
     public static $csrf = array('TFE$RW§5e342wREw','FT$§E%TR§$E3tzrterTrtgre');
     public static $csrf_token;
 
