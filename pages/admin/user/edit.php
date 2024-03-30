@@ -101,23 +101,31 @@ $csrf_token = Functions::CreateCSRFToken('admin_edit_user');
 
         <?php if($user->hasPermission('admin_upperstaff_management')) { ?>
             <div class="form-group mt-3">
-            <label for="main_rank">Main Rank</label>
-            <select name="main_rank" id="main_rank" class="form-control">
-                <?php foreach($all_ranks as $rank) { ?>
-                    <option value="<?= $rank['id'];?>" <?= $rank['id'] == $user_data->getMainRank() ? 'selected' : '';?>><?= $rank['name'];?></option>
-                <?php } ?>
-            </select>
-        </div>
+                <label for="main_rank">Main Rank</label>
+                <select name="main_rank" id="main_rank" class="form-control">
+                    <?php foreach($all_ranks as $rank) { ?>
+                        <option value="<?= $rank['id'];?>" <?= $rank['id'] == $user_data->getMainRank() ? 'selected' : '';?>><?= $rank['name'];?></option>
+                    <?php } ?>
+                </select>
+            </div>
 
-        <div class="form-group mt-3">
-            <label for="secondary_rank">Secondary Rank</label>
-            <select name="secondary_rank" id="secondary_rank" class="form-control">
-                <option value="0" <?= 0 == $user_data->getSecondaryRank() ? 'selected' : '';?>>None</option>
-                <?php foreach($all_ranks as $rank) { ?>
-                    <option value="<?= $rank['id'];?>" <?= $rank['id'] == $user_data->getSecondaryRank() ? 'selected' : '';?>><?= $rank['name'];?></option>
-                <?php } ?>
-            </select>
-        </div>
+            <div class="form-group mt-3">
+                <label for="secondary_rank">Secondary Rank</label>
+                <select name="secondary_rank" id="secondary_rank" class="form-control">
+                    <option value="0" <?= 0 == $user_data->getSecondaryRank() ? 'selected' : '';?>>None</option>
+                    <?php foreach($all_ranks as $rank) { ?>
+                        <option value="<?= $rank['id'];?>" <?= $rank['id'] == $user_data->getSecondaryRank() ? 'selected' : '';?>><?= $rank['name'];?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="team_hidden">Hidden on Team-Page</label>
+                <select name="team_hidden" id="main_rank" class="form-control">
+                    <option value="0" <?= $user_data->getTeamHidden() == 0 ? 'selected' : '';?>>Shown</option>
+                    <option value="1" <?= $user_data->getTeamHidden() == 1 ? 'selected' : '';?>>Hidden</option>
+                </select>
+            </div>
         <?php } ?>
 
         <div class="form-group mt-3">

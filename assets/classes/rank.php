@@ -124,9 +124,22 @@ class Rank {
     }
 
     static function getAllRanks() {
-        $query = Functions::$mysqli->query("SELECT * FROM core_ranks WHERE id > 0");
+        $query = Functions::$mysqli->query("SELECT * FROM core_ranks WHERE id > 0 ORDER BY priority ASC");
         if($query->num_rows > 0) {
             return $query->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
+    static function getAllUsersByRank($rank) {
+        $prepare = Functions::$mysqli->prepare("SELECT * FROM web_users WHERE main_rank = ? OR secondary_rank = ?");
+        $prepare->bind_param('ii', $rank, $rank);
+        $prepare->execute();
+        $result = $prepare->get_result();
+        if($result->num_rows > 0) {
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        else {
+            return 0;
         }
     }
 

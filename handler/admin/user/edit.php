@@ -130,6 +130,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
 
             $new_main_rank = $user_data->getMainRank();
             $new_secondary_rank = $user_data->getSecondaryRank();
+            $new_team_hidden = $user_data->getTeamHidden();
             if($user->hasPermission('admin_upperstaff_management')) {
                 $new_main_rank = new Rank($_POST['main_rank']);
                 $new_secondary_rank = new Rank($_POST['secondary_rank']);
@@ -176,6 +177,18 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                         
                         $changed ++;
                     }
+                }
+                if($new_team_hidden != $_POST['team_hidden']) {
+                    $new_team_hidden = $_POST['team_hidden'];
+                    $log = new Log();
+                    $log->setCategory('Profile_Edit');
+                    $log->setUser($user->getID())->setTarget($user_data->getID());
+                    $log->setChangedWhat('Hidden on Team Page')->setChangedOld($new_team_hidden)->setChangedNew($new_team_hidden);
+                    $log->setTime(gmdate('U'));
+                    $log->create();
+
+                    $changed ++;
+                    $user_data->setTeamHidden($new_team_hidden);
                 }
             }
 

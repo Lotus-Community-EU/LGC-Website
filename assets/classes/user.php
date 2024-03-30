@@ -186,6 +186,12 @@ class User {
         return $this;
     }
 
+    function getTeamHidden() { return $this->data['team_hidden']; }
+    function setTeamHidden($hidden) {
+        $this->data['team_hidden'] = $hidden;
+        return $this;
+    }
+
     function deleteAvatarFile() {
         if($this->data['avatar'] != 'none.png') {
             unlink('assets/images/avatar/'.$this->data['avatar']);
