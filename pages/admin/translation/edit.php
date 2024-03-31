@@ -151,14 +151,35 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
                                                         <?php
                                                     }
                                                     ?>
-                                                    <div class="form-group">
-                                                        <label>Variables</label><br>
-                                                        <?= strlen($res['variables']) ? $res['variables'].' <hr>' : '- No variables available <hr>';?>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Find where</label><br>
-                                                        <?= strlen($res['find_where']) ? '<div class="find_where border border-secondary p-2 w-100">'.$res['find_where'].'</div><hr>' : '- Please contact the Web-Developer for informations! <hr>';?>
-                                                    </div>
+                                                    <?php
+                                                    if($user->hasPermission('admin_translation_admin')) {
+                                                        ?>
+                                                        <div class="form-group">
+                                                            <label for="variables">Variables</label>
+                                                            <textarea name="variables" id="variables" cols="30" rows="3" class="form-control"><?= $res['variables'];?></textarea>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-group">
+                                                            <label for="find_where">Find where (Image Link)</label>
+                                                            <input name="find_where" type="text" class="form-control" id="find_where" placeholder="https://imagelink.com/Image" value="<?= $res['find_where'];?>">
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                    else {
+                                                        ?>
+                                                        <div class="form-group">
+                                                            <label>Variables</label><br>
+                                                            <?= strlen($res['variables']) ? nl2br($res['variables']).' <hr>' : '- No variables set yet';?>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-group">
+                                                            <label>Find where</label><br>
+                                                            <?= strlen($res['find_where']) ? '<div class="find_where border border-secondary p-2 w-100"><img src="'.$res['find_where'].'" alt="Contact the Web-Developer!"></div><hr>' : '- Please contact the Web-Developer for informations!';?>
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                    <hr>
                                                     <div class="form-group">
                                                         <label for="new_language_<?= $res['id'];?>">Translation - <?= $language;?></label>
                                                         <textarea name="new_language" id="new_language_<?= $res['id'];?>" cols="30" rows="3" class="form-control"><?= $res[$language];?></textarea>
@@ -240,6 +261,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_edit');
             processData: false,
             contentType: false,
             success: function(response) {
+                console.log(response);
                 if(response.status == 'success') {
                     $("#ergebnis_"+response.id).css("display","block");
                     $("#ergebnis_"+response.id).removeClass("alert-danger");

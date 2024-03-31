@@ -79,6 +79,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 $_SESSION['language_name'] = $language_name;
 
                 $path = $_POST['path'];
+                $new_variables = $_POST['variables'];
+                $new_find_where = $_POST['find_where'];
                 $new_bot = isset($_POST['isBot']) ? 1 : 0;
                 $new_game = isset($_POST['isGame']) ? 1 : 0;
                 $new_web = isset($_POST['isWeb']) ? 1 : 0;
@@ -109,6 +111,22 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                     $new_language = Functions::RemoveScriptFromString($new_language);
                     $new_language = Functions::RemoveIFrameFromString($new_language);
 
+                    if(strcmp($now_translation['variables'], $new_variables)) {
+                        $log = new Log();
+                        $log->setCategory('Translation');
+                        $log->setUser($user->getID())->setTarget($path);
+                        $log->setChangedWhat('Variables')->setChangedOld($now_translation['variables'])->setChangedNew($new_variables);
+                        $log->setTime(gmdate('U'));
+                        $log->create();
+                    }
+                    if(strcmp($now_translation['find_where'], $new_find_where)) {
+                        $log = new Log();
+                        $log->setCategory('Translation');
+                        $log->setUser($user->getID())->setTarget($path);
+                        $log->setChangedWhat('Find Where')->setChangedOld($now_translation['find_where'])->setChangedNew($find_where);
+                        $log->setTime(gmdate('U'));
+                        $log->create();
+                    }
                     if($now_translation['isBot'] != $new_bot) {
                         $log = new Log();
                         $log->setCategory('Translation');
@@ -142,8 +160,8 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                         $log->create();
                     }
 
-                    $prepare = Functions::$mysqli->prepare("UPDATE core_translations SET isBot = ?, isGame = ?, isWeb = ?, ".$language_name." = ? WHERE path = ?");
-                    $prepare->bind_param('iiiss', $new_bot, $new_game, $new_web, $new_language, $path);
+                    $prepare = Functions::$mysqli->prepare("UPDATE core_translations SET isBot = ?, isGame = ?, isWeb = ?, variables = ?, find_where = ?, ".$language_name." = ? WHERE path = ?");
+                    $prepare->bind_param('iiissss', $new_bot, $new_game, $new_web, $new_variables, $new_find_where, $new_language, $path);
                     $prepare->execute();
                     $response = array(
                         'status' => 'success',
