@@ -24,6 +24,10 @@ class Rank {
             'min' => 1,
             'max' => 6
         ),
+        'description' => array(
+            'min' => 0,
+            'max' => 512
+        ),
         'colour' => 7,
         'colour_ingame' => 5,
         'ingame_id' => array(
@@ -116,6 +120,12 @@ class Rank {
     function getIsUpperStaff() { return $this->data['is_upperstaff']; }
     function setIsUpperStaff($is_upperstaff) {
         $this->data['is_upperstaff'] = $is_upperstaff;
+        return $this;
+    }
+
+    function getDescription() { return $this->data['description']; }
+    function setDescription($description) {
+        $this->data['description'] = $description;
         return $this;
     }
 
@@ -216,6 +226,7 @@ class Rank {
             'ingame_id',
             'name',
             'short',
+            'description',
             'colour',
             'colour_ingame',
             'priority',
@@ -235,10 +246,11 @@ class Rank {
         $questionmarks = implode(',', $questionmarks);
         
         $prepare = Functions::$mysqli->prepare("INSERT INTO core_ranks (".$vars.") VALUES (".$questionmarks.")");
-        $prepare->bind_param('sssssiiii',
+        $prepare->bind_param('ssssssiiii',
             $this->data['ingame_id'],
             $this->data['name'],
             $this->data['short'],
+            $this->data['description'],
             $this->data['colour'],
             $this->data['colour_ingame'],
             $this->data['priority'],
@@ -262,6 +274,7 @@ class Rank {
             'ingame_id',
             'name',
             'short',
+            'description',
             'colour',
             'colour_ingame',
             'priority',
@@ -277,10 +290,11 @@ class Rank {
         $vars = implode(',', $vars);
 
         $prepare = Functions::$mysqli->prepare("UPDATE core_ranks SET ".$vars." WHERE id = ? LIMIT 1");
-        $prepare->bind_param('sssssiiiii',
+        $prepare->bind_param('ssssssiiiii',
             $this->data['ingame_id'],
             $this->data['name'],
             $this->data['short'],
+            $this->data['description'],
             $this->data['colour'],
             $this->data['colour_ingame'],
             $this->data['priority'],

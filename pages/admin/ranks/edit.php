@@ -39,6 +39,11 @@ $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
             <input type="text" name="short" class="form-control" id="short" placeholder="<?= $rank_short;?>" value="<?= $rank->getShort();?>" maxlength="6">
         </div>
         <div class="form-group mt-3">
+            <?php $description = Functions::Translation('text.rank.description');?>
+            <label for="description"><?= $description;?></label>
+            <input type="text" name="description" class="form-control" id="description" placeholder="<?= $description;?>">
+        </div>
+        <div class="form-group mt-3">
             <?php $rank_colour = Functions::Translation('text.rank.rank_colour');?>
             <label for="colour"><?= $rank_colour;?></label>
             <input type="color" name="colour" class="form-control" id="colour" placeholder="<?= $rank_colour;?>" value="<?= $rank->getColour();?>">

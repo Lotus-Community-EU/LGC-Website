@@ -21,6 +21,11 @@
             <input type="text" name="short" class="form-control" id="short" placeholder="<?= $short;?>">
         </div>
         <div class="form-group mt-3">
+            <?php $description = Functions::Translation('text.rank.description');?>
+            <label for="description"><?= $description;?></label>
+            <input type="text" name="description" class="form-control" id="description" placeholder="<?= $description;?>">
+        </div>
+        <div class="form-group mt-3">
             <?php $colour = Functions::Translation('text.rank.rank_colour');?>
             <label for="colour"><?= $colour;?></label>
             <input type="color" name="colour" class="form-control" id="colour" placeholder="<?= $colour;?>">

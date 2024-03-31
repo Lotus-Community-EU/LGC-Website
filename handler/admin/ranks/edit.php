@@ -15,6 +15,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
 
             $name = $_POST['name'];
             $short = $_POST['short'];
+            $description = $_POST['description'];
             $colour = $_POST['colour'];
             $colour_ingame = $_POST['colour_ingame'];
             $ingame_id = $_POST['ingame_id'];
@@ -50,6 +51,12 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 $error = 1;
                 if(strlen($error_msg) > 0) { $error_msg .='<br>';}
                 $error_msg .= 'Rank\'s short-form must be between '.$rank->lengths['short']['min'].' and '.$rank->lengths['short']['max'].' letters!';
+            }
+
+            if(strlen($description) < $rank->lengths['description']['min'] || strlen($description) > $rank->lengths['description']['max']) {
+                $error = 1;
+                if(strlen($error_msg) > 0) { $error_msg .='<br>';}
+                $error_msg .= 'Description\'s length must be between '.$rank->lengths['description']['min'].' and '.$rank->lengths['description']['max'].' letters!';
             }
 
             if(strlen($colour) != $rank->lengths['colour']) {
@@ -100,6 +107,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             $rank->setIngameID($ingame_id);
             $rank->setName($name);
             $rank->setShort($short);
+            $rank->setDescription($description);
             $rank->setColour($colour);
             $rank->setColourIngame($colour_ingame);
             $rank->setPriority($priority);
