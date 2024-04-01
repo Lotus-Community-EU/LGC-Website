@@ -14,6 +14,9 @@ $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
 <div class="container col-12 col-lg-6 mb-5">
     <div class="d-flex justify-content-between">
         <div>
+            <a href="/admin/ranks/list" class="btn btn-sm btn-primary mb-2 mb-md-0">Back to List</a>
+        </div>
+        <div>
             <p><?= Functions::Translation('text.rank.edit.header', ['rank_name'], [$rank->getName()]);?></p>
         </div>
         <?php if($rank->getID() != 1 && $rank->getID() != 2) {?>
@@ -41,7 +44,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
         <div class="form-group mt-3">
             <?php $description = Functions::Translation('text.rank.description');?>
             <label for="description"><?= $description;?></label>
-            <input type="text" name="description" class="form-control" id="description" placeholder="<?= $description;?>">
+            <input type="text" name="description" class="form-control" id="description" placeholder="<?= $description;?>" value="<?= $rank->getDescription();?>">
         </div>
         <div class="form-group mt-3">
             <?php $rank_colour = Functions::Translation('text.rank.rank_colour');?>
