@@ -14,7 +14,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_ranks_edit');
 <div class="container col-12 col-lg-6 mb-5">
     <div class="d-flex justify-content-between">
         <div>
-            <a href="/admin/ranks/list" class="btn btn-sm btn-primary mb-2 mb-md-0">Back to List</a>
+            <a href="/admin/ranks/list" class="btn btn-sm btn-primary mb-2 mb-md-0">Back to Overview</a>
         </div>
         <div>
             <p><?= Functions::Translation('text.rank.edit.header', ['rank_name'], [$rank->getName()]);?></p>
