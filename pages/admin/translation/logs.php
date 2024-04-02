@@ -45,9 +45,9 @@ $csrf_token = Functions::CreateCSRFToken('admin_translation_log_delete');
                                 <?= $log['target'];?>
                             </td>
                             <td>
-                                <a href="/user/<?= $log['user'];?>" <?= ($user->hasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Hyperlink (<?= $log['user'];?>)</a>
+                                <a href="/profile/<?= $log['user'];?>" <?= ($user->hasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Hyperlink (<?= $log['user'];?>)</a>
                                 <?php if($log['deleted'] == 1) {?>
-                                    | <a href="/user/<?= $log['deleted_by'];?>" <?= ($user->hasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Deleted by (<?= $log['deleted_by'];?>)</a>
+                                    | <a href="/profile/<?= $log['deleted_by'];?>" <?= ($user->hasPermission('admin_translation_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Deleted by (<?= $log['deleted_by'];?>)</a>
                                 <?php }?>
                             </td>
                             <td>
