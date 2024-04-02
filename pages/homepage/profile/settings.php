@@ -13,7 +13,7 @@ else {
 
     ?>
 
-    <div class="container w-50 mb-5">
+    <div class="container mb-5">
         <div class="d-flex justify-content-between">
             <div>
                 <p><?= Functions::Translation('text.edit_profile');?></p>
