@@ -188,12 +188,8 @@ class Functions {
     }
 
     static function ConnectDB() {
-        $data = array(
-            'host'      => '88.198.12.152',
-            'user'      => 'root',
-            'password'  => 'MauriceH2400',
-            'database'  => 'LotusGaming'
-        );
+        global $config;
+        $data = $config['sql_data'];
 
         self::$mysqli = new mysqli($data['host'], $data['user'], $data['password'], $data['database']);
 
