@@ -197,7 +197,7 @@ class Functions {
 
         self::$mysqli = new mysqli($data['host'], $data['user'], $data['password'], $data['database']);
 
-        if(self::$mysqli->connect_error) {
+        if(self::$mysqli->connect_erro) {
             die('Website is currently under maintenance! We are working on getting it back online as soon as possible!<br>Sorry for the inconveniences!');
         }
     }
