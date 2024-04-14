@@ -4,6 +4,8 @@ if($user->getID() == 0) {
     exit;
 }
 
+die('Under maintenance! - Will be re-activated as soon as possible!');
+
 $all_languages = Functions::GetAllLanguages();
 
 $csrf_token = Functions::CreateCSRFToken('profile_settings');
