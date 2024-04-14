@@ -102,6 +102,8 @@ class User {
         return $this;
     }
 
+    function getPassword() { return $this->data['password']; }
+
     function getEmail() { return $this->data['email']; }
     function setEmail($email) {
         $this->data['email'] = $email;

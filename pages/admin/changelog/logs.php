@@ -42,7 +42,7 @@ $csrf_token = Functions::CreateCSRFToken('admin_changelog_log_delete');
                                 </span>
                             </td>
                             <td>
-                                <?= $log['target'];?>
+                                <a href="/changelog/<?= $log['target'];?>" <?= ($user->hasPermission('admin_changelog_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Hyperlink (<?= $log['target'];?>)</a>
                             </td>
                             <td>
                                 <a href="/profile/<?= $log['user'];?>" <?= ($user->hasPermission('admin_changelog_log_delete') && $log['deleted'] == 1) ? 'class="text-dark"' : 'class="text-white"';?> target="_blank">Hyperlink (<?= $log['user'];?>)</a>

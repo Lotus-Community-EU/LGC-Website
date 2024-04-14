@@ -28,7 +28,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 else {
                     $_SESSION['error_title'] = 'Edit Profile Picture';
                     $_SESSION['error_message'] = 'You didn\'t link your Minecraft-Account!';
-                    header("Location: /profile/settings");
+                    header("Location: /profile/settings/avatar");
                     exit;
                 }
             }
@@ -46,7 +46,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 $user->setAvatar('none.png');
                 $user->update();
                 $_SESSION['success_message'] = 'You removed your Avatar!';
-                header("Location: /profile/settings");
+                header("Location: /profile/settings/avatar");
                 exit;
             }
             if(isset($_POST['submit'])) {
@@ -72,27 +72,27 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                             $user->setAvatar($avatar_name);
                             $user->update();
                             $_SESSION['success_message'] = 'You successfully uploaded an Avatar!';
-                            header("Location: /profile/settings");
+                            header("Location: /profile/settings/avatar");
                             exit;
                         }
                         else {
                             $_SESSION['error_title'] = 'Edit Avatar';
                             $_SESSION['error_message'] = 'Avatars can only be .png, .jpeg or .gif files!';
-                            header("Location: /profile/settings");
+                            header("Location: /profile/settings/avatar");
                             exit;
                         }
                     }
                     else {
                         $_SESSION['error_title'] = 'Edit Avatar';
                         $_SESSION['error_message'] = 'Avatar can not be bigger than '.$settings->getMaxAvatarSize().' MB!';
-                        header("Location: /profile/settings");
+                        header("Location: /profile/settings/avatar");
                         exit;
                     }
                 }
                 else {
                     $_SESSION['error_title'] = 'Edit Avatar';
                     $_SESSION['error_message'] = 'Please select an Avatar you want to upload!';
-                    header("Location: /profile/settings");
+                    header("Location: /profile/settings/avatar");
                     exit;
                 }
             }
@@ -100,20 +100,20 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
         else {
             $_SESSION['error_title'] = 'Edit Avatar';
             $_SESSION['error_message'] = 'Your permissions to change your Avatar have been rejected. Contact Staff, if you think that this is an error!';
-            header("Location: /profile/settings");
+            header("Location: /profile/settings/avatar");
             exit;
         }
     }
     else {
         $_SESSION['error_title'] = 'Edit Avatar';
         $_SESSION['error_message'] = 'An error occured while editing your Avatar. Please try again! (2)';
-        header("Location: /profile/settings");
+        header("Location: /profile/settings/avatar");
         exit;
     }
 }
 else {
     $_SESSION['error_title'] = 'Edit Avatar';
     $_SESSION['error_message'] = 'An error occured while editing your Avatar. Please try again! (1)';
-    header("Location: /profile/settings");
+    header("Location: /profile/settings/avatar");
     exit;
 }

@@ -9,7 +9,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             $repeat_new_password = $_POST['repeat_new_password'];
             $error = 0; $error_msg = '';
 
-            if(Functions::HashPassword($current_password) !== Functions::$user['password']) {
+            if(Functions::HashPassword($current_password) !== $user->getPassword()) {
                 $error = 1;
                 if(strlen($error_msg) > 0) { $error_msg .='<br>';}
                 $error_msg .= '- The input password is incorrect!';
@@ -30,35 +30,35 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             if($error == 1) {
                 $_SESSION['error_title'] = 'Change Password';
                 $_SESSION['error_message'] = $error_msg;
-                header("Location: /profile/password");
+                header("Location: /profile/settings/password");
                 exit;
             }
 
             $hashed_password = Functions::HashPassword($new_password);
             $prepare = Functions::$mysqli->prepare("UPDATE web_users SET password = ? WHERE id = ?");
-            $prepare->bind_param("si", $hashed_password, Functions::$user['id']);
+            $prepare->bind_param("si", $hashed_password, $user->getID());
             $prepare->execute();
             $_SESSION['success_message'] = 'Password changed successfully!';
-            header("Location: /profile/password");
+            header("Location: /profile/settings/password");
             exit;
         }
         else {
             $_SESSION['error_title'] = 'Change Password';
             $_SESSION['error_message'] = 'An error occured while changing your password. Please try again! (3)';
-            header("Location: /profile/password");
+            header("Location: /profile/settings/password");
             exit;
         }
     }
     else {
         $_SESSION['error_title'] = 'Change Password';
         $_SESSION['error_message'] = 'An error occured while changing your password. Please try again! (2)';
-        header("Location: /profile/password");
+        header("Location: /profile/settings/password");
         exit;
     }
 }
 else {
     $_SESSION['error_title'] = 'Change Password';
     $_SESSION['error_message'] = 'An error occured while changing your password. Please try again! (1)';
-    header("Location: /profile/password");
+    header("Location: /profile/settings/password");
     exit;
 }

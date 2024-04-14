@@ -9,7 +9,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 $key = Functions::GenerateLinkKey($user->getID());
                 $user->setMCVerifyCode($key);
                 $user->update();
-                header("Location: /profile/settings");
+                header("Location: /profile/settings/minecraft");
                 exit;
             }
 
@@ -25,7 +25,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 $user->setMCUUID('');
                 $user->update();
                 $_SESSION['success_message'] = Functions::Translation('text.success.minecraft_unlink');
-                header("Location: /profile/settings");
+                header("Location: /profile/settings/minecraft");
                 exit;
             }
 
@@ -141,7 +141,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 $error_msg = '- The entered Bio is too long (4096 Character max - including HMTL)';
             }
             else {
-                if(strcmp(Functions::$user['bio'], $new_bio)) {
+                if(strcmp($user->getBio(), $new_bio)) {
                     $new_bio = Functions::RemoveScriptFromString($new_bio);
                     $new_bio = Functions::RemoveIFrameFromString($new_bio);
                     
@@ -168,26 +168,26 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
             if($changed > 0) {
                 $_SESSION['success_message'] = 'Profile edited successfully';
             }
-            header("Location: /profile/settings");
+            header("Location: /profile/settings/profile");
             exit;
         }
         else {
             $_SESSION['error_title'] = 'Edit Profile';
             $_SESSION['error_message'] = 'An error occured while editing your account. Please try again! (3)';
-            header("Location: /profile/settings");
+            header("Location: /profile/settings/profile");
             exit;
         }
     }
     else {
         $_SESSION['error_title'] = 'Edit Profile';
         $_SESSION['error_message'] = 'An error occured while editing your account. Please try again! (2)';
-        header("Location: /profile/settings");
+        header("Location: /profile/settings/profile");
         exit;
     }
 }
 else {
     $_SESSION['error_title'] = 'Edit Profile';
     $_SESSION['error_message'] = 'An error occured while editing your account. Please try again! (1)';
-    header("Location: /profile/settings");
+    header("Location: /profile/settings/profile");
     exit;
 }
