@@ -1,4 +1,9 @@
 <?php
+if($user->getID() == 0) {
+    header("Location: /");
+    exit;
+}
+
 $all_languages = Functions::GetAllLanguages();
 
 $csrf_token = Functions::CreateCSRFToken('profile_settings');
