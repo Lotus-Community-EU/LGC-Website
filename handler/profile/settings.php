@@ -72,7 +72,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 }
             }
 
-            if(isset($_POSTS['pronouns'])) {
+            if(isset($_POST['pronouns'])) {
                 $new_pronouns = $_POST['pronouns'];
                 if(strlen($pronouns) > 64) {
                     $error = 1;
