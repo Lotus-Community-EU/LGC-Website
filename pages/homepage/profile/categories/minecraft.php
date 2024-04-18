@@ -13,6 +13,11 @@ if(strlen($user->getMCUUID()) > 1) {
                 <option value="1" <?= $user->getShowMCName() == 1 ? 'selected' : '';?>><?= Functions::Translation('yes');?></option>
             </select>
         </div>
+
+        <?php Functions::AddCSRFCheck('profile_settings', $csrf_token); $_SESSION['user_id'] = $user->getID();?>
+        <input type="hidden" name="user_id" value="<?= $user->getID();?>">
+        <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.edit');?>">
+    
     <?php
 }
 else {
@@ -29,6 +34,5 @@ else {
         }?>
     </div>
     <?php
-    
 }
 ?>

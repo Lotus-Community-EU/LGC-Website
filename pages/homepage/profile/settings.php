@@ -4,8 +4,6 @@ if($user->getID() == 0) {
     exit;
 }
 
-die('Under maintenance! - Will be re-activated as soon as possible!');
-
 $all_languages = Functions::GetAllLanguages();
 
 $csrf_token = Functions::CreateCSRFToken('profile_settings');
@@ -44,25 +42,28 @@ $csrf_token = Functions::CreateCSRFToken('profile_settings');
             </ul>
         </div>
         <div class="col-12 col-md-8 mt-5 mt-md-0">
-            <?php
-                switch($GET['2']) {
-                    case 'profile':
-                        include('categories/profile.php');
-                        break;
-                    case 'avatar':
-                        include('categories/avatar.php');
-                        break;
-                    case 'minecraft':
-                        include('categories/minecraft.php');
-                        break;
-                    case 'password':
-                        include('categories/password.php');
-                        break;
-                    default:
-                        header("Location: /profile/settings/profile");
-                        break;
-                }
-            ?>
+            <form action="/profile/<?= $GET['2'] == 'password' ? 'password' : 'settings';?>" method="POST" class="">
+                <?php
+                    switch($GET['2']) {
+                        case 'profile':
+                            include('categories/profile.php');
+                            break;
+                        case 'avatar':
+                            include('categories/avatar.php');
+                            break;
+                        case 'minecraft':
+                            include('categories/minecraft.php');
+                            break;
+                        case 'password':
+                            include('categories/password.php');
+                            break;
+                        default:
+                            header("Location: /profile/settings/profile");
+                            break;
+                    }
+                    ?><input type="hidden" name="ref" value="<?= $GET['2'];?>"><?php
+                ?>
+            </form>
         </div>
     </div>
 </div>
