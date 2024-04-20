@@ -85,16 +85,16 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 }
             }
 
-            if(!is_numeric($priority)) {
-                $error = 1;
-                if(strlen($error_msg) > 0) { $error_msg .='<br>';}
-                $error_msg .= 'The priority must be numeric!';
-            }
-
             if(!is_numeric($discord_role_id)) {
                 $error = 1;
                 if(strlen($error_msg) > 0) { $error_msg .= '<br>'; }
                 $error_msg .= 'The Discord Role ID has to be numeric!';
+            }
+
+            if(!is_numeric($priority)) {
+                $error = 1;
+                if(strlen($error_msg) > 0) { $error_msg .='<br>';}
+                $error_msg .= 'The priority must be numeric!';
             }
 
             if($error == 1) {

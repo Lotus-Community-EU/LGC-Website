@@ -41,6 +41,10 @@
             <input type="text" name="ingame_id" class="form-control" id="ingame_id" placeholder="<?= $rank_ingame_id;?>" maxlength="64">
         </div>
         <div class="form-group mt-3">
+            <label for="discord_role_id">Discord Role ID</label>
+            <input type="text" name="discord_role_id" class="form-control" id="discord_role_id" placeholder="Discord Role ID" value="<?= $rank->getDiscordRoleID();?>" maxlength="64">
+        </div>
+        <div class="form-group mt-3">
             <?php $rank_priority = Functions::Translation('text.rank.rank_priority');?>
             <label for="priority"><?= $rank_priority;?></label>
             <input type="text" pattern="[0-9]+" name="priority" class="form-control" id="priority" placeholder="<?= $rank_priority;?>">
