@@ -97,6 +97,7 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
         $rank->setColourIngame($colour_ingame);
         $rank->setIngameID($ingame_id);
         $rank->setPriority($priority);
+        $rank->setDiscordRoleID($discord_role_id);
         $rank->setIsStaff($is_staff);
         $rank->setIsUpperStaff($is_upperstaff);
         
