@@ -14,6 +14,16 @@ if(strlen($user->getMCUUID()) > 1) {
             </select>
         </div>
 
+        <br><hr><br>
+
+        <?php
+            $bridge = $this->getMCChatBridge();
+            foreach($bridge as $p => $point) {
+                echo '['.$p.'] - '.$point.'<br>';
+            }
+            //echo var_dump($user->getMCChatBridge());
+        ?>
+
         <?php Functions::AddCSRFCheck('profile_settings', $csrf_token); $_SESSION['user_id'] = $user->getID();?>
         <input type="hidden" name="user_id" value="<?= $user->getID();?>">
         <input type="submit" class="btn btn-success w-100 mt-3" value="<?= Functions::Translation('global.edit');?>">
@@ -29,7 +39,9 @@ else {
             echo '<br>'.Functions::Translation('text.profile.mc_verify_code', ['verify_code'], [$user->getMCVerifyCode()]);
         }
         else {
-            ?><input type="submit" class="btn btn-sm btn-success" value="Link Minecraft Account" id="link_mc" name="link_mc"><?php
+            ?>
+            <input type="submit" class="btn btn-sm btn-success" value="Link Minecraft Account" id="link_mc" name="link_mc">
+            <?php
             Functions::AddCSRFCheck('profile_settings', $csrf_token);
         }?>
     </div>

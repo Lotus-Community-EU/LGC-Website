@@ -317,4 +317,33 @@ class User {
             return false;
         }
     }
+
+    function getMCAccount() {
+        if(strlen($this->data['mc_uuid']) < 1) {
+            return null;
+        }
+        $prepare = Functions::$mysqli->prepare("SELECT * FROM mc_users WHERE mcuuid = ?");
+        $prepare->bind_param('s', $this->data['mc_uuid']);
+        $prepare->execute();
+        $result = $prepare->get_result();
+        if($result->num_rows > 0) {
+            return $result->fetch_all(MYSQLI_ASSOC)[0];
+        }
+        else {
+            return null;
+        }
+    }
+
+    function getMCChatBridge() {
+        if(strlen($this->data['mc_uuid']) < 1) {
+            return null;
+        }
+        $result = $this->getMCAccount()['chatbridgeOptions'];
+        $return_array = array();
+        $outer = explode(';', $result);
+        foreach($outer as $key => $out) {
+            $return_array[$out] = $out;
+        }
+        return implode(';', $return_array);
+    }
 }

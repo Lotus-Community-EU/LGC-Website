@@ -123,7 +123,6 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                 }
             }
 
-
             if(isset($_POST['show_mc_name'])) {
                 
                 $new_show_mc_name = $_POST['show_mc_name'];
@@ -141,7 +140,6 @@ if(strpos($ref, Functions::GetWebsiteURL()) == 0) {
                     $changed ++;
                 }
             }
-
 
             if(isset($_POST['bio'])) {
                 $new_bio = $_POST['bio'];
