@@ -17,11 +17,17 @@ if(strlen($user->getMCUUID()) > 1) {
         <br><hr><br>
 
         <?php
-            $bridge = $this->getMCChatBridge();
-            foreach($bridge as $p => $point) {
-                echo '['.$p.'] - '.$point.'<br>';
+            $bridge = $user->getMCChatBridge();
+            $bridge = explode(';', $bridge);
+            if($bridge == null) {
+                echo 'Contact Web Development with a Screenshot of the whole Website please!';
             }
-            //echo var_dump($user->getMCChatBridge());
+            else {
+                foreach($bridge as $p => $point) {
+                    echo '['.$p.'] - '.$point.'<br>';
+                }
+                //echo var_dump($user->getMCChatBridge());
+            }
         ?>
 
         <?php Functions::AddCSRFCheck('profile_settings', $csrf_token); $_SESSION['user_id'] = $user->getID();?>
